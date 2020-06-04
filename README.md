@@ -1,3 +1,5 @@
+First of all you have to go to application.properties file and give username and password for MYSQl and also have to give new Database name.
+
 # Login purpose
 Login into the System using UserName as Admin and Password as Admin.
 
