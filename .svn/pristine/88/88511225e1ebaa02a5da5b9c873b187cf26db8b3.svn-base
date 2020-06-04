@@ -1,0 +1,22 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.PriceManager;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.Date;
+import java.util.List;
+
+
+public interface HotelPriceManagerRepository extends JpaRepository<PriceManager, Long> {
+    List<PriceManager> findByIdNotInAndRoomtypeAndFromDateAndToDate(Long id, String roomName, Date fromdate, Date todate);
+    List<PriceManager> findByRoomtypeAndFromDateAndToDate(String roomtype, Date fromdate, Date todate);
+    List<PriceManager> findAllByRoomtypeContaining(String searchText, Pageable pageable);
+    List<PriceManager> findAllByRoomtypeContaining(String searchText);
+    PriceManager findFirstBy(Sort sort);
+    PriceManager findFirstByRoomtypeContaining(String searchText, Sort sort);
+    List<PriceManager> findAllBy(Pageable pageable);
+
+}

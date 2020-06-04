@@ -1,0 +1,54 @@
+package com.hyva.hotel.pojo;
+
+import com.hyva.hotel.entities.RelOrdersPrices;
+
+import java.util.List;
+
+public class CheckOutPojo {
+
+   private OrdersPojo OrdersObj;
+   private List<RelOrdersPrices> relOrdersPricesList;
+   private List<RelOrderTaxesPojo> relOrdersTaxesList;
+   private List<RelOrderServicesPojo> relOrdersServicesList;
+   private List<GuestsPojo> guestsPojoList;
+
+    public OrdersPojo getOrdersObj() {
+        return OrdersObj;
+    }
+
+    public void setOrdersObj(OrdersPojo ordersObj) {
+        OrdersObj = ordersObj;
+    }
+
+    public List<RelOrdersPrices> getRelOrdersPricesList() {
+        return relOrdersPricesList;
+    }
+
+    public void setRelOrdersPricesList(List<RelOrdersPrices> relOrdersPricesList) {
+        this.relOrdersPricesList = relOrdersPricesList;
+    }
+
+    public List<RelOrderTaxesPojo> getRelOrdersTaxesList() {
+        return relOrdersTaxesList;
+    }
+
+    public void setRelOrdersTaxesList(List<RelOrderTaxesPojo> relOrdersTaxesList) {
+        this.relOrdersTaxesList = relOrdersTaxesList;
+    }
+
+    public List<RelOrderServicesPojo> getRelOrdersServicesList() {
+        return relOrdersServicesList;
+    }
+
+    public void setRelOrdersServicesList(List<RelOrderServicesPojo> relOrdersServicesList) {
+        this.relOrdersServicesList = relOrdersServicesList;
+    }
+
+    public List<GuestsPojo> getGuestsPojoList() {
+        return guestsPojoList;
+    }
+
+    public void setGuestsPojoList(List<GuestsPojo> guestsPojoList) {
+        this.guestsPojoList = guestsPojoList;
+    }
+}

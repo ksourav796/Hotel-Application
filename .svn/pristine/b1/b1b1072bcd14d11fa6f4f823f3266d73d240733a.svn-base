@@ -1,0 +1,448 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+@Table(name = "orders")
+public class Orders {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long id;
+    private String order_no;
+    private String txn_id;
+    private Date ordered_on;
+    private String status;
+    private String payment_gateway_status;
+    private String payment_gateway_name;
+    private String currency;
+    private String coupon;
+    private String free_paid_services;
+    private String free_paid_services_title;
+    private String checkstatus;
+    private String discount;
+    private double itemtotal;
+    private String checkintime;
+    private String checkouttime;
+    private String room_no;
+    private String room_rent;
+    @OneToOne
+    private Guests guestId;
+    private Long adults;
+    private Long kids;
+    private Long room_type_id;
+    private Long room_id;
+    private Long additional_person;
+    private String payment_status;
+    private Long is_new;
+    private Long is_cancel_by_guest;
+    private Long is_cancel_view;
+    private double free_paid_services_amount;
+    private double after_coupon_totalamount;
+    private double coupon_discount;
+    private double currency_unit;
+    private double advance_amount;
+    private double totalamount;
+    private double taxamount;
+    private double paid_service_amount;
+    private double amount;
+    private double base_price;
+    private double additional_person_amount;
+    private Long nights;
+    private Date check_in;
+    private Date check_out;
+    private String bookingstatus;
+    private String description;
+    private double discountAmt;
+    private String itemName;
+    private boolean advanceBooking;
+    private String invoice;
+
+    public String getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(String invoice) {
+        this.invoice = invoice;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public boolean isAdvanceBooking() {
+        return advanceBooking;
+    }
+
+    public void setAdvanceBooking(boolean advanceBooking) {
+        this.advanceBooking = advanceBooking;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public double getDiscountAmt() {
+        return discountAmt;
+    }
+
+    public void setDiscountAmt(double discountAmt) {
+        this.discountAmt = discountAmt;
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getOrder_no() {
+        return order_no;
+    }
+
+    public void setOrder_no(String order_no) {
+        this.order_no = order_no;
+    }
+
+    public String getTxn_id() {
+        return txn_id;
+    }
+
+    public void setTxn_id(String txn_id) {
+        this.txn_id = txn_id;
+    }
+
+    public Date getOrdered_on() {
+        return ordered_on;
+    }
+
+    public void setOrdered_on(Date ordered_on) {
+        this.ordered_on = ordered_on;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPayment_gateway_status() {
+        return payment_gateway_status;
+    }
+
+    public void setPayment_gateway_status(String payment_gateway_status) {
+        this.payment_gateway_status = payment_gateway_status;
+    }
+
+    public String getPayment_gateway_name() {
+        return payment_gateway_name;
+    }
+
+    public void setPayment_gateway_name(String payment_gateway_name) {
+        this.payment_gateway_name = payment_gateway_name;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(String coupon) {
+        this.coupon = coupon;
+    }
+
+    public String getFree_paid_services() {
+        return free_paid_services;
+    }
+
+    public void setFree_paid_services(String free_paid_services) {
+        this.free_paid_services = free_paid_services;
+    }
+
+    public String getFree_paid_services_title() {
+        return free_paid_services_title;
+    }
+
+    public void setFree_paid_services_title(String free_paid_services_title) {
+        this.free_paid_services_title = free_paid_services_title;
+    }
+
+    public String getCheckstatus() {
+        return checkstatus;
+    }
+
+    public void setCheckstatus(String checkstatus) {
+        this.checkstatus = checkstatus;
+    }
+
+    public double getItemtotal() {
+        return itemtotal;
+    }
+
+    public void setItemtotal(double itemtotal) {
+        this.itemtotal = itemtotal;
+    }
+
+    public String getCheckintime() {
+        return checkintime;
+    }
+
+    public void setCheckintime(String checkintime) {
+        this.checkintime = checkintime;
+    }
+
+    public String getCheckouttime() {
+        return checkouttime;
+    }
+
+    public void setCheckouttime(String checkouttime) {
+        this.checkouttime = checkouttime;
+    }
+
+    public String getRoom_no() {
+        return room_no;
+    }
+
+    public void setRoom_no(String room_no) {
+        this.room_no = room_no;
+    }
+
+    public String getRoom_rent() {
+        return room_rent;
+    }
+
+    public void setRoom_rent(String room_rent) {
+        this.room_rent = room_rent;
+    }
+
+    public Guests getGuestId() {
+        return guestId;
+    }
+
+    public void setGuestId(Guests guestId) {
+        this.guestId = guestId;
+    }
+
+    public Long getAdults() {
+        return adults;
+    }
+
+    public void setAdults(Long adults) {
+        this.adults = adults;
+    }
+
+    public Long getKids() {
+        return kids;
+    }
+
+    public void setKids(Long kids) {
+        this.kids = kids;
+    }
+
+    public Long getRoom_type_id() {
+        return room_type_id;
+    }
+
+    public void setRoom_type_id(Long room_type_id) {
+        this.room_type_id = room_type_id;
+    }
+
+    public Long getRoom_id() {
+        return room_id;
+    }
+
+    public void setRoom_id(Long room_id) {
+        this.room_id = room_id;
+    }
+
+    public Long getAdditional_person() {
+        return additional_person;
+    }
+
+    public void setAdditional_person(Long additional_person) {
+        this.additional_person = additional_person;
+    }
+
+    public String getPayment_status() {
+        return payment_status;
+    }
+
+    public void setPayment_status(String payment_status) {
+        this.payment_status = payment_status;
+    }
+
+    public Long getIs_new() {
+        return is_new;
+    }
+
+    public void setIs_new(Long is_new) {
+        this.is_new = is_new;
+    }
+
+    public Long getIs_cancel_by_guest() {
+        return is_cancel_by_guest;
+    }
+
+    public void setIs_cancel_by_guest(Long is_cancel_by_guest) {
+        this.is_cancel_by_guest = is_cancel_by_guest;
+    }
+
+    public Long getIs_cancel_view() {
+        return is_cancel_view;
+    }
+
+    public void setIs_cancel_view(Long is_cancel_view) {
+        this.is_cancel_view = is_cancel_view;
+    }
+
+    public double getFree_paid_services_amount() {
+        return free_paid_services_amount;
+    }
+
+    public void setFree_paid_services_amount(double free_paid_services_amount) {
+        this.free_paid_services_amount = free_paid_services_amount;
+    }
+
+    public double getAfter_coupon_totalamount() {
+        return after_coupon_totalamount;
+    }
+
+    public void setAfter_coupon_totalamount(double after_coupon_totalamount) {
+        this.after_coupon_totalamount = after_coupon_totalamount;
+    }
+
+    public double getCoupon_discount() {
+        return coupon_discount;
+    }
+
+    public void setCoupon_discount(double coupon_discount) {
+        this.coupon_discount = coupon_discount;
+    }
+
+    public double getCurrency_unit() {
+        return currency_unit;
+    }
+
+    public void setCurrency_unit(double currency_unit) {
+        this.currency_unit = currency_unit;
+    }
+
+    public double getAdvance_amount() {
+        return advance_amount;
+    }
+
+    public void setAdvance_amount(double advance_amount) {
+        this.advance_amount = advance_amount;
+    }
+
+    public double getTotalamount() {
+        return totalamount;
+    }
+
+    public void setTotalamount(double totalamount) {
+        this.totalamount = totalamount;
+    }
+
+    public double getTaxamount() {
+        return taxamount;
+    }
+
+    public void setTaxamount(double taxamount) {
+        this.taxamount = taxamount;
+    }
+
+    public double getPaid_service_amount() {
+        return paid_service_amount;
+    }
+
+    public void setPaid_service_amount(double paid_service_amount) {
+        this.paid_service_amount = paid_service_amount;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public double getBase_price() {
+        return base_price;
+    }
+
+    public void setBase_price(double base_price) {
+        this.base_price = base_price;
+    }
+
+    public double getAdditional_person_amount() {
+        return additional_person_amount;
+    }
+
+    public void setAdditional_person_amount(double additional_person_amount) {
+        this.additional_person_amount = additional_person_amount;
+    }
+
+    public Long getNights() {
+        return nights;
+    }
+
+    public void setNights(Long nights) {
+        this.nights = nights;
+    }
+
+    public Date getCheck_in() {
+        return check_in;
+    }
+
+    public void setCheck_in(Date check_in) {
+        this.check_in = check_in;
+    }
+
+    public Date getCheck_out() {
+        return check_out;
+    }
+
+    public void setCheck_out(Date check_out) {
+        this.check_out = check_out;
+    }
+
+    public String getBookingstatus() {
+        return bookingstatus;
+    }
+
+    public void setBookingstatus(String bookingstatus) {
+        this.bookingstatus = bookingstatus;
+    }
+}

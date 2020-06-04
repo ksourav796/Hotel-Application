@@ -1,0 +1,22 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Testimonials;
+import org.apache.poi.ss.formula.functions.T;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+
+public interface TestimonialsRepository extends JpaRepository<Testimonials, Long> {
+    List<Testimonials> findByAutherNameAndIdNotIn(String name, Long id);
+    List<Testimonials> findByAutherName(String name);
+    Testimonials findFirstByAutherNameContaining(String searchText, Sort sort);
+    List<Testimonials> findAllByAutherNameContaining(String searchText,Pageable pageable);
+    Testimonials findFirstBy(Sort sort);
+    List<Testimonials> findAllBy(Pageable pageable);
+    List<Testimonials> findAllByAutherNameContaining(String searchText);
+}
+

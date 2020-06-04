@@ -1,0 +1,46 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.PriceManager;
+import com.hyva.hotel.pojo.PriceManagerPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class HotelPriceManagerMapper {
+    public static PriceManager mapPojoToEntity(PriceManagerPojo priceManagerPojo){
+       PriceManager priceManager=new PriceManager();
+        priceManager.setId(priceManagerPojo.getId());
+        priceManager.setRoomtype(priceManagerPojo.getRoomtype());
+        priceManager.setFromDate(priceManagerPojo.getFromDate());
+        priceManager.setToDate(priceManagerPojo.getToDate());
+        priceManager.setMon(priceManagerPojo.getMon());
+        priceManager.setTue(priceManagerPojo.getTue());
+        priceManager.setWed(priceManagerPojo.getWed());
+        priceManager.setThu(priceManagerPojo.getThu());
+        priceManager.setFri(priceManagerPojo.getFri());
+        priceManager.setSat(priceManagerPojo.getSat());
+        priceManager.setSun(priceManagerPojo.getSun());
+        return priceManager;
+    }
+
+    public static List<PriceManagerPojo> mapEntityToPojo(List<PriceManager> priceList){
+        List<PriceManagerPojo> list=new ArrayList<>();
+        for(PriceManager priceManager:priceList) {
+            PriceManagerPojo pojo = new PriceManagerPojo();
+            pojo.setId(priceManager.getId());
+            pojo.setRoomtype(priceManager.getRoomtype());
+            pojo.setFromDate(priceManager.getFromDate());
+            pojo.setToDate(priceManager.getToDate());
+            pojo.setMon(priceManager.getMon());
+            pojo.setTue(priceManager.getTue());
+            pojo.setWed(priceManager.getWed());
+            pojo.setThu(priceManager.getThu());
+            pojo.setFri(priceManager.getFri());
+            pojo.setSat(priceManager.getSat());
+            pojo.setSun(priceManager.getSun());
+            list.add(pojo);
+        }
+        return list;
+    }
+}

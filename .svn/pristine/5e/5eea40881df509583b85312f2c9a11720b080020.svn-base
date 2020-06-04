@@ -1,0 +1,14 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Orders;
+import com.hyva.hotel.entities.RelOrdersPrices;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.Date;
+import java.util.List;
+
+public interface RelOrderPriceRepository extends CrudRepository<RelOrdersPrices, Long> {
+    List<RelOrdersPrices> findByOrderId(Orders orders);
+    List<RelOrdersPrices> findAllByDateBetween(Date fromdate, Date todate);
+
+}

@@ -1,0 +1,259 @@
+app.controller('languageController',
+    function($scope, $http, $location, $filter, Notification, ngTableParams,  $timeout, $window, $rootScope) {
+        console.log("aaaaaaaaaaaaa");
+        $scope.bshimServerURL = "/hotel";
+        $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        $scope.customerId = 1;
+        $scope.userRights = [];
+        $scope.operation = 'Create';
+        $scope.customer = 1;
+        $scope.today = new Date();
+        $scope.operation='create';
+
+        $scope.reloadPage = function () {
+            $window.location.reload();
+        };
+        $scope.getPaginatedLanguageList= function (page) {
+            switch (page) {
+                case 'firstPage':
+                    $scope.firstPage = true;
+                    $scope.lastPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'lastPage':
+                    $scope.lastPage = true;
+                    $scope.firstPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'nextPage':
+                    $scope.isNext = true;
+                    $scope.isPrev = false;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.pageNo = $scope.pageNo + 1;
+                    break;
+                case 'prevPage':
+                    $scope.isPrev = true;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.isNext = false;
+                    $scope.pageNo = $scope.pageNo - 1;
+                    break;
+                default:
+                    $scope.firstPage = true;
+                    $scope.lastPage = false;
+                    $scope.pageNo =0;
+                    $scope.isPrev = false;
+                    $scope.isNext = false;
+            }
+            var paginationDetails;
+            paginationDetails={
+                firstPage: $scope.firstPage,
+                lastPage: $scope.lastPage,
+                pageNo: $scope.pageNo,
+                prevPage: $scope.isPrev,
+                nextPage: $scope.isNext
+            }
+            if(angular.isUndefined($scope.searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getPaginatedLanguageList?searchText='+$scope.searchText,angular.toJson(paginationDetails)).then(function (response) {
+                var data = response.data;
+                console.log(data);
+                $scope.cityList = data.list;
+                $scope.first = data.firstPage;
+                $scope.last = data.lastPage;
+                $scope.prev = data.prevPage;
+                $scope.next = data.nextPage;
+                $scope.pageNo = data.pageNo;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.getPaginatedLanguageList();
+
+
+
+        $scope.reloadPage = function () {
+            $window.location.reload();
+        };
+        $scope.getlanguageList = function (searchText) {
+            if(angular.isUndefined(searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getlanguageList?searchText=').then(function (response) {
+                var data = response.data.object;
+                $scope.languageList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.getlanguageList();
+
+
+
+
+
+        $scope.EditLanguages = function (data) {
+             $scope.id=data.id;
+             $scope.lname=data.name;
+             $scope.flag=data.flag;
+             $scope.lfile=data. file;
+            $scope.operation = 'Edit';
+            $("#submit").text("Update");
+            $('#language-title').text("Edit Language");
+            $("#add_new_language").modal('show');
+
+        }, function (error) {
+            Notification.error({message: 'Something went wrong, please try again', positionX: 'center', delay: 2000});
+        };
+
+
+        $scope.DeleteLanguage=function(data) {
+            bootbox.confirm({
+                title: "Alert",
+                message: "Do you want to Continue ?",
+                buttons: {
+                    confirm: {
+                        label: 'OK'
+                    },
+                    cancel: {
+                        label: 'Cancel'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $http.post($scope.bshimServerURL + '/getDeleteLanguage?id=' + data.id).then(function (response) {
+                            var data = response.data;
+                            Notification.success({
+                                message: 'Language deleted  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.getlanguageList();
+                        }, function (error) {
+                            Notification.error({
+                                message: 'Something went wrong, please try again',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.isDisabled = false;
+                        });
+                    }
+                }
+            });
+        };
+
+        $scope.addlanguage = function () {
+            $scope.id=0;
+            $scope.lname="";
+            $scope.flag="";
+            $scope.lfile="";
+            $("#submit").text("Save");
+            $('#language-title').text("Add Language");
+            $("#add_new_language").modal('show');
+
+        };
+
+        $scope.backadminstrative=function(){
+            $window.location.href='/home#!/adminstrative'
+        };
+
+
+        $scope.importPopup = function(){
+            $("#import_Language").modal('show');
+        }
+
+        $scope.saveLanguageImport = function(){
+            $scope.isDisabled= true;
+            var formElement = document.getElementById("languageDetails");
+            var languageDetails = new FormData(formElement);
+            $http.post($scope.bshimServerURL + '/LanguageImportSave',languageDetails,
+                { headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity,
+                }).then(function (response) {
+                    $("#import_Language").modal('hide');
+                $scope.getlanguageList();
+                $scope.getPaginatedLanguageList();
+                    $scope.isDisabled= false;
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                    $scope.isDisabled= false;
+                }
+            )
+        }
+
+
+        $scope.savelanguage = function () {
+            if ($scope.lname == '' || $scope.lname == null || angular.isUndefined($scope.lname)) {
+                Notification.error({message: 'Please Enter Language Name', positionX: 'center', delay: 2000});
+            }
+            // else if ($scope.flag == '' || $scope.flag == null || angular.isUndefined($scope.flag)) {
+            //     Notification.error({message: 'Flag can not be empty', positionX: 'center', delay: 2000});
+            // }
+            // else if ($scope.lfile == '' || $scope.lfile == null || angular.isUndefined($scope.lfile)) {
+            //     Notification.error({message: 'Language File can not be empty', positionX: 'center', delay: 2000});
+            // }
+            else {
+                var savelanguageDetails;
+            savelanguageDetails = {
+                id: $scope.id,
+                name: $scope.lname,
+                flag: $scope.flag,
+                file: $scope.lfile
+
+                };
+                $http.post($scope.bshimServerURL + "/savelanguage", angular.toJson(savelanguageDetails)).then(function (response) {
+                    var data = response.data;
+                    if (data == "" || data == 'undefined'|| data ==null) {
+                        Notification.error({message: ' Already exists', positionX: 'center', delay: 2000});
+                    }
+                    else {
+                        $("#add_new_language").modal('hide');
+                        $scope.getlanguageList();
+                        if ($scope.operation == 'Edit') {
+                            Notification.success({
+                                message: 'Language is Updated successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+
+                        } else {
+                            Notification.success({
+                                message: 'Language is Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+
+                    }
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                });
+            };
+        }
+
+
+    });

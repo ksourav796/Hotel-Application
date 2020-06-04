@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row" >
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>Administrative</div>
+            </h2>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="taxmanagerLink"  href="#!/taxManager"  tabindex="-1"> <i class="fa fa-credit-card" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Tax Manager</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="salesdiscountLink"  href="#!/salesdiscount"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Sales Discount</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="testimonialLink"  href="#!/testimonial"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Testimonial</div>
+                </div>
+                </a>
+            </div>
+            <!--<div class="col-md-3 rep_list_info">-->
+                <!--<div class="custom_notif">-->
+                    <!--&nbsp;&nbsp;&nbsp; <a id="countryLink"  href="#!/country"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>-->
+                    <!--<div class="rep_info">Country</div>-->
+                <!--</div>-->
+                <!--</a>-->
+            <!--</div>-->
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="currencyLink"  href="#!/currency"  tabindex="-1"> <i class="fa fa-money" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                        <div class="rep_info">Currency</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="languageLink"  href="#!/language"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                        <div class="rep_info">Language</div>
+                </div>
+                </a>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

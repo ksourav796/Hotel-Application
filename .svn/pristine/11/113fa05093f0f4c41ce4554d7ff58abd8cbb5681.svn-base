@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row" style="height: 715px;">
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>City List</div>
+            </h2>
+        </div>
+        <div class="row inner_row_bg">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel">
+                    <div class="panel-body" style="height: 65px;">
+                        <div class="col-md-4 col-lg-3 col-sm-5 col-xs-5">
+                            <form class="form-horizontal ng-pristine ng-valid">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <p class="input-group" style="display: block;">
+                                            <input id="search_grade" name="textinput"  type="text"
+                                                   placeholder="search" ng-model="searchText" class="form-control input-md"
+                                                   ng-keyup="$event.keyCode == 13 ? getPaginatedCityList(searchText) : null"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-primary hi_btn"
+                                        ng-click="addNewcityPopulate()">Add
+                                </button>
+                            </div>
+                            <div class="col-sm-2">
+                                <button id="cityImport" type="button" class="btn btn-primary hi_btn" ng-click="importPopup()">
+                                    City Import
+                                </button>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-4">
+                                <button type="submit" id="colButn" class="btn btn-default" data-toggle="modal"
+                                        ng-model="inactiveStatus" data-target=".print-me"
+                                        ng-click="inactiveCity('InActive','firstPage','searchText')">InActive
+                                </button>
+                            </div>
+                        <div class="col-lg-2 col-md-3 col-sm-3">
+                        <span class="custom-dropdown custom-dropdown--white">
+                            <select ng-model="exportsType" class="form-control " ng-change="GetValue()">
+                                <option value=""> Select Type</option>
+                                <option value="pdf"> pdf</option>
+                                <option value="excel"> Excel</option>
+                            </select>
+                        </span>
+                        </div>
+                            <div class="col-lg-2 col-md-3 col-sm-4" >
+                            <div ng-if="exportsType"><a
+                                href="/hotel/CityExport?val={{searchText}}&type={{exportsType}}">
+                            <button type="button" class="btn btn-primary hi_btn">Export</button>
+                        </a>
+                        </div>
+                            <div ng-if="!exportsType">
+                                <button type="button" class="btn btn-primary hi_btn">Export</button>
+                            </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-primary hi_btn"  ng-click="backconfiguration()">Back</button>
+                            </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="fixed-table-container">
+                <div class="table_wrapsasdsafixed-table-container-innerdsad" style="    max-height: 317px;">
+                    <div class="table-responsive">
+                        <table data-toggle="table" data-cache="false" data-height="299" style="margin-bottom: 0;"
+                               class="hi_table table table-hover table-bordered table-striped table-fixed-header">
+                            <thead>
+                            <tr>
+
+                                <th data-field="edit">
+                                    <div class="th-inner">Country Name</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner">State Name</div>
+                                </th>
+                                <th data-field="cntryname">
+                                    <div class="th-inner">Name</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner">Edit</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner">Delete</div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody id="parentTable">
+                            <tr ng-repeat="city in cityList">
+                                <td>{{city.country}}</td>
+                                <td>{{city.state}}</td>
+                                <td>{{city.name}}</td>
+                                <td><button type="button" class="btn btn-primary hi_btn"   ng-click="editCity(city)">Edit</button></td>
+                                <td><button type="button" class="btn btn-primary hi_btn"   ng-click="deleteCity(city)">Delete</button></td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div ng-if="(cityList).length==0">
+                            <div id="notFoundDiv" style="color: red; font-weight: bold">No Records Found</div>
+                    </div>
+                    <!--Button added for pagination @rahul-->
+
+                </div>
+            </div>
+        </div>
+            <div class="form-group">
+                <div class="col-sm-12 pagination_">
+                    <button type="button" class="btn btn-default hi_btn" ng-class="{'diabled-class': first}" ng-disabled="first"
+                            ng-click="getPaginatedCityList('firstPage')"  ng-model="first">First
+                    </button>
+                    <button type="button" class="btn btn-default hi_btn"  ng-class="{'diabled-class': prev}" ng-disabled="prev"
+                            ng-click="getPaginatedCityList('prevPage')"   ng-model="prev">Prev
+                    </button>
+                    <button type="button" class="btn btn-default hi_btn"  name="next" ng-disabled="next"
+                            ng-click="getPaginatedCityList('nextPage')"  value="next"  ng-class="{'diabled-class': next}" ng-model="next">Next
+                    </button>
+                    <button type="button" class="btn btn-default hi_btn"
+                            ng-click="getPaginatedCityList('lastPage')"   ng-class="{'diabled-class': last}" ng-disabled="last"
+                            ng-model="last">Last
+                    </button>
+                </div>
+            </div>
+        <form class="form-horizontal" id="cityDetails" method="post" ng-submit="saveCityImport()">
+            <div class="modal fade" tabindex="-1" id="import_City" role="dialog" data-backdrop="static"
+                 aria-labelledby="mySmallModalLabel_1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Import City</h4>
+                        </div>
+                        <a href="resource\images\ImportSheets\City.xlsx" download>Download ExcelSheet</a>
+                        <div class="modal-body checkout-body">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="col-xs-5">
+                                        <input type="file" name="myFile" id="myFile"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" ng-click="reloadPage()" data-toggle="modal"
+                                    ng-disabled="isDisabled">Save
+                            </button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+        <div class="modal fade addCustomer" tabindex="-1" id="add_new_city_modal" role="dialog"
+             data-backdrop="static"
+             aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content checkout">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 id="city-title" class="modal-title">Add City</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <form class="form-horizontal" name="form">
+                                    <fieldset>
+
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade in active" id="sub_step12">
+                                                <div class="col-md-6">
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-6 control-label" for=""> Country<span style="color:red;">*</span></label>
+                                                        <div class="col-md-6" style="position:relative;">
+                                                            <select class="form-control input-md"
+                                                                    ng-model="countryName" ng-change="getStateListBasedonContry(countryName)"
+                                                                    ng-options="country.countryName as country.countryName for country in countryList">
+                                                                <option value="">Select Country</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-6 control-label" for=""> State<span style="color:red;">*</span></label>
+                                                        <div class="col-md-6" style="position:relative;">
+                                                            <select class="form-control input-md"
+                                                                    ng-model="state"
+                                                                    ng-options="state.stateName as state.stateName for state in stateList">
+                                                                <option value="">Select State</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-6 control-label" for=""> Name<span style="color:red;">*</span></label>
+                                                        <div class="col-md-6" style="position:relative;">
+                                                            <input id="name" name="name"  maxlength="32"
+                                                                   type="text"  alpha-with-space
+                                                                   ng-model="name" ng-pattern="regexp"
+                                                                   class="form-control input-md" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-toggle="modal" ng-disabled="isDisabled"
+                                data-target=".print-me" ng-disabled="!form.$valid" id="submit"
+                                ng-click="saveCity('add_new_city_modal')">Save
+                        </button>
+                        <button type="button" class="btn btn-primary" ng-click="reloadPage()"
+                                data-dismiss="modal">Close
+                        </button>
+
+                    </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+</body>
+</html>

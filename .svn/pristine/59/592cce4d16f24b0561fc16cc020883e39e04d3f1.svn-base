@@ -1,0 +1,88 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.sql.Date;
+
+@Entity
+@Table(name = "rel_orders_prices")
+public class RelOrdersPrices {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long id;
+    @ManyToOne
+    private Orders orderId;
+    private double price;
+    private double additional_person_price;
+    private double total;
+    private Long additional_person;
+    private Long room_id;
+    private Date date;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Orders getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Orders orderId) {
+        this.orderId = orderId;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getAdditional_person_price() {
+        return additional_person_price;
+    }
+
+    public void setAdditional_person_price(double additional_person_price) {
+        this.additional_person_price = additional_person_price;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public Long getAdditional_person() {
+        return additional_person;
+    }
+
+    public void setAdditional_person(Long additional_person) {
+        this.additional_person = additional_person;
+    }
+
+    public Long getRoom_id() {
+        return room_id;
+    }
+
+    public void setRoom_id(Long room_id) {
+        this.room_id = room_id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+}

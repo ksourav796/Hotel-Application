@@ -1,0 +1,749 @@
+<style>
+    .form-horizontal .control-label {
+        padding-top: 7px;
+        margin-bottom: 0;
+        text-align: left !important;
+        padding: 10px 0 0 10px !important;
+    }
+    .modal-footer .btn+.btn {
+        margin-bottom: 0;
+        margin-left: 4px !important;
+        margin-right: 0px !important;
+    }
+    .modal-title {
+        margin: 0;
+        line-height: -31.571429 !important;
+    }
+    .form-horizontal .form-group {
+        margin-right: -54px;
+        margin-left: 5px;
+    }
+    .form-group {
+        margin-bottom: 5px;
+    }
+    .modal-header {
+        padding: 5px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    .modal-footer {
+        padding: 23px;
+        text-align: right;
+        border-top: 1px solid #e5e5e5;
+    }
+    label {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+        font-weight: 100;
+    }
+    .btn btn-primary back{
+        padding: 5px;
+    }
+
+</style>
+<div class="container-fluid">
+    <div class="container cus_main_row" >
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>CheckIn</div>
+            </h2>
+        </div>
+        <div class="row inner_row_bg">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="panel-body" style="height: 65px;">
+                            <div class="col-md-4 col-lg-3 col-sm-5 col-xs-5">
+                                <form class="form-horizontal ng-pristine ng-valid">
+                                    <div class="form-group">
+                                        <div class="col-sm-30" style="margin: -21px">
+                                            <p class="input-group" style="display: block;">
+                                                <input id="search_grade" name="textinput" type="text"
+                                                       placeholder="Search BY City,Room Cost,Rating,Reviews" ng-model="searchText"
+                                                       class="form-control input-md"
+                                                />
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="fixed-table-container">
+                    <div class="table_wrapfixed-table-container-inner">
+                        <div class="header-background"></div>
+                        <table data-toggle="table" data-cache="false" data-height="299"
+                               class="hi_table table table-hover table-bordered table-striped table-fixed-header">
+                            <thead>
+                            <tr>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Guest Name</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Room Type</div>
+                                </th>
+
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">No Of Guests</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">City</div>
+                                </th>
+
+
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Check In</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Check Out</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Room Cost</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Rating</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Reviews</div>
+                                </th>
+
+
+
+                            </tr>
+                            </thead>
+                            <tbody id="parentTable">
+                            <input type="hidden" ng-model="bookingId" value="{{checkinList.bookingId}}"/>
+                            <tr ng-repeat="checkin in checkinList|filter:searchText">
+                                <td hidden></td>
+                                <td>{{checkin.guest}}</td>
+                                <td>{{checkin.room_type_id}}</td>
+                                <td>{{checkin.adults}}</td>
+                                <td>{{checkin.city}}</td>
+                                <td>{{checkin.check_in|date:'dd/MM/yyyy'}}</td>
+                                <td>{{checkin.check_out|date:'dd/MM/yyyy'}}</td>
+                                <td>{{checkin.stayCost}}</td>
+                                <td>{{checkin.rating}}</td>
+                                <td>{{checkin.reviews}}</td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div ng-if="searchText!=''&&(checkinList|filter:searchText).length==0">
+                            <div id="notFoundDiv" style="color: red; font-weight: bold">No Records Found</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade Student" tabindex="-1" id="add_CheckIn_modal" role="dialog"
+                     data-backdrop="static"
+                     aria-labelledby="mySmallModalLabel" style="overflow: auto">
+                    <div class="modal-dialog modal-lg" style="width: 1000px !important;">
+                        <div class="modal-content checkout">
+                            <div class="modal-header">
+                                <button type="button" class="close" ng-click="removeStudentDetails()"
+                                        data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                                <h4 id="Hotel-title" class="modal-title" style="color:black;" align="center">Booking
+                                    form</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <form class="form-horizontal" name="checkin">
+                                            <fieldset>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane fade in active" id="sub_step12">
+                                                        <h4 class="modal-title" style="color:black;" align="left">Make  reservation</h4>
+                                                        <div class="col-md-6">
+
+
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Select Guest<span style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md"
+                                                                                ng-model="guests" id="guestsId"
+                                                                                ng-options="guests.firstname as guests.firstname for guests in guestsList"
+                                                                                class="form-control input-md">
+                                                                            <option value="" selected>Select Guest</option>
+                                                                        </select>
+                                                                    </strong>
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <button type="button" class="btn btn-primary hi_btn" ng-click="addguests()">Add New Guests</button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for=""> Country<span style="color:red;">*</span></label>
+                                                                <div class="col-md-6" style="position:relative;">
+                                                                    <select class="form-control input-md"
+                                                                            ng-model="countryName" ng-change="getStateListBasedonContry(countryName)"
+                                                                            ng-options="country.countryName as country.countryName for country in countryList">
+                                                                        <option value="">Select Country</option>
+                                                                    </select>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for=""> State<span style="color:red;">*</span></label>
+                                                                <div class="col-md-6" style="position:relative;">
+                                                                    <select class="form-control input-md"
+                                                                            ng-model="stateName"
+                                                                            ng-change="stateCity(stateName)"
+                                                                            ng-options="state.stateName as state.stateName for state in stateList">
+                                                                        <option value="">Select State</option>
+                                                                    </select>
+
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">City </label>
+                                                                <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                                    <select id="cityId" name="cityId" ng-model="city"
+                                                                            ng-options="city.name as
+											city.name for city in cityList" class="form-control input-md">
+                                                                        <option value="">Select</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">CheckIn<span style="color:red;"></span></label>
+                                                                <div class="col-md-6" style="position:relative;">
+                                                                    <p class="input-group">
+                                                                        <strong>
+                                                                            <input type="text" class="form-control" readonly
+                                                                                   ng-change="getRoomTypeObj()" uib-datepicker-popup="{{format}}"
+                                                                                   ng-model="checkIn" is-open="popup1.opened"
+                                                                                   datepicker-options="dateOptions" ng-required="true"
+                                                                                   close-text="Close" alt-input-formats="altInputFormats" />
+                                                                        </strong>
+
+                                                                        <span class="input-group-btn">
+                                                                            <button type="button" class="btn btn-default" ng-click="openDate1()">
+                                                                             <i class="glyphicon glyphicon-calendar"></i></button>
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">CheckOut</label>
+                                                                <div class="col-md-6" style="position:relative;">
+                                                                    <div class="col-md-4">
+                                                                        <p class="input-group margin_0px">
+                                                                            <input id="checkout" type="text" class="form-control" style="margin-left: -16px;width: 188px" ng-change="getRoomTypeObj()" ng-blur="totalNights(checkOut)" ng-model="checkOut"
+                                                                                   uib-datepicker-popup="{{format}}"  is-open="popup2.opened"
+                                                                                   datepicker-options="dateOptions" readonly="readonly" ng-required="true"
+                                                                                   close-text="Close" alt-input-formats="altInputFormats"/>
+                                                                            <span class="input-group-btn">
+                                                                   <button type="button" class="btn btn-default" ng-click="openDate2()"><i
+                                                                           class="glyphicon glyphicon-calendar"></i></button>
+                                                                    </span>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">No Of Travellers<span style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md" ng-change="getRoomTypeObj()"
+                                                                                ng-model="adults" id="adultsId">
+                                                                            <option value="" selected>Select Travellers</option>
+                                                                            <option value="1">1</option>
+                                                                            <option value="2">2</option>
+                                                                            <option value="3">3</option>
+                                                                            <option value="4">4</option>
+                                                                            <option value="5">5</option>
+                                                                            <option value="6">6</option>
+                                                                            <option value="7">7</option>
+                                                                            <option value="8">8</option>
+                                                                            <option value="9">9</option>
+                                                                            <option value="10">10</option>
+                                                                        </select>
+                                                                    </strong>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Room Type<span
+                                                                        style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md"
+                                                                                ng-model="roomTypeId" id="roomTypeId"
+                                                                                ng-options="roomtypes.title as roomtypes.title for roomtypes in roomtypesList"
+                                                                                ng-change="getRoomTypeObj(roomTypeId);afterroomtype()">
+                                                                            <option value="" selected>Room Type</option>
+                                                                        </select>
+                                                                    </strong>
+                                                                </div>
+
+                                                                <div class="col-sm-2">
+                                                                    <button type="button" class="btn btn-primary hi_btn"
+                                                                            ng-click="addroomtypes()">Add Room Type
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Room Cost<span style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md"
+                                                                                ng-model="stayCost" id="stayCost">
+                                                                            <option value="" selected>Room cost</option>
+                                                                            <option value="1500">For Deluxe Room RS-1500</option>
+                                                                            <option value="1000">For Ac Room RS-1000 </option>
+                                                                            <option value="600">For NON-AC ROOM RS-600 </option>
+                                                                        </select>
+                                                                    </strong>
+
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">WI-Fi Available<span style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md"
+                                                                                ng-model="wifi" id="adultsId">
+                                                                            <option value="" selected>Select for WIFI</option>
+                                                                            <option value="Yes">YES</option>
+                                                                            <option value="NO">NO</option>
+                                                                        </select>
+                                                                    </strong>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Meals Available<span style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md"
+                                                                                ng-model="meals" id="adultsId">
+                                                                            <option value="" selected>Select for Meals</option>
+                                                                            <option value="Yes">YES</option>
+                                                                            <option value="NO">NO</option>
+                                                                        </select>
+                                                                    </strong>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Air Conditioning Functionality<span style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md"
+                                                                                ng-model="airConditioning" id="adultsId">
+                                                                            <option value="" selected>Select for AC Functionality</option>
+                                                                            <option value="Yes">Yes</option>
+                                                                            <option value="No">No</option>
+                                                                        </select>
+                                                                    </strong>
+
+                                                                </div>
+                                                            </div>
+
+
+
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Ratings<span style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md"
+                                                                                ng-model="rating" id="adultsId">
+                                                                            <option value="" selected>Give Ratings</option>
+                                                                            <option value="1">1</option>
+                                                                            <option value="2">2</option>
+                                                                            <option value="3">3</option>
+                                                                            <option value="4">4</option>
+                                                                            <option value="5">5</option>
+                                                                            <option value="6">6</option>
+                                                                            <option value="7">7</option>
+                                                                            <option value="8">8</option>
+                                                                            <option value="9">9</option>
+                                                                            <option value="10">10</option>
+                                                                        </select>
+                                                                    </strong>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Reviews</label>
+                                                                <div class="col-md-6" style="position:relative;">
+                                                                    <textarea id="companyname" name="companyname"  maxlength="32"
+                                                                              type="text" placeholder="Reviews"
+                                                                              ng-model="reviews"
+                                                                              class="form-control input-md" required></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer" style="border:none !important;">
+                                        <button type="submit" class="btn btn-primary hi_btn" data-toggle="modal"
+                                                data-target=".print-me" ng-click="saveOrder()">Save
+                                        </button>
+
+                                        <button type="button" class="btn btn-primary hi_btn" data-dismiss="modal"
+                                                ng-click="reloadPage()"> Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade addCustomer" tabindex="-1" id="checkout_modal" role="dialog" data-backdrop="static"
+             aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content checkout">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 id="brand-title" class="modal-title">Add Payment</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <form class="form-horizontal">
+                                    <fieldset>
+                                        <input type="hidden" ng-model="orderId">
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-sm-4 control-label">Order Number</label>
+                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                <input id="Order Number" name="Order Number"
+                                                       type="text" placeholder="Order Number"
+                                                       ng-model="ordernumber" readonly
+                                                       class="form-control input-md" maxlength="20">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-sm-4 control-label">Added Date</label>
+                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                <input id="Added Date" name="Added Date "
+                                                       type="text" placeholder="Added Date"
+                                                       ng-model="addeddate|date:'dd/MM/yyyy hh:mm'"
+                                                       class="form-control input-md">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-sm-4 control-label">Payment Method</label>
+                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                <select name="Payment   Method" id="PaymentMethod"
+                                                        ng-model="paymentmethod" class="form-control input-md">
+                                                    <option value="">Select</option>
+                                                    <option value="Cash">Cash</option>
+                                                    <option value="Cheque">Cheque</option>
+                                                    <option value="Cheque">Card</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-sm-4 control-label">Amount</label>
+                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                <input id="Amount" name="Amount "
+                                                       type="text" placeholder="Amount"
+                                                       ng-model="amount" readonly
+                                                       class="form-control input-md" maxlength="10">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" id="submit"
+                                                ng-disabled="isDisabled"
+                                                ng-click="savePayment()">Save
+                                        </button>
+                                        <button type="button" class="btn btn-primary" ng-click="removeSoapDetails()"
+                                                data-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade addCustomer" tabindex="-1" id="item_modal" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="brand-title" class="modal-title">Add Item</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <input type="hidden" ng-model="orderId">
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Order Number</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Order Number" name="Order Number"
+                                               type="text" placeholder="Order Number"
+                                               ng-model="ordernumber" readonly
+                                               class="form-control input-md" maxlength="20">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Item Name</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="itemname" name="itemname"
+                                               type="text" placeholder="Item Name"
+                                               ng-model="itemname" alpha-with-space
+                                               class="form-control input-md" maxlength="20">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Item Price </label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Item Price" name="Item Price"
+                                               type="text" placeholder="Item Price"
+                                               ng-model="itemprice" num-with-out-space
+                                               class="form-control input-md" maxlength="5">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" for="">RoomNo</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Room_No" name="Room_No"
+                                               type="text" placeholder="RoomNo" readonly
+                                               ng-model="roomno"
+                                               class="form-control input-md" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Quantity</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Quantity" name="Quantity "
+                                               type="text" placeholder="Quantity"
+                                               ng-model="quantity" num-with-out-space
+                                               class="form-control input-md" maxlength="5">
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" id="submit"
+                                        ng-disabled="isDisabled"
+                                        ng-click="saveItem()">Save
+                                </button>
+                                <button type="button" class="btn btn-primary" ng-click="removeSoapDetails()"
+                                        data-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="modal fade addCustomer" tabindex="-1" id="discount_modal" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="brand-title" class="modal-title">Add Discount</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <input type="hidden" ng-model="orderId">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="">Select Category<span style="color:red;"></span></label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <select name="StatusText" id="status_country" ng-disabled="disabled" ng-model="discountType" ng-change="adddiscountBasedOnDiscountType()"
+                                                class="form-control input-md">
+                                            <option value="DiscountInRoomRent">Discount In RoomRent</option>
+                                            <option value="DiscountInTotal">Discount In Total</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Total Amount</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Amount" name="Amount "
+                                               type="text" placeholder="Amount"
+                                               ng-model="totalAmt" readonly
+                                               class="form-control input-md" maxlength="5">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Discount Amount</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="disctamount" name="discountamount" ng-change="calDiscountAmt()"
+                                               type="text"
+                                               ng-model="discountAmt" num-with-space
+                                               class="form-control input-md" maxlength="5">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Remaining Amount</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="remainingamt" name="remainingamt "
+                                               type="text" readonly
+                                               ng-model="remainingAmt"
+                                               class="form-control input-md" maxlength="5">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" for=""> Description</label>
+                                    <div class="col-md-6" style="position:relative;">
+                                        <input id="description" name="description"  maxlength="150"
+                                               type="text" placeholder="Description"
+                                               ng-model="description"
+                                               class="form-control input-md" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="">Date</label>
+                                    <div class="col-md-6" style="position:relative;">
+                                        <p class="input-group">
+                                            <strong>
+                                                <input type="text" class="form-control" readonly
+                                                       uib-datepicker-popup="{{format}}"
+                                                       ng-model="date" is-open="popup4.opened"
+                                                       datepicker-options="dateOptions" ng-required="true"
+                                                       close-text="Close" alt-input-formats="altInputFormats" />
+                                            </strong>
+
+                                            <span class="input-group-btn">
+                                                                            <button type="button" class="btn btn-default" ng-click="openDate4()">
+                                                                             <i class="glyphicon glyphicon-calendar"></i></button>
+                                                                        </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" id="submit"
+                                        ng-disabled="isDisabled"
+                                        ng-click="saveDiscount()">Save
+                                </button>
+                                <button type="button" class="btn btn-primary" ng-click="removeSoapDetails()"
+                                        data-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="modal fade addCustomer" tabindex="-1" id="payment_modal" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="brand-title" class="modal-title">Add Payment</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <input type="hidden" ng-model="orderId">
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Order Number</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Order Number" name="Order Number"
+                                               type="text" placeholder="Order Number"
+                                               ng-model="ordernumber" readonly
+                                               class="form-control input-md">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="">Added Date<span
+                                            style="color:red;"></span></label>
+                                    <div class="col-md-6" style="position:relative;">
+                                        <input id="addeddate" name="addeddate" type="text"
+                                               ng-model="addeddate" readonly
+                                               class="form-control input-md" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Payment Method</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <select name="PaymentMethod" id="PaymentMethod"
+                                                ng-model="paymentmethod" class="form-control input-md">
+                                            <option value="">Select</option>
+                                            <option value="Cash">Cash</option>
+                                            <option value="Cheque">Cheque</option>
+                                            <option value="Card">Card</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Amount</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Amount" name="Amount "
+                                               type="text" placeholder="Amount" num-with-out-space
+                                               ng-model="advanceAmount"
+                                               class="form-control input-md" maxlength="8">
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" id="submit"
+                                        ng-disabled="isDisabled"
+                                        ng-click="saveAdvancePayment()">Save
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                        data-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<add-new-modal-ctrl></add-new-modal-ctrl>
+            </div>
+        </div>
+    </div>
+</div>

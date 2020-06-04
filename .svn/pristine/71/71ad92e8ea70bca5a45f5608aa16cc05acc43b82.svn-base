@@ -1,0 +1,97 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.sql.Date;
+
+@Entity
+@Table(name = "organisation_module_mapping")
+public class OrganisationModuleMapping {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long mapping_id;
+    private Long fk_organisationid;
+    private Long fk_parent_moduleid;
+    private Long updatedby;
+    private Long deletedby;
+    private Long createdby;
+    private Date createdon;
+    private Date updatedon;
+    private String fk_child_moduleid;
+
+
+    public Long getMapping_id() {
+        return mapping_id;
+    }
+
+    public void setMapping_id(Long mapping_id) {
+        this.mapping_id = mapping_id;
+    }
+
+    public Long getFk_organisationid() {
+        return fk_organisationid;
+    }
+
+    public void setFk_organisationid(Long fk_organisationid) {
+        this.fk_organisationid = fk_organisationid;
+    }
+
+    public Long getFk_parent_moduleid() {
+        return fk_parent_moduleid;
+    }
+
+    public void setFk_parent_moduleid(Long fk_parent_moduleid) {
+        this.fk_parent_moduleid = fk_parent_moduleid;
+    }
+
+    public Long getUpdatedby() {
+        return updatedby;
+    }
+
+    public void setUpdatedby(Long updatedby) {
+        this.updatedby = updatedby;
+    }
+
+    public Long getDeletedby() {
+        return deletedby;
+    }
+
+    public void setDeletedby(Long deletedby) {
+        this.deletedby = deletedby;
+    }
+
+    public Long getCreatedby() {
+        return createdby;
+    }
+
+    public void setCreatedby(Long createdby) {
+        this.createdby = createdby;
+    }
+
+    public Date getCreatedon() {
+        return createdon;
+    }
+
+    public void setCreatedon(Date createdon) {
+        this.createdon = createdon;
+    }
+
+    public Date getUpdatedon() {
+        return updatedon;
+    }
+
+    public void setUpdatedon(Date updatedon) {
+        this.updatedon = updatedon;
+    }
+
+    public String getFk_child_moduleid() {
+        return fk_child_moduleid;
+    }
+
+    public void setFk_child_moduleid(String fk_child_moduleid) {
+        this.fk_child_moduleid = fk_child_moduleid;
+    }
+}

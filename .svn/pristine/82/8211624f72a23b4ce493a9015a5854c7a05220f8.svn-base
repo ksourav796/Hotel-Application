@@ -1,0 +1,44 @@
+
+app.controller('smsConfigCtrl',function ($scope,$http,Notification,$timeout) {
+        $scope.formsetupId="";
+        $scope.typePrefix="";
+        $scope.nextRef="";
+    $scope.bshimServerURL = "/hotel";
+    $scope.editSms = function (formsetupId) {
+            $scope.formSetupIdSms=formsetupId.formsetupId;
+            $scope.smsMessage=formsetupId.message;
+            $("#edit_sms").modal('show');
+
+        };
+    $scope.formsetList = function () {
+        $http.post("/hotel" + '/getFormsetupList').then(function (response) {
+            var data = response.data;
+            $scope.formsetupList = data;
+        },function (error){
+            Notification.error({message: 'Something went wrong, please try again', positionX: 'center', delay: 2000});
+        })
+    };
+    $scope.formsetList();
+        $scope.saveSms= function(){
+            $scope.isDisabled= true;
+            $timeout(function(){
+                $scope.isDisabled= false;
+            }, 3000)
+            var saveSms;
+            saveSms = {
+                message : $scope.smsMessage,
+                enableSms:$scope.enableSms,
+                formsetupId:$scope.formSetupIdSms
+            }
+            $http.post('/sms'+'/saveSms', angular.toJson(saveSms, "Create")).then(function (response) {
+                $("#edit_sms").modal('hide');
+                var data = response.data;
+                $scope.formsetList();
+                Notification.success({message: 'SMS Configured Succesfully', positionX: 'center', delay: 2000});
+            })
+        };
+    $scope.backconfiguration=function () {
+        window.location.href='/home#!/configuration'
+    };
+
+    });

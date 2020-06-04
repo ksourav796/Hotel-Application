@@ -1,0 +1,21 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.ExpensesCategory;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+
+public interface ExpenseCategoryRepository extends JpaRepository<ExpensesCategory, Long> {
+    List<ExpensesCategory> findByNameAndIdNotIn(String name, Long id);
+    List<ExpensesCategory> findByName(String name);
+    ExpensesCategory findFirstByNameContaining(String searchText,Sort sort);
+    List<ExpensesCategory> findAllByNameContaining(String searchText,Pageable pageable);
+    ExpensesCategory findFirstBy(Sort sort);
+    List<ExpensesCategory> findAllBy(Pageable pageable);
+    List<ExpensesCategory> findAllByNameContaining(String searchText);
+}
+

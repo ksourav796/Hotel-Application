@@ -1,0 +1,163 @@
+package com.hyva.hotel.pojo;
+
+
+import com.hyva.hotel.entities.Mail;
+
+import java.io.Serializable;
+import java.sql.Date;
+
+public class MailSchedulerData implements Serializable {
+
+    private String toEmail;
+    private Mail fromMail;
+    private String senderName;
+    private String subject;
+    private String reportType;
+    private String fileName;
+    private String dbKeyword;
+    private String message;
+    private String scheduleType;
+    private String reportName;
+    private String scheduleTime;
+    private String scheduleDate;
+    private String student;
+    private Date fromDate;
+    private Date toDate;
+    private String body;
+private String installmentsId;
+
+    public String getInstallmentsId() {
+        return installmentsId;
+    }
+
+    public void setInstallmentsId(String installmentsId) {
+        this.installmentsId = installmentsId;
+    }
+
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public Date getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getStudent() {
+        return student;
+    }
+    public void setStudent(String student) {
+        this.student = student;
+    }
+
+    public String getScheduleDate() {
+        return scheduleDate;
+    }
+
+    public void setScheduleDate(String scheduleDate) {
+        this.scheduleDate = scheduleDate;
+    }
+
+    public String getToEmail() {
+        return toEmail;
+    }
+
+    public void setToEmail(String toEmail) {
+        this.toEmail = toEmail;
+    }
+
+    public Mail getFromMail() {
+        return fromMail;
+    }
+
+    public void setFromMail(Mail fromMail) {
+        this.fromMail = fromMail;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getReportType() {
+        return reportType;
+    }
+
+    public void setReportType(String reportType) {
+        this.reportType = reportType;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getDbKeyword() {
+        return dbKeyword;
+    }
+
+    public void setDbKeyword(String dbKeyword) {
+        this.dbKeyword = dbKeyword;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getScheduleType() {
+        return scheduleType;
+    }
+
+    public void setScheduleType(String scheduleType) {
+        this.scheduleType = scheduleType;
+    }
+
+    public String getReportName() {
+        return reportName;
+    }
+
+    public void setReportName(String reportName) {
+        this.reportName = reportName;
+    }
+
+    public String getScheduleTime() {
+        return scheduleTime;
+    }
+
+    public void setScheduleTime(String scheduleTime) {
+        this.scheduleTime = scheduleTime;
+    }
+}

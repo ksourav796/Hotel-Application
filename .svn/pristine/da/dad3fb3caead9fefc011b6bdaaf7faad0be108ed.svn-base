@@ -1,0 +1,32 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "rel_room_types_amenities")
+public class RelRoomTypesAmenities {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long room_type_id;
+    private Long amenity_id;
+
+    public Long getRoom_type_id() {
+        return room_type_id;
+    }
+
+    public void setRoom_type_id(Long room_type_id) {
+        this.room_type_id = room_type_id;
+    }
+
+    public Long getAmenity_id() {
+        return amenity_id;
+    }
+
+    public void setAmenity_id(Long amenity_id) {
+        this.amenity_id = amenity_id;
+    }
+}

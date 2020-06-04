@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row" >
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>Expenses</div>
+            </h2>
+        </div>
+
+        <div class="row">
+
+            <!--<div class="col-md-3 rep_list_info">-->
+                <!--<div class="custom_notif">-->
+                    <!--&nbsp;&nbsp;&nbsp; <a id="expensescategoryLink"  href="#!/expensescategory"  tabindex="-1"> <i class="fa fa-sitemap" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>-->
+                    <!--<div class="rep_info">Expenses Category</div>-->
+                <!--</div>-->
+                <!--</a>-->
+            <!--</div>-->
+            <!--<div class="col-md-3 rep_list_info">-->
+                <!--<div class="custom_notif">-->
+                    <!--&nbsp;&nbsp;&nbsp; <a id="expansesLink"  href="#!/expanses"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>-->
+                    <!--<div class="rep_info">Expanses</div>-->
+                <!--</div>-->
+                <!--</a>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+</body>
+</html>

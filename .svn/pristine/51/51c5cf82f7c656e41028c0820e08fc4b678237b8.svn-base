@@ -1,0 +1,50 @@
+app.controller('availabilitycalenderCtrl',
+    function($scope, $http, $location, $filter, Notification, ngTableParams,  $timeout, $window, $rootScope) {
+        console.log("aaaaaaaaaaaaa");
+        $scope.bshimServerURL = "/hotel";
+        $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        $scope.customerId = 1;
+        $scope.userRights = [];
+        $scope.operation = 'Create';
+        $scope.customer = 1;
+        $scope.today = new Date();
+        $scope.operation='create';
+
+
+
+
+
+
+
+
+
+        $scope.getRoomTypesList = function () {
+            $http.post($scope.bshimServerURL + '/getRoomTypesList').then(function (response) {
+                var data = response.data.object;
+                $scope.roomtypesList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.getRoomTypesList();
+
+
+
+        // $scope.addcalender=function(){
+        //     $scope.getRoomTypesList();
+        //     $("#add_new_calender").modal('show');
+        //
+        //
+        // };
+
+
+
+
+
+
+    });

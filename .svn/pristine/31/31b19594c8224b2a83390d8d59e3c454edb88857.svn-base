@@ -1,0 +1,154 @@
+app.controller('emailtemplateCtrl',
+    function($scope, $http, $location, $filter, Notification, ngTableParams,  $timeout, $window, $rootScope) {
+        console.log("aaaaaaaaaaaaa");
+        $scope.bshimServerURL = "/hotel";
+        $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        $scope.customerId = 1;
+        $scope.userRights = [];
+        $scope.operation = 'Create';
+        $scope.customer = 1;
+        $scope.today = new Date();
+        $scope.operation='create';
+
+
+        $scope.getemailList = function (searchText) {
+            if(angular.isUndefined(searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getemailList?searchText=').then(function (response) {
+                var data = response.data.object;
+                $scope.emailtemplateList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.getemailList();
+
+
+
+
+
+        $scope.EditEmail = function (data) {
+                 $scope.id=data.id;
+                 $scope.email=data.email;
+                 $scope.passwrd=data. passward;
+                 $scope.template=data.subject;
+                 $scope.emailprovider=data.provider;
+                 $scope.statusText=data.active;
+            $scope.operation = 'Edit';
+            $("#submit").text("Update");
+            $('#email-title').text("Edit Email Template");
+            $("#add_new_email").modal('show');
+
+        }, function (error) {
+            Notification.error({message: 'Something went wrong, please try again', positionX: 'center', delay: 2000});
+        };
+
+
+        $scope.DeleteEmail=function(data) {
+            bootbox.confirm({
+                title: "Alert",
+                message: "Do you want to Continue ?",
+                buttons: {
+                    confirm: {
+                        label: 'OK'
+                    },
+                    cancel: {
+                        label: 'Cancel'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $http.post($scope.bshimServerURL + '/getDeleteEmail?id=' + data.id).then(function (response) {
+                            var data = response.data;
+                            Notification.success({
+                                message: 'Email deleted  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.getemailList();
+                        }, function (error) {
+                            Notification.error({
+                                message: 'Something went wrong, please try again',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.isDisabled = false;
+                        });
+                    }
+                }
+            });
+        };
+
+        $scope.addemail = function () {
+            $scope.id=0;
+            $scope.email="";
+            $scope.passwrd="";
+            $scope.template="";
+            $scope.emailprovider="";
+            $scope.statusText="Active";
+            $("#add_new_email").modal('show');
+
+        };
+
+        $scope.backconfiguration=function(){
+            $window.location.href='/home#!/configuration    '
+        };
+
+
+        $scope.saveemail = function () {
+            if ($scope.email == '' || $scope.email == null || angular.isUndefined($scope.email)) {
+                Notification.error({message: ' Please Enter valid Email ', positionX: 'center', delay: 2000});
+            }
+            else {
+                var saveemailDetails;
+            saveemailDetails = {
+                id: $scope.id,
+                email: $scope.email,
+                passward: $scope.passwrd,
+                subject: $scope.template,
+                provider: $scope.emailprovider,
+                active: $scope.statusText
+
+                };
+                $http.post($scope.bshimServerURL + "/saveemail", angular.toJson(saveemailDetails)).then(function (response) {
+                    var data = response.data;
+                    if (data == "" || data == 'undefined'|| data ==null) {
+                        Notification.error({message: ' Already exists', positionX: 'center', delay: 2000});
+                    }
+                    else {
+                        $("#add_new_email").modal('hide');
+                        $scope.getemailList();
+                        if ($scope.operation == 'Edit') {
+                            Notification.success({
+                                message: 'Email Template is Updated successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+
+                        } else {
+                            Notification.success({
+                                message: 'Email Template is Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+
+                    }
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                });
+            };
+        }
+
+
+    });

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row" >
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>Hotel Configuration</div>
+            </h2>
+        </div>
+
+        <div class="row">
+
+                <div class="col-md-3 rep_list_info">
+                    <div class="custom_notif">
+                        &nbsp;&nbsp;&nbsp; <a id="floorsLink"  href="#!/floors"  tabindex="-1"> <i class="fa fa-random" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                            <div class="rep_info">Floors</div>
+                        </div>
+                    </a>
+                </div>
+            <div class="col-md-3 rep_list_info">
+                    <div class="custom_notif">
+                        &nbsp;&nbsp;&nbsp; <a id="roomtypesLink"  href="#!/roomtypes"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                            <div class="rep_info">RoomTypes</div>
+                        </div>
+                    </a>
+                </div>
+            <div class="col-md-3 rep_list_info">
+                    <div class="custom_notif">
+                        &nbsp;&nbsp;&nbsp; <a id="roomsLink"  href="#!/rooms"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                            <div class="rep_info">Rooms</div>
+                        </div>
+                    </a>
+                </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="paidservicesLink"  href="#!/paidServices"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Paid Services</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="pricemanagerLink"  href="#!/priceManager"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Price Manger</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="usersLink"  href="#!/users"  tabindex="-1"> <i  class="fa fa-user" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Users</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+            <div class="custom_notif">
+            &nbsp;&nbsp;&nbsp; <a id="countryLink"  href="#!/country"  tabindex="-1"> <i class="fa fa-globe" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+            <div class="rep_info">Country</div>
+            </div>
+            </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="stateLink"  href="#!/state"  tabindex="-1"> <i class="fa fa-map-marker" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">State</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="cityLink"  href="#!/city"  tabindex="-1"> <i class="fa fa-circle" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">City</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="currency1Link"  href="#!/currency1"  tabindex="-1"> <i class="fa fa-money" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Currency</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="paymentmethodLink"  href="#!/paymentmethod"  tabindex="-1"> <i class="fa fa-credit-card" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">PaymentMethod</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="couponLink"  href="#!/coupon"  tabindex="-1"> <i class="fa fa-tags" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Coupon </div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="amenitiesLink"  href="#!/amenities"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Amenities </div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="housekeepingLink"  href="#!/housekeeping"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">HouseKeeping Status </div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="emailtemplateLink"  href="#!/emailtemplate"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">EmailTemplate </div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="formsetupLink"  href="#!/formsetup"  tabindex="-1"> <i class="fa fa-cogs" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">FormSetup </div>
+                </div>
+                </a>
+             </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="configuratorLink"  href="#!/configurator"  tabindex="-1"> <i class="fa fa-table" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Configurator </div>
+                </div>
+                </a>
+             </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    <a id="addNewSms"  href="#!/smsConfig"  tabindex="-1"> <i class="fa fa-comments-o" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Sms Configurator</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6 rep_list_info"
+                 id="addNewEmail">
+                <a id="addEmail"  href="#!/emailServer"  tabindex="-1"> <i class="fa fa-envelope" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="custom_info">
+                        <div class="rep_info">Email</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6 rep_list_info"
+                 id="smsServer">
+                <a id="smsServer"  href="#!/smsServer"  tabindex="-1"> <i class="fa fa-envelope" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                <div class="custom_info">
+                    <div class="rep_info">SMS Server</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6 rep_list_info"
+                 id="addMailSchedular">
+                <a id="addMailSchedular" href="#!/reportMailScheduler" tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="custom_info">
+                        <div class="rep_info">Report Schedular</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

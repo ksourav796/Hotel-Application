@@ -1,0 +1,50 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "room_types_images")
+public class RoomTypesImages {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long id;
+    private Long image;
+    private Long room_type_id;
+    private Long is_featured;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getImage() {
+        return image;
+    }
+
+    public void setImage(Long image) {
+        this.image = image;
+    }
+
+    public Long getRoom_type_id() {
+        return room_type_id;
+    }
+
+    public void setRoom_type_id(Long room_type_id) {
+        this.room_type_id = room_type_id;
+    }
+
+    public Long getIs_featured() {
+        return is_featured;
+    }
+
+    public void setIs_featured(Long is_featured) {
+        this.is_featured = is_featured;
+    }
+}

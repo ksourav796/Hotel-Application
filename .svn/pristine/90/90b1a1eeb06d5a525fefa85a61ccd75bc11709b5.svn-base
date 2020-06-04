@@ -1,0 +1,70 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Currency;
+import com.hyva.hotel.entities.Currency1;
+import com.hyva.hotel.pojo.CurrencyPojo;
+import com.hyva.hotel.pojo.CurrencyPojo1;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CurrencyMapper {
+    public static Currency1 mapCurrencyPojoToEntity(CurrencyPojo1 currencyPojo){
+        Currency1 currency = new Currency1();
+        currency.setCurrencyId(currencyPojo.getCurrencyId());
+        currency.setCurrencyCode(currencyPojo.getCurrencyCode());
+        currency.setCurrencyDescription(currencyPojo.getCurrencyDescription());
+        currency.setCurrencyName(currencyPojo.getCurrencyName());
+        currency.setCurrencySymbol(currencyPojo.getCurrencySymbol());
+        currency.setStatus(currencyPojo.getStatus());
+        return currency;
+    }
+    public static List<CurrencyPojo1> mapCurrencyEntityToPojo(List<Currency1> currencyList){
+        List<CurrencyPojo1> list=new ArrayList<>();
+        for(Currency1 currency:currencyList) {
+            CurrencyPojo1 currencyPojo = new CurrencyPojo1();
+            currencyPojo.setCurrencyId(currency.getCurrencyId());
+            currencyPojo.setCurrencyCode(currency.getCurrencyCode());
+            currencyPojo.setCurrencyDescription(currency.getCurrencyDescription());
+            currencyPojo.setCurrencyName(currency.getCurrencyName());
+            currencyPojo.setCurrencySymbol(currency.getCurrencySymbol());
+            currencyPojo.setStatus(currency.getStatus());
+            list.add(currencyPojo);
+        }
+        return list;
+    }
+    public static Currency mapPojoToEntity(CurrencyPojo pojo){
+        Currency currency=new Currency();
+        currency.setId(pojo.getId());
+        currency.setName(pojo.getName());
+        currency.setIsd(pojo.getIsd());
+        currency.setIso_alpha2(pojo.getIso_alpha2());
+        currency.setIso_alpha3(pojo.getIso_alpha3());
+        currency.setIso_numeric(pojo.getIso_numeric());
+        currency.setCurrency_code(pojo.getCurrency_code());
+        currency.setCurrency_name(pojo.getCurrency_name());
+        currency.setCurrrency_symbol(pojo.getCurrrency_symbol());
+        currency.setFlag(pojo.getFlag());
+        currency.setStatus(pojo.getStatus());
+        return currency;
+    }
+    public static List<CurrencyPojo> mapEntityToPojo(List<Currency> currencyList){
+        List<CurrencyPojo> list=new ArrayList<>();
+        for(Currency currency:currencyList) {
+            CurrencyPojo currencyPojo = new CurrencyPojo();
+            currencyPojo.setId(currency.getId());
+            currencyPojo.setName(currency.getName());
+            currencyPojo.setIsd(currency.getIsd());
+            currencyPojo.setIso_alpha2(currency.getIso_alpha2());
+            currencyPojo.setIso_alpha3(currency.getIso_alpha3());
+            currencyPojo.setIso_numeric(currency.getIso_numeric());
+            currencyPojo.setCurrency_code(currency.getCurrency_code());
+            currencyPojo.setCurrency_name(currency.getCurrency_name());
+            currencyPojo.setCurrrency_symbol(currency.getCurrrency_symbol());
+            currencyPojo.setFlag(currency.getFlag());
+            currencyPojo.setStatus(currency.getStatus());
+            list.add(currencyPojo);
+        }
+        return list;
+    }
+}

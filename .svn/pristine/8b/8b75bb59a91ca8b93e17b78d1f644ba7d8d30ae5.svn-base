@@ -1,0 +1,20 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Language;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Sort;
+
+import java.util.List;
+
+
+public interface LanguageRepository extends JpaRepository<Language, Long> {
+    List<Language> findByNameAndIdNotIn(String name, Long id);
+    List<Language> findByName(String name);
+    Language findFirstByNameContaining(String searchText,Sort sort);
+    List<Language> findAllByNameContaining(String searchText, Pageable pageable);
+    Language findFirstBy(Sort sort);
+    List<Language> findAllBy(Pageable pageable);
+    List<Language> findAllByNameContaining(String searchText);
+}
+

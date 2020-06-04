@@ -1,0 +1,447 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.sql.Date;
+
+@Entity
+@Table(name = "settings")
+public class Settings {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long id;
+    private String name;
+    private String logo;
+    private Date check_in_time;
+    private Date check_out_time;
+    private String address;
+    private String email;
+    private String phone;
+    private String fax;
+    private String language;
+    private String currency;
+    private String date_format;
+    private String timezone;
+    private String taxes;
+    private String status;
+    private String maintenance_message;
+    private String payment_gateway;
+    private String google_analytics_code;
+    private String smtp_mail;
+    private String smtp_host;
+    private String smtp_user;
+    private String smtp_pass;
+    private String smtp_port;
+    private String paypal_business_email;
+    private String stripe_key;
+    private String stripe_api_key;
+    private String facebook_link;
+    private String twitter_link;
+    private String google_plus_link;
+    private String linkedin_link;
+    private String footer_text;
+    private String cancellation_policy;
+    private String content_section_title;
+    private String content_section_description;
+    private String meta_keywords;
+    private String meta_description;
+    private Long minimum_booking;
+    private Long time_format;
+    private Long maintenance_mode;
+    private Long currency_api;
+    private Long paypal;
+    private Long invoice;
+    private Long stripe;
+    private Long pay_on_arrival;
+    private Long paypal_sandbox;
+    private double advance_payment;
+    private Date room_block_start_date;
+    private Date room_block_end_date;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public Date getCheck_in_time() {
+        return check_in_time;
+    }
+
+    public void setCheck_in_time(Date check_in_time) {
+        this.check_in_time = check_in_time;
+    }
+
+    public Date getCheck_out_time() {
+        return check_out_time;
+    }
+
+    public void setCheck_out_time(Date check_out_time) {
+        this.check_out_time = check_out_time;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getDate_format() {
+        return date_format;
+    }
+
+    public void setDate_format(String date_format) {
+        this.date_format = date_format;
+    }
+
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
+
+    public String getTaxes() {
+        return taxes;
+    }
+
+    public void setTaxes(String taxes) {
+        this.taxes = taxes;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMaintenance_message() {
+        return maintenance_message;
+    }
+
+    public void setMaintenance_message(String maintenance_message) {
+        this.maintenance_message = maintenance_message;
+    }
+
+    public String getPayment_gateway() {
+        return payment_gateway;
+    }
+
+    public void setPayment_gateway(String payment_gateway) {
+        this.payment_gateway = payment_gateway;
+    }
+
+    public String getGoogle_analytics_code() {
+        return google_analytics_code;
+    }
+
+    public void setGoogle_analytics_code(String google_analytics_code) {
+        this.google_analytics_code = google_analytics_code;
+    }
+
+    public String getSmtp_mail() {
+        return smtp_mail;
+    }
+
+    public void setSmtp_mail(String smtp_mail) {
+        this.smtp_mail = smtp_mail;
+    }
+
+    public String getSmtp_host() {
+        return smtp_host;
+    }
+
+    public void setSmtp_host(String smtp_host) {
+        this.smtp_host = smtp_host;
+    }
+
+    public String getSmtp_user() {
+        return smtp_user;
+    }
+
+    public void setSmtp_user(String smtp_user) {
+        this.smtp_user = smtp_user;
+    }
+
+    public String getSmtp_pass() {
+        return smtp_pass;
+    }
+
+    public void setSmtp_pass(String smtp_pass) {
+        this.smtp_pass = smtp_pass;
+    }
+
+    public String getSmtp_port() {
+        return smtp_port;
+    }
+
+    public void setSmtp_port(String smtp_port) {
+        this.smtp_port = smtp_port;
+    }
+
+    public String getPaypal_business_email() {
+        return paypal_business_email;
+    }
+
+    public void setPaypal_business_email(String paypal_business_email) {
+        this.paypal_business_email = paypal_business_email;
+    }
+
+    public String getStripe_key() {
+        return stripe_key;
+    }
+
+    public void setStripe_key(String stripe_key) {
+        this.stripe_key = stripe_key;
+    }
+
+    public String getStripe_api_key() {
+        return stripe_api_key;
+    }
+
+    public void setStripe_api_key(String stripe_api_key) {
+        this.stripe_api_key = stripe_api_key;
+    }
+
+    public String getFacebook_link() {
+        return facebook_link;
+    }
+
+    public void setFacebook_link(String facebook_link) {
+        this.facebook_link = facebook_link;
+    }
+
+    public String getTwitter_link() {
+        return twitter_link;
+    }
+
+    public void setTwitter_link(String twitter_link) {
+        this.twitter_link = twitter_link;
+    }
+
+    public String getGoogle_plus_link() {
+        return google_plus_link;
+    }
+
+    public void setGoogle_plus_link(String google_plus_link) {
+        this.google_plus_link = google_plus_link;
+    }
+
+    public String getLinkedin_link() {
+        return linkedin_link;
+    }
+
+    public void setLinkedin_link(String linkedin_link) {
+        this.linkedin_link = linkedin_link;
+    }
+
+    public String getFooter_text() {
+        return footer_text;
+    }
+
+    public void setFooter_text(String footer_text) {
+        this.footer_text = footer_text;
+    }
+
+    public String getCancellation_policy() {
+        return cancellation_policy;
+    }
+
+    public void setCancellation_policy(String cancellation_policy) {
+        this.cancellation_policy = cancellation_policy;
+    }
+
+    public String getContent_section_title() {
+        return content_section_title;
+    }
+
+    public void setContent_section_title(String content_section_title) {
+        this.content_section_title = content_section_title;
+    }
+
+    public String getContent_section_description() {
+        return content_section_description;
+    }
+
+    public void setContent_section_description(String content_section_description) {
+        this.content_section_description = content_section_description;
+    }
+
+    public String getMeta_keywords() {
+        return meta_keywords;
+    }
+
+    public void setMeta_keywords(String meta_keywords) {
+        this.meta_keywords = meta_keywords;
+    }
+
+    public String getMeta_description() {
+        return meta_description;
+    }
+
+    public void setMeta_description(String meta_description) {
+        this.meta_description = meta_description;
+    }
+
+    public Long getMinimum_booking() {
+        return minimum_booking;
+    }
+
+    public void setMinimum_booking(Long minimum_booking) {
+        this.minimum_booking = minimum_booking;
+    }
+
+    public Long getTime_format() {
+        return time_format;
+    }
+
+    public void setTime_format(Long time_format) {
+        this.time_format = time_format;
+    }
+
+    public Long getMaintenance_mode() {
+        return maintenance_mode;
+    }
+
+    public void setMaintenance_mode(Long maintenance_mode) {
+        this.maintenance_mode = maintenance_mode;
+    }
+
+    public Long getCurrency_api() {
+        return currency_api;
+    }
+
+    public void setCurrency_api(Long currency_api) {
+        this.currency_api = currency_api;
+    }
+
+    public Long getPaypal() {
+        return paypal;
+    }
+
+    public void setPaypal(Long paypal) {
+        this.paypal = paypal;
+    }
+
+    public Long getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Long invoice) {
+        this.invoice = invoice;
+    }
+
+    public Long getStripe() {
+        return stripe;
+    }
+
+    public void setStripe(Long stripe) {
+        this.stripe = stripe;
+    }
+
+    public Long getPay_on_arrival() {
+        return pay_on_arrival;
+    }
+
+    public void setPay_on_arrival(Long pay_on_arrival) {
+        this.pay_on_arrival = pay_on_arrival;
+    }
+
+    public Long getPaypal_sandbox() {
+        return paypal_sandbox;
+    }
+
+    public void setPaypal_sandbox(Long paypal_sandbox) {
+        this.paypal_sandbox = paypal_sandbox;
+    }
+
+    public double getAdvance_payment() {
+        return advance_payment;
+    }
+
+    public void setAdvance_payment(double advance_payment) {
+        this.advance_payment = advance_payment;
+    }
+
+    public Date getRoom_block_start_date() {
+        return room_block_start_date;
+    }
+
+    public void setRoom_block_start_date(Date room_block_start_date) {
+        this.room_block_start_date = room_block_start_date;
+    }
+
+    public Date getRoom_block_end_date() {
+        return room_block_end_date;
+    }
+
+    public void setRoom_block_end_date(Date room_block_end_date) {
+        this.room_block_end_date = room_block_end_date;
+    }
+}

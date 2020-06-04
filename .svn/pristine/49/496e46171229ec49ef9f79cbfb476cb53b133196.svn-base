@@ -1,0 +1,45 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.pojo.RoomTypesPojo;
+import com.hyva.hotel.entities.RoomTypes;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class HotelRoomTypeMapper {
+    public static RoomTypes mapPojoToEntity(RoomTypesPojo roomTypesPojo){
+        RoomTypes roomTypes=new RoomTypes();
+        roomTypes.setId(roomTypesPojo.getId());
+        roomTypes.setTitle(roomTypesPojo.getTitle());
+        roomTypes.setSlug(roomTypesPojo.getSlug());
+        roomTypes.setShortcode(roomTypesPojo.getShortcode());
+        roomTypes.setDescription(roomTypesPojo.getDescription());
+        roomTypes.setBase_occupancy(roomTypesPojo.getBase_occupancy());
+        roomTypes.setHigher_occupancy(roomTypesPojo.getHigher_occupancy());
+        roomTypes.setKids_occupancy(roomTypesPojo.getKids_occupancy());
+        roomTypes.setBase_price(roomTypesPojo.getBase_price());
+        roomTypes.setAdditional_person(roomTypesPojo.getAdditional_person());
+//        roomTypes.setExtra_bed_price(roomTypesPojo.getExtra_bed_price());
+        return roomTypes;
+    }
+
+    public static List<RoomTypesPojo> mapEntityToPojo(List<RoomTypes> typeList){
+        List<RoomTypesPojo> list=new ArrayList<>();
+        for(RoomTypes roomTypes:typeList) {
+            RoomTypesPojo pojo = new RoomTypesPojo();
+            pojo.setId(roomTypes.getId());
+            pojo.setTitle(roomTypes.getTitle());
+            pojo.setSlug(roomTypes.getSlug());
+            pojo.setShortcode(roomTypes.getShortcode());
+            pojo.setDescription(roomTypes.getDescription());
+            pojo.setBase_occupancy(roomTypes.getBase_occupancy());
+            pojo.setHigher_occupancy(roomTypes.getHigher_occupancy());
+            pojo.setKids_occupancy(roomTypes.getKids_occupancy());
+            pojo.setBase_price(roomTypes.getBase_price());
+            pojo.setAdditional_person(roomTypes.getAdditional_person());
+//            pojo.setExtra_bed_price(roomTypes.getExtra_bed_price());
+            list.add(pojo);
+        }
+        return list;
+    }
+}

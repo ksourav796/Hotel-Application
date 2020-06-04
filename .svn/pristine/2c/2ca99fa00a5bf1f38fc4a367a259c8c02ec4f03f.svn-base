@@ -1,0 +1,33 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "banner_collections")
+public class BannerCollections {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long banner_collection_id;
+    private String name;
+
+
+    public Long getBanner_collection_id() {
+        return banner_collection_id;
+    }
+
+    public void setBanner_collection_id(Long banner_collection_id) {
+        this.banner_collection_id = banner_collection_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}

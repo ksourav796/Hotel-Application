@@ -1,0 +1,113 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.sql.Date;
+
+@Entity
+@Table(name = "banners")
+public class Banners {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long banner_id;
+    private String name;
+    private String heading;
+    private Date enable_date;
+    private Date disable_date;
+    private String description;
+    private String image;
+    private String link;
+    private Long new_window;
+    private Long sequence;
+    private Long banner_collection_id;
+
+    public Long getBanner_id() {
+        return banner_id;
+    }
+
+    public void setBanner_id(Long banner_id) {
+        this.banner_id = banner_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getHeading() {
+        return heading;
+    }
+
+    public void setHeading(String heading) {
+        this.heading = heading;
+    }
+
+    public Date getEnable_date() {
+        return enable_date;
+    }
+
+    public void setEnable_date(Date enable_date) {
+        this.enable_date = enable_date;
+    }
+
+    public Date getDisable_date() {
+        return disable_date;
+    }
+
+    public void setDisable_date(Date disable_date) {
+        this.disable_date = disable_date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public Long getNew_window() {
+        return new_window;
+    }
+
+    public void setNew_window(Long new_window) {
+        this.new_window = new_window;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
+
+    public Long getBanner_collection_id() {
+        return banner_collection_id;
+    }
+
+    public void setBanner_collection_id(Long banner_collection_id) {
+        this.banner_collection_id = banner_collection_id;
+    }
+}

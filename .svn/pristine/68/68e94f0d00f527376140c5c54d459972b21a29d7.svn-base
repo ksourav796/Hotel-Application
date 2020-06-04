@@ -1,0 +1,25 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Floors;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.data.domain.Pageable;
+import java.util.List;
+
+
+public interface HotelFloorRepository extends JpaRepository<Floors, Long> {
+    List<Floors> findByNameAndIdNotIn(String name,long id);
+    List<Floors> findByName(String name);
+    Floors findFirstByNameContainingOrDescriptionContaining(String description,String searchText,Sort sort);
+    List<Floors> findAllByNameContainingOrDescriptionContaining(String description,String searchText,Pageable pageable);
+    Floors findFirstBy(Sort sort);
+    List<Floors> findAllBy(Pageable pageable);
+    List<Floors> findAllByNameContainingOrDescriptionContaining(String description,String searchText);
+
+}
+
+
+
+
+

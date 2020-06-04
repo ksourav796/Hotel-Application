@@ -1,0 +1,32 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.HouseKeepingStatus;
+import com.hyva.hotel.pojo.HouseKeepingStatusPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class HouseKeepingStatusMapper {
+    public static HouseKeepingStatus mapPojoToEntity(HouseKeepingStatusPojo pojo){
+        HouseKeepingStatus houseKeepingStatus=new HouseKeepingStatus();
+        houseKeepingStatus.setId(pojo.getId());
+        houseKeepingStatus.setTitle(pojo.getTitle());
+        houseKeepingStatus.setShort_description(pojo.getShort_description());
+        houseKeepingStatus.setStatus(pojo.getStatus());
+
+        return houseKeepingStatus;
+    }
+    public static List<HouseKeepingStatusPojo> mapEntityToPojo(List<HouseKeepingStatus> houseKeepingStatusList){
+        List<HouseKeepingStatusPojo> list=new ArrayList<>();
+        for(HouseKeepingStatus houseKeepingStatus:houseKeepingStatusList) {
+            HouseKeepingStatusPojo pojo = new HouseKeepingStatusPojo();
+            pojo.setId(houseKeepingStatus.getId());
+            pojo.setTitle(houseKeepingStatus.getTitle());
+            pojo.setShort_description(houseKeepingStatus.getShort_description());
+            pojo.setStatus(houseKeepingStatus.getStatus());
+            list.add(pojo);
+        }
+        return list;
+    }
+}
+

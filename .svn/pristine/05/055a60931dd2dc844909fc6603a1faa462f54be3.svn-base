@@ -1,0 +1,221 @@
+package com.hyva.hotel.pojo;
+
+public class AdmissionPojo {
+    private String      DOB;
+    private String  fk_levelid;
+    private String     fk_classid;
+    private String     admission_date;
+    private String     fk_organisationid;
+    private String        uid;
+    private String        fk_branchid;
+    private String        admissionno;
+    private String         studentname;
+    private String         bloodgroup;
+    private String         academicyear;
+    private String         joiningdate;
+    private String        fathersname;
+    private String        fathersemail;
+    private String        fathersmobile;
+    private String       fathersoccupation;
+    private String         mothername;
+    private String        motheremail;
+    private String       mothermobile;
+    private String        motheroccupation;
+    private String        primarycontact;
+    private String        place;
+    private String        gender;
+    private String       status;
+
+
+    public String getDOB() {
+        return DOB;
+    }
+
+    public void setDOB(String DOB) {
+        this.DOB = DOB;
+    }
+
+    public String getFk_levelid() {
+        return fk_levelid;
+    }
+
+    public void setFk_levelid(String fk_levelid) {
+        this.fk_levelid = fk_levelid;
+    }
+
+    public String getFk_classid() {
+        return fk_classid;
+    }
+
+    public void setFk_classid(String fk_classid) {
+        this.fk_classid = fk_classid;
+    }
+
+    public String getAdmission_date() {
+        return admission_date;
+    }
+
+    public void setAdmission_date(String admission_date) {
+        this.admission_date = admission_date;
+    }
+
+    public String getFk_organisationid() {
+        return fk_organisationid;
+    }
+
+    public void setFk_organisationid(String fk_organisationid) {
+        this.fk_organisationid = fk_organisationid;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getFk_branchid() {
+        return fk_branchid;
+    }
+
+    public void setFk_branchid(String fk_branchid) {
+        this.fk_branchid = fk_branchid;
+    }
+
+    public String getAdmissionno() {
+        return admissionno;
+    }
+
+    public void setAdmissionno(String admissionno) {
+        this.admissionno = admissionno;
+    }
+
+    public String getStudentname() {
+        return studentname;
+    }
+
+    public void setStudentname(String studentname) {
+        this.studentname = studentname;
+    }
+
+    public String getBloodgroup() {
+        return bloodgroup;
+    }
+
+    public void setBloodgroup(String bloodgroup) {
+        this.bloodgroup = bloodgroup;
+    }
+
+    public String getAcademicyear() {
+        return academicyear;
+    }
+
+    public void setAcademicyear(String academicyear) {
+        this.academicyear = academicyear;
+    }
+
+    public String getJoiningdate() {
+        return joiningdate;
+    }
+
+    public void setJoiningdate(String joiningdate) {
+        this.joiningdate = joiningdate;
+    }
+
+    public String getFathersname() {
+        return fathersname;
+    }
+
+    public void setFathersname(String fathersname) {
+        this.fathersname = fathersname;
+    }
+
+    public String getFathersemail() {
+        return fathersemail;
+    }
+
+    public void setFathersemail(String fathersemail) {
+        this.fathersemail = fathersemail;
+    }
+
+    public String getFathersmobile() {
+        return fathersmobile;
+    }
+
+    public void setFathersmobile(String fathersmobile) {
+        this.fathersmobile = fathersmobile;
+    }
+
+    public String getFathersoccupation() {
+        return fathersoccupation;
+    }
+
+    public void setFathersoccupation(String fathersoccupation) {
+        this.fathersoccupation = fathersoccupation;
+    }
+
+    public String getMothername() {
+        return mothername;
+    }
+
+    public void setMothername(String mothername) {
+        this.mothername = mothername;
+    }
+
+    public String getMotheremail() {
+        return motheremail;
+    }
+
+    public void setMotheremail(String motheremail) {
+        this.motheremail = motheremail;
+    }
+
+    public String getMothermobile() {
+        return mothermobile;
+    }
+
+    public void setMothermobile(String mothermobile) {
+        this.mothermobile = mothermobile;
+    }
+
+    public String getMotheroccupation() {
+        return motheroccupation;
+    }
+
+    public void setMotheroccupation(String motheroccupation) {
+        this.motheroccupation = motheroccupation;
+    }
+
+    public String getPrimarycontact() {
+        return primarycontact;
+    }
+
+    public void setPrimarycontact(String primarycontact) {
+        this.primarycontact = primarycontact;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}

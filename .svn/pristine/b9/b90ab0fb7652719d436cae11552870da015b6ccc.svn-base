@@ -1,0 +1,18 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Email_Templete;
+import com.hyva.hotel.pojo.EmailTemplatePojo;
+
+public class EmailTemplateMapper {
+    public static Email_Templete mapPojoToEntity(EmailTemplatePojo pojo){
+        Email_Templete email_templete=new Email_Templete();
+        email_templete.setId(pojo.getId());
+        email_templete.setEmail(pojo.getEmail());
+        email_templete.setPassward(pojo.getPassward());
+        email_templete.setSubject(pojo.getSubject());
+        email_templete.setProvider(pojo.getProvider());
+        email_templete.setActive(pojo.getActive());
+        return email_templete;
+    }
+}
+

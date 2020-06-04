@@ -1,0 +1,40 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.SalesDiscount;
+import com.hyva.hotel.pojo.SalesDiscountPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class SalesDiscountMapper {
+    public static SalesDiscount mapPojoToEntity(SalesDiscountPojo salesDiscountPojo){
+        SalesDiscount salesDiscount=new SalesDiscount();
+        salesDiscount.setId(salesDiscountPojo.getId());
+        salesDiscount.setDiscount_type(salesDiscountPojo.getDiscount_type());
+        salesDiscount.setFrom_date(salesDiscountPojo.getFrom_date());
+        salesDiscount.setTo_date(salesDiscountPojo.getTo_date());
+        salesDiscount.setItemName(salesDiscountPojo.getItemName());
+        salesDiscount.setStatus(salesDiscountPojo.getStatus());
+        salesDiscount.setDiscount_value(salesDiscountPojo.getDiscount_value());
+
+
+
+        return salesDiscount;
+    }
+    public static List<SalesDiscountPojo> mapEntityToPojo(List<SalesDiscount> salesDiscountList){
+        List<SalesDiscountPojo> list=new ArrayList<>();
+        for(SalesDiscount salesDiscount:salesDiscountList) {
+            SalesDiscountPojo salesDiscountPojo = new SalesDiscountPojo();
+            salesDiscountPojo.setId(salesDiscount.getId());
+            salesDiscountPojo.setDiscount_type(salesDiscount.getDiscount_type());
+            salesDiscountPojo.setFrom_date(salesDiscount.getFrom_date());
+            salesDiscountPojo.setTo_date(salesDiscount.getTo_date());
+            salesDiscountPojo.setItemName(salesDiscount.getItemName());
+            salesDiscountPojo.setStatus(salesDiscount.getStatus());
+            salesDiscountPojo.setDiscount_value(salesDiscount.getDiscount_value());
+            list.add(salesDiscountPojo);
+        }
+        return list;
+    }
+}

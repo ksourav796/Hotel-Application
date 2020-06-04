@@ -1,0 +1,58 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Coupons;
+import com.hyva.hotel.pojo.CouponsPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CouponsMapper {
+    public static Coupons mapPojoToEntity(CouponsPojo couponsPojo){
+        Coupons coupons=new Coupons();
+        coupons.setId(couponsPojo.getId());
+        coupons.setTitle(couponsPojo.getTitle());
+        coupons.setDate_from(couponsPojo.getDate_from());
+        coupons.setDate_to(couponsPojo.getDate_to());
+        coupons.setDescription(couponsPojo.getDescription());
+        coupons.setImage(couponsPojo.getImage());
+        coupons.setCode(couponsPojo.getCode());
+        coupons.setValue(couponsPojo.getValue());
+        coupons.setInclude_user(couponsPojo.getInclude_user());
+        coupons.setExclude_user(couponsPojo.getExclude_user());
+        coupons.setInclude_room_type(couponsPojo.getInclude_room_type());
+        coupons.setExclude_room_type(couponsPojo.getExclude_room_type());
+        coupons.setPaid_services(couponsPojo.getPaid_services());
+        coupons.setType(couponsPojo.getType());
+        coupons.setLimit_per_user(couponsPojo.getLimit_per_user());
+        coupons.setLimit_per_coupon(couponsPojo.getLimit_per_coupon());
+        coupons.setMin_amount(couponsPojo.getMin_amount());
+        coupons.setMax_amount(couponsPojo.getMax_amount());
+        return coupons;
+    }
+    public static List<CouponsPojo> mapCouponsEntityToPojo(List<Coupons> couponsList){
+        List<CouponsPojo>list=new ArrayList<>();
+        for(Coupons coupons:couponsList) {
+            CouponsPojo couponsPojo = new CouponsPojo();
+            couponsPojo.setId(coupons.getId());
+            couponsPojo.setTitle(coupons.getTitle());
+            couponsPojo.setDate_from(coupons.getDate_from());
+            couponsPojo.setDate_to(coupons.getDate_to());
+            couponsPojo.setDescription(coupons.getDescription());
+            couponsPojo.setImage(coupons.getImage());
+            couponsPojo.setCode(coupons.getCode());
+            couponsPojo.setValue(coupons.getValue());
+            couponsPojo.setInclude_user(coupons.getInclude_user());
+            couponsPojo.setExclude_user(coupons.getExclude_user());
+            couponsPojo.setInclude_room_type(coupons.getInclude_room_type());
+            couponsPojo.setExclude_room_type(coupons.getExclude_room_type());
+            couponsPojo.setPaid_services(coupons.getPaid_services());
+            couponsPojo.setType(coupons.getType());
+            couponsPojo.setLimit_per_user(coupons.getLimit_per_user());
+            couponsPojo.setLimit_per_coupon(coupons.getLimit_per_coupon());
+            couponsPojo.setMin_amount(coupons.getMin_amount());
+            couponsPojo.setMax_amount(coupons.getMax_amount());
+            list.add(couponsPojo);
+        }
+        return list;
+    }
+}

@@ -1,0 +1,67 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Employees;
+import com.hyva.hotel.pojo.EmployeesPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class EmployeesMapper {
+    public static Employees mapPojoToEntity(EmployeesPojo employeesPojo){
+        Employees employees=new Employees();
+        employees.setId(employeesPojo.getId());
+        employees.setTitle(employeesPojo.getTitle());
+        employees.setFirstname(employeesPojo.getFirstname());
+        employees.setLastname(employeesPojo.getLastname());
+        employees.setGender(employeesPojo.getGender());
+        employees.setEmail(employeesPojo.getEmail());
+        employees.setDob(employeesPojo.getDob());
+        employees.setUsername(employeesPojo.getUsername());
+        employees.setPassword(employeesPojo.getPassword());
+        employees.setPhone(employeesPojo.getPhone());
+        employees.setDepartment(employeesPojo.getDepartment());
+        employees.setDesignation(employeesPojo.getDesignation());
+        employees.setCountry(employeesPojo.getCountry());
+        employees.setState(employeesPojo.getState());
+        employees.setCity(employeesPojo.getCity());
+        employees.setAddress(employeesPojo.getAddress());
+        employees.setId_type(employeesPojo.getId_type());
+        employees.setId_no(employeesPojo.getId_no());
+        employees.setId_upload(employeesPojo.getId_upload());
+        employees.setRemarks(employeesPojo.getRemarks());
+        employees.setJoin_date(employeesPojo.getJoin_date());
+        employees.setSalary(employeesPojo.getSalary());
+        return employees;
+    }
+    public static List<EmployeesPojo> mapEntityToPojo(List<Employees> employeesList){
+        List<EmployeesPojo> list=new ArrayList<>();
+        for(Employees employees:employeesList) {
+            EmployeesPojo employeesPojo = new EmployeesPojo();
+            employeesPojo.setId(employees.getId());
+            employeesPojo.setTitle(employees.getTitle());
+            employeesPojo.setFirstname(employees.getFirstname());
+            employeesPojo.setLastname(employees.getLastname());
+            employeesPojo.setGender(employees.getGender());
+            employeesPojo.setEmail(employees.getEmail());
+            employeesPojo.setDob(employees.getDob());
+            employeesPojo.setUsername(employees.getUsername());
+            employeesPojo.setPassword(employees.getPassword());
+            employeesPojo.setPhone(employees.getPhone());
+            employeesPojo.setDepartment(employees.getDepartment());
+            employeesPojo.setDesignation(employees.getDesignation());
+            employeesPojo.setCountry(employees.getCountry());
+            employeesPojo.setState(employees.getState());
+            employeesPojo.setCity(employees.getCity());
+            employeesPojo.setAddress(employees.getAddress());
+            employeesPojo.setId_type(employees.getId_type());
+            employeesPojo.setId_no(employees.getId_no());
+            employeesPojo.setId_upload(employees.getId_upload());
+            employeesPojo.setRemarks(employees.getRemarks());
+            employeesPojo.setJoin_date(employees.getJoin_date());
+            employeesPojo.setSalary(employees.getSalary());
+            list.add(employeesPojo);
+        }
+        return list;
+    }
+}

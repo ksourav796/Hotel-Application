@@ -1,0 +1,244 @@
+app.controller('housekeepingCtrl',
+    function($scope, $http, $location, $filter, Notification, ngTableParams,  $timeout, $window, $rootScope) {
+        console.log("aaaaaaaaaaaaa");
+        $scope.bshimServerURL = "/hotel";
+        $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        $scope.customerId = 1;
+        $scope.userRights = [];
+        $scope.operation = 'Create';
+        $scope.customer = 1;
+        $scope.today = new Date();
+        $scope.operation='create';
+
+        $scope.reloadPage = function () {
+            $window.location.reload();
+        };
+
+        $scope.getPaginatedHouseKeepingList = function (page) {
+            switch (page) {
+                case 'firstPage':
+                    $scope.firstPage = true;
+                    $scope.lastPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'lastPage':
+                    $scope.lastPage = true;
+                    $scope.firstPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'nextPage':
+                    $scope.isNext = true;
+                    $scope.isPrev = false;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.pageNo = $scope.pageNo + 1;
+                    break;
+                case 'prevPage':
+                    $scope.isPrev = true;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.isNext = false;
+                    $scope.pageNo = $scope.pageNo - 1;
+                    break;
+                default:
+                    $scope.firstPage = true;
+            }
+            var paginationDetails;
+            paginationDetails={
+                firstPage: $scope.firstPage,
+                lastPage: $scope.lastPage,
+                pageNo: $scope.pageNo,
+                prevPage: $scope.isPrev,
+                nextPage: $scope.isNext
+            }
+            if(angular.isUndefined($scope.searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getPaginatedHouseKeepingList?searchText='+$scope.searchText,angular.toJson(paginationDetails)).then(function (response) {
+                var data = response.data;
+                console.log(data);
+                $scope.cityList = data.list;
+                $scope.first = data.firstPage;
+                $scope.last = data.lastPage;
+                $scope.prev = data.prevPage;
+                $scope.next = data.nextPage;
+                $scope.pageNo = data.pageNo;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.getPaginatedHouseKeepingList();
+
+
+
+
+
+        $scope.addhousekeeping = function () {
+            $scope.id=0;
+            $scope.title="";
+            $scope.description="";
+            $scope.statusText="Active";
+            $("#submit").text("Save");
+            $('#keeping-title').text("Add Housekeeping");
+            $("#add_new_keeping").modal('show');
+
+        };
+
+        $scope.EditHouseKeeping = function (data) {
+            $scope.id=data.id;
+            $scope.title = data.title;
+            $scope.description = data.short_description;
+            $scope.statusText = data.status;
+            $scope.operation = 'Edit';
+            $("#submit").text("Update");
+            $('#keeping-title').text("Edit HouseKeeping");
+            $("#add_new_keeping").modal('show');
+
+        }, function (error) {
+            Notification.error({message: 'Something went wrong, please try again', positionX: 'center', delay: 2000});
+        };
+        $scope.DeleteHouseKeeping=function(data) {
+            bootbox.confirm({
+                title: "Alert",
+                message: "Do you want to Continue ?",
+                buttons: {
+                    confirm: {
+                        label: 'OK'
+                    },
+                    cancel: {
+                        label: 'Cancel'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $http.post($scope.bshimServerURL + '/getDeleteHouseKeeping?id=' + data.id).then(function (response) {
+                            var data = response.data;
+                            Notification.success({
+                                message: 'HouseKeeping deleted  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.getHouseKeepingList();
+                        }, function (error) {
+                            Notification.error({
+                                message: 'Something went wrong, please try again',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.isDisabled = false;
+                        });
+                    }
+                }
+            });
+        };
+
+
+        $scope.getHouseKeepingList = function (searchText) {
+            if(angular.isUndefined(searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getHouseKeepingList?searchText=').then(function (response) {
+                var data = response.data.object;
+                $scope.housekeepingList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.getHouseKeepingList();
+
+        $scope.backconfiguration=function(){
+            $window.location.href='/home#!/configuration'
+        };
+
+        $scope.importPopup = function(){
+            $("#import_housekeeping").modal('show');
+        }
+
+        $scope.saveHousekeepingImport = function(){
+            $scope.isDisabled= true;
+            var formElement = document.getElementById("housekeepingDetails");
+            var housekeepingDetails = new FormData(formElement);
+            $http.post($scope.bshimServerURL + '/housekeepingImportSave',housekeepingDetails,
+                { headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity,
+                }).then(function (response) {
+                    $("#import_housekeeping").modal('hide');
+                    $scope.getHouseKeepingList();
+                    $scope.getPaginatedHouseKeepingList();
+                    $scope.isDisabled= false;
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                    $scope.isDisabled= false;
+                }
+            )
+        }
+
+
+
+        $scope.saveHousekeeping = function () {
+            if ($scope.title == '' || $scope.title == null || angular.isUndefined($scope.title)) {
+                Notification.error({message: 'Please Enter Title ', positionX: 'center', delay: 2000});
+            }
+            else {
+                var saveHousekeepingDetails;
+                saveHousekeepingDetails = {
+                    id: $scope.id,
+                    title: $scope.title,
+                    short_description: $scope.description,
+                    status: $scope.statusText
+
+                };
+                $http.post($scope.bshimServerURL + "/saveHouse", angular.toJson(saveHousekeepingDetails)).then(function (response) {
+                    var data = response.data;
+                    if (data == "" || data == 'undefined'|| data ==null) {
+                        Notification.error({message: ' Already exists', positionX: 'center', delay: 2000});
+                    }
+                    else {
+                        $("#add_new_keeping").modal('hide');
+                        $scope.getHouseKeepingList();
+                        if ($scope.operation == 'Edit') {
+                            Notification.success({
+                                message: 'Housekeeping is Updated successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+
+                        } else {
+                            Notification.success({
+                                message: 'Housekeeping is Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+
+                    }
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                });
+            };
+        }
+
+
+    });

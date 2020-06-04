@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row" >
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>HR Management</div>
+            </h2>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="departmentsLink"  href="#!/departments"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Departments</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="designationsLink"  href="#!/designations"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Designations</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="employeesLink"  href="#!/employees"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Employees</div>
+                </div>
+                </a>
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

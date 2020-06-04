@@ -1,0 +1,62 @@
+package com.hyva.hotel.pojo;
+
+import com.hyva.hotel.entities.Orders;
+
+import java.sql.Date;
+
+public class PaymentPojo {
+    private Orders orderId;
+    private Long order_Id;
+    private String invoiceNo;
+    private String paymentType;
+    private Date addedDate;
+    private double amount;
+
+    public Orders getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Orders orderId) {
+        this.orderId = orderId;
+    }
+
+    public Long getOrder_Id() {
+        return order_Id;
+    }
+
+    public void setOrder_Id(Long order_Id) {
+        this.order_Id = order_Id;
+    }
+
+    public String getInvoiceNo() {
+        return invoiceNo;
+    }
+
+    public void setInvoiceNo(String invoiceNo) {
+        this.invoiceNo = invoiceNo;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public Date getAddedDate() {
+        return addedDate;
+    }
+
+    public void setAddedDate(Date addedDate) {
+        this.addedDate = addedDate;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+
+<style>
+    .th-inner{
+        font-size: 13px;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="container cus_main_row" style="height: 715px;">
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>Guests Report</div>
+            </h2>
+        </div>
+        <div class="row inner_row_bg">
+            <div class="col-sm-12 col-md-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="col-sm-12 col-md-12">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-md-10 col-sm-9">
+                                        <div class="row">
+                                            <div class="col-md-3 col-sm-12">
+                                                <div class="col-md-8 col-sm-9 input_label cus_input_label no-pad">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 col-sm-4">
+                                                <!--<button type="button" class="btn btn-default hi_btn col-md-2" ng-click="getSalesInvoiceListWithFilter()" style="min-width: 101px;">View-->
+                                                <!--</button>-->
+                                            </div>
+                                            <div class="col-md-5 col-sm-8">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fixed-table-container">
+                    <div class="table_wrapfixed-table-container-inner hi_table">
+                        <div class="header-background"></div>
+                        <table data-toggle="table" data-cache="false" data-height="299"style="margin-bottom: 0px;"
+                               class="table table_option2 table-hover table-striped table-fixed-header list_table">
+                            <thead>
+                            <tr>
+                                <th data-field="date">
+                                    <div class="th-inner">SlNo</div>
+                                </th>
+                                <th data-field="date">
+                                    <div class="th-inner">First Name</div>
+                                </th>
+                                <th data-field="date">
+                                    <div class="th-inner">Email</div>
+                                </th>
+                                <th data-field="itmcode">
+                                    <div class="th-inner">Address</div>
+                                </th>
+                                <th data-field="itmname">
+                                    <div class="th-inner">Mobile</div>
+                                </th>
+                                <th data-field="currency">
+                                    <div class="th-inner">DOB</div>
+                                </th>
+
+                            </tr>
+                            </thead>
+                            <tbody ng-repeat="guest in guestsList">
+
+                            <tr>
+                                <td class="align_right">{{$index+1}}</a> </td>
+                                <td class="align_right">{{guest.firstname}}</a> </td>
+                                <td class="align_right">{{guest.email}}</td>
+                                <td class="align_right">{{guest.address}}</td>
+                                <td class="align_right">{{guest.mobile}}</td>
+                                <td class="align_right">{{guest.dob}}</td>
+
+                            </tr>
+
+                            <tfoot>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

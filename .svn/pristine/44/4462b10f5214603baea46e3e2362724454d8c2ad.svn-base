@@ -1,0 +1,31 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Language;
+import com.hyva.hotel.pojo.LanguagePojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class LanguageMapper {
+    public static Language mapPojoToEntity(LanguagePojo languagePojo){
+        Language language=new Language();
+        language.setId(languagePojo.getId());
+        language.setName(languagePojo.getName());
+        language.setFile(languagePojo.getFile());
+        language.setFlag(languagePojo.getFlag());
+        return language;
+    }
+    public static List<LanguagePojo> mapEntityToPojo(List<Language> languageList){
+        List<LanguagePojo> list=new ArrayList<>();
+        for(Language language:languageList) {
+            LanguagePojo languagePojo = new LanguagePojo();
+            languagePojo.setId(language.getId());
+            languagePojo.setName(language.getName());
+            languagePojo.setFile(language.getFile());
+            languagePojo.setFlag(language.getFlag());
+            list.add(languagePojo);
+        }
+        return list;
+    }
+}

@@ -1,0 +1,21 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Employees;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+
+public interface EmployeesRepository extends JpaRepository<Employees, Long> {
+    List<Employees> findByUsernameAndIdNotIn(String username, Long id);
+    List<Employees> findByUsername(String username);
+    Employees findFirstByUsernameContaining(String searchText,Sort sort);
+    List<Employees> findAllByUsernameContaining(String searchText, Pageable pageable);
+    Employees findFirstBy(Sort sort);
+    List<Employees> findAllBy(Pageable pageable);
+    List<Employees> findAllByUsernameContaining(String searchText);
+}
+

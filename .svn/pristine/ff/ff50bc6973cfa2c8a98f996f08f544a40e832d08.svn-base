@@ -1,0 +1,7 @@
+package com.hyva.hotel.respositories;
+import com.hyva.hotel.entities.SmsConfigurator;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SmsConfiguratorRepository extends JpaRepository<SmsConfigurator,Long> {
+
+}

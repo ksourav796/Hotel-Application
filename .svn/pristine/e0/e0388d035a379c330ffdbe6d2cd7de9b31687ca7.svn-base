@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row" >
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>Users</div>
+            </h2>
+        </div>
+        <div class="row inner_row_bg">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel">
+                    <div class="panel-body" style="height: 65px;">
+                        <div class="col-md-4 col-lg-3 col-sm-5 col-xs-5">
+                            <form class="form-horizontal ng-pristine ng-valid">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <p class="input-group" style="display: block;">
+                                            <input id="search_grade" name="textinput"  type="text"
+                                                   placeholder="search" ng-model="searchText" class="form-control input-md"
+                                                   ng-keyup="$event.keyCode == 13 ? getPaginatedUsersList(searchText) : null"/>
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-primary hi_btn"  ng-click="addUserDetails()">Add</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button id="usersImport" type="button" class="btn btn-primary hi_btn" ng-click="importPopup()">Users Import</button>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                        <span class="custom-dropdown custom-dropdown--white">
+                            <select ng-model="exportsType" class="form-control " ng-change="GetValue()">
+                                <option value=""> Select Type</option>
+                                <option value="pdf"> pdf</option>
+                                <option value="excel"> Excel</option>
+                            </select>
+                         </span>
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-sm-3" >
+                                <div ng-if="exportsType"><a
+                                        href="/hotel/UsersExport?val={{searchText}}&type={{exportsType}}">
+                                    <button type="button" class="btn btn-primary hi_btn">Export</button>
+
+                                </a>
+                                </div>
+                                <div ng-if="!exportsType">
+                                    <button type="button" class="btn btn-primary hi_btn">Export</button>
+                                </div>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button type="button" class="btn btn-primary hi_btn"  ng-click="backconfiguration()">Back</button>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="fixed-table-container">
+                        <div class="table_wrap fixed-table-container-inner">
+                            <div class="header-background"> </div>
+                            <table data-toggle="table" data-cache="false" data-height="299" style="margin-bottom: 0;" class="hi_table table table-hover table-bordered table-striped table-fixed-header">
+                                <thead>
+                                <th data-field="cntryname"><div class="th-inner">User Name</div></th>
+                                <th data-field="cntryname"><div class="th-inner">Password</div></th>
+                                <th data-field="cntryname"><div class="th-inner">Full Name</div></th>
+                                <th data-field="cntryname"><div class="th-inner">Security Question</div></th>
+                                <th data-field="cntryname"><div class="th-inner">Security Answer</div></th>
+                                <th data-field="cntryname"><div class="th-inner">Telephone Number</div></th>
+                                <th data-field="cntryname"><div class="th-inner">Email Address</div></th>
+                                <th data-field="cntryname"><div class="th-inner">Status</div></th>
+                                <th data-field="cntryname"><div class="th-inner">Edit</div></th>
+                                <th data-field="cntryname"><div class="th-inner">Delete</div></th>
+
+                                </tr></thead>
+                                <tbody id="parentTable">
+                                <tr ng-repeat="user in userList">
+                                    <td>{{user.userName}}</td>
+                                    <td>{{user.passwordUser}}</td>
+                                    <td>{{user.full_name}}</td>
+                                    <td style="word-break:break-all;">{{user.securityQuestion}}</td>
+                                    <td style="word-break:break-all;">{{user.securityAnswer}}</td>
+                                    <td>{{user.phone}}</td>
+                                    <td>{{user.email}}</td>
+                                    <td>{{user.status}}</td>
+                                    <td><button type="button" class="btn btn-primary hi_btn"  ng-click="EditUser(user)">Edit</button></td>
+                                    <td ng-hide="user.userName=='admin'"><button type="button" class="btn btn-primary hi_btn"  ng-click="DeleteUser(user)">Delete</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div ng-if="searchText!=''&&(userList|filter:searchText).length==0">
+                            <div id="notFoundDiv" style="color: red; font-weight: bold">No Records Found</div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 pagination_">
+                            <button type="button" class="btn btn-default hi_btn" ng-class="{'diabled-class': first}" ng-disabled="first"
+                                    ng-click="getPaginatedUsersList('firstPage')"  ng-model="first">First
+                            </button>
+                            <button type="button" class="btn btn-default hi_btn"  ng-class="{'diabled-class': prev}" ng-disabled="prev"
+                                    ng-click="getPaginatedUsersList('prevPage')"   ng-model="prev">Prev
+                            </button>
+                            <button type="button" class="btn btn-default hi_btn"  name="next" ng-disabled="next"
+                                    ng-click="getPaginatedUsersList('nextPage')"  value="next"  ng-class="{'diabled-class': next}" ng-model="next">Next
+                            </button>
+                            <button type="button" class="btn btn-default hi_btn"
+                                    ng-click="getPaginatedUsersList('lastPage')"   ng-class="{'diabled-class': last}" ng-disabled="last"
+                                    ng-model="last">Last
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form class="form-horizontal" id="usersDetails" method="post" ng-submit="saveUsersImport()">
+                    <div class="modal fade" tabindex="-1" id="import_Users" role="dialog" data-backdrop="static"
+                         aria-labelledby="mySmallModalLabel_1">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Import Users</h4>
+                                </div>
+                                <a href="resource\images\ImportSheets\users.xlsx" download>Download ExcelSheet</a>
+                                <div class="modal-body checkout-body">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-xs-5">
+                                                <input type="file" name="myFile" id="myFile"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" ng-click="reloadPage()" data-toggle="modal"
+                                            ng-disabled="isDisabled">Save
+                                    </button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="modal fade addCustomer" tabindex="-1" id="add_user_master" role="dialog" data-backdrop="static"
+                     aria-labelledby="mySmallModalLabel">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content checkout">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                                <h4 id="user-title" class="modal-title">Add User</h4>
+
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <form class="form-horizontal" name="mail">
+                                            <fieldset>
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 col-sm-4 control-label" for="">User Name<span style="color:red;">*</span></label>
+                                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                            <input id="UserName" name="UserName"
+                                                                   type="text" placeholder="User Name"
+                                                                   ng-model="userText" maxlength="30" alpha-with-space
+                                                                   class="form-control input-md" autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 col-sm-4 control-label">Password
+                                                            <span style="color:red;">*</span></label>
+                                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                            <input id="newPassword" name="newPassword"
+                                                                   maxlength="30"
+                                                                   type="password" placeholder="Password"
+                                                                   ng-model="PasswordText"
+                                                                   class="form-control input-md" autocomplete="off" required>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 col-sm-4 control-label">Full Name</label>
+                                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                            <input id="FullName" name="FullName" alpha-with-space
+                                                                   allowpattern="[a-z]"
+                                                                   maxlength="30"
+                                                                   type="text" placeholder="Full Name"
+                                                                   ng-model="FullNameText" alpha-with-space
+                                                                   class="form-control input-md" autocomplete="off" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 col-sm-4 control-label">Security Question</label>
+                                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                            <input id="SecurityQuestion" name="SecurityQuestion"
+                                                                   allowpattern="[a-z]" maxlength="100"
+                                                                   type="text" placeholder="Security Question"
+                                                                   ng-model="SecurityQuestionText" alpha-with-space
+                                                                   class="form-control input-md" autocomplete="off" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 col-sm-4 control-label">Answer</label>
+                                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                            <input id="Answer" name="Answer"
+                                                                   allowpattern="[a-z]" maxlength="100"
+                                                                   type="text" placeholder="Answer"
+                                                                   ng-model="AnswerText" alpha-with-space
+                                                                   ng-value="setupobj.securityAnswer"
+                                                                   class="form-control input-md" autocomplete="off" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 col-sm-4 control-label">Telephone Number</label>
+                                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                            <input id="TelephoneNumber" name="TelephoneNumber" num-with-space maxlength="10"
+                                                                   allowpattern="[a-z]"
+                                                                   type="text" placeholder="Telephone Number"
+                                                                   ng-model="TelephoneNumberText" num-with-out-space
+                                                                   class="form-control input-md" autocomplete="off" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 col-sm-4 control-label">Email Address<span style="color:red;">*</span></label>
+                                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                            <input id="EmailAddress" name="EmailAddress"
+                                                                   ng-pattern="word"
+                                                                   type="text" placeholder="Email Address"
+                                                                   ng-model="EmailAddressText"
+                                                                   no-special-char=""
+                                                                   class="form-control input-md"  required>
+                                                            <p class="error" ng-show="mail.EmailAddress.$error.pattern">Enter Valid MailID</p>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 col-sm-4 control-label">Status </label>
+                                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                            <select id="statusId" name="status"
+                                                                    ng-model="status" ng-init="status='Active'"  class="form-control input-md">
+                                                                <option value="Active">Active</option>
+                                                                <option value="InActive">InActive</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" id="submit" data-toggle="modal" ng-disabled="isDisabled"
+                                        data-target=".print-me" ng-click="saveuserDetails()">Save
+                                </button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

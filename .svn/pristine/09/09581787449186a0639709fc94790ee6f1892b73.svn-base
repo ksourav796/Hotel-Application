@@ -1,0 +1,20 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Payment;
+import com.hyva.hotel.entities.PaymentMethod;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface PaymentMethodRepository extends JpaRepository<PaymentMethod,Long> {
+    List<PaymentMethod> findAllByStatus(String status);
+    PaymentMethod findByPaymentmethodName(String status);
+    PaymentMethod findByPaymentmethodNameAndPaymentmethodIdNotIn(String status,Long id);
+    PaymentMethod findFirstByPaymentmethodNameContaining(String searchText, Sort sort);
+    List<PaymentMethod> findAllByPaymentmethodNameContaining(String searchText, Pageable pageable);
+    PaymentMethod findFirstBy(Sort sort);
+    List<PaymentMethod> findAllBy(Pageable pageable);
+    List<PaymentMethod> findAllByPaymentmethodNameContaining(String searchText);
+}

@@ -1,0 +1,144 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Orders;
+import com.hyva.hotel.entities.RelOrdersPrices;
+import com.hyva.hotel.entities.RelOrdersServices;
+import com.hyva.hotel.pojo.OrdersPojo;
+import com.hyva.hotel.pojo.RelOrderPricesPojo;
+import com.hyva.hotel.pojo.RelOrderServicesPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrdersMapper {
+    public static Orders mapPojoToEntity(OrdersPojo ordersPojo){
+        Orders orders = new Orders();
+        orders.setAdditional_person(ordersPojo.getAdditional_person());
+        orders.setAdditional_person_amount(ordersPojo.getAdditional_person_amount());
+        orders.setAdults(ordersPojo.getAdults());
+        orders.setAdvance_amount(ordersPojo.getAdvance_amount());
+        orders.setAfter_coupon_totalamount(ordersPojo.getAfter_coupon_totalamount());
+        orders.setAmount(ordersPojo.getAmount());
+        orders.setBase_price(ordersPojo.getBase_price());
+        orders.setCheck_in(ordersPojo.getCheck_in());
+        orders.setCheck_out(ordersPojo.getCheck_out());
+        orders.setCheckintime(ordersPojo.getCheckintime());
+        orders.setCheckouttime(ordersPojo.getCheckouttime());
+        orders.setAdvanceBooking(ordersPojo.isAdvanceBooking());
+        orders.setCheckstatus(ordersPojo.getCheckstatus());
+        orders.setCoupon(ordersPojo.getCoupon());
+        orders.setCoupon_discount(ordersPojo.getCoupon_discount());
+        orders.setCurrency(ordersPojo.getCurrency());
+        orders.setCurrency_unit(ordersPojo.getCurrency_unit());
+        orders.setDiscount("DiscountInRoomRent");
+        orders.setFree_paid_services(ordersPojo.getFree_paid_services());
+        orders.setFree_paid_services_amount(ordersPojo.getFree_paid_services_amount());
+        orders.setFree_paid_services_title(ordersPojo.getFree_paid_services_title());
+        orders.setItemtotal(ordersPojo.getItemtotal());
+        orders.setGuestId(ordersPojo.getGuestId());
+        orders.setId(ordersPojo.getId());
+        orders.setIs_cancel_by_guest(ordersPojo.getIs_cancel_by_guest());
+        orders.setIs_cancel_view(ordersPojo.getIs_cancel_view());
+        orders.setIs_new(ordersPojo.getIs_new());
+        orders.setItemtotal(ordersPojo.getItemtotal());
+        orders.setKids(ordersPojo.getKids());
+        orders.setNights(ordersPojo.getNights());
+        orders.setOrder_no(ordersPojo.getOrder_no());
+        orders.setOrdered_on(ordersPojo.getOrdered_on());
+        orders.setPaid_service_amount(ordersPojo.getPaid_service_amount());
+        orders.setPayment_gateway_name(ordersPojo.getPayment_gateway_name());
+        orders.setPayment_gateway_status(ordersPojo.getPayment_gateway_status());
+        orders.setPayment_status(ordersPojo.getPayment_status());
+        orders.setRoom_id(ordersPojo.getRoom_id());
+        orders.setRoom_no(ordersPojo.getRoom_no());
+        orders.setRoom_rent(ordersPojo.getRoom_rent());
+        orders.setRoom_type_id(ordersPojo.getRoom_type_id());
+        orders.setStatus(ordersPojo.getStatus());
+        orders.setTaxamount(ordersPojo.getTaxamount());
+        orders.setTotalamount(ordersPojo.getTotalamount());
+        orders.setTxn_id(ordersPojo.getTxn_id());
+        orders.setBookingstatus(ordersPojo.getBookingstatus());
+        return orders;
+    }
+    public static OrdersPojo EntityToPojo(Orders orders){
+        OrdersPojo ordersPojo = new OrdersPojo();
+        ordersPojo.setAdditional_person(orders.getAdditional_person());
+        ordersPojo.setAdditional_person_amount(orders.getAdditional_person_amount());
+        ordersPojo.setAdults(orders.getAdults());
+        ordersPojo.setAdvance_amount(orders.getAdvance_amount());
+        ordersPojo.setAfter_coupon_totalamount(orders.getAfter_coupon_totalamount());
+        ordersPojo.setAmount(orders.getAmount());
+        ordersPojo.setBase_price(orders.getBase_price());
+        ordersPojo.setCheck_in(orders.getCheck_in());
+        ordersPojo.setCheck_out(orders.getCheck_out());
+        ordersPojo.setCheckintime(orders.getCheckintime());
+        ordersPojo.setCheckouttime(orders.getCheckouttime());
+        ordersPojo.setCheckstatus(orders.getCheckstatus());
+        ordersPojo.setCoupon(orders.getCoupon());
+        ordersPojo.setCoupon_discount(orders.getCoupon_discount());
+        ordersPojo.setCurrency(orders.getCurrency());
+        ordersPojo.setCurrency_unit(orders.getCurrency_unit());
+        ordersPojo.setDiscount(orders.getDiscount());
+        ordersPojo.setFree_paid_services(orders.getFree_paid_services());
+        ordersPojo.setFree_paid_services_amount(orders.getFree_paid_services_amount());
+        ordersPojo.setFree_paid_services_title(orders.getFree_paid_services_title());
+        ordersPojo.setGuestId(orders.getGuestId());
+        ordersPojo.setId(orders.getId());
+        ordersPojo.setIs_cancel_by_guest(orders.getIs_cancel_by_guest());
+        ordersPojo.setIs_cancel_view(orders.getIs_cancel_view());
+        ordersPojo.setIs_new(orders.getIs_new());
+        ordersPojo.setItemtotal(orders.getItemtotal());
+        ordersPojo.setKids(orders.getKids());
+        ordersPojo.setNights(orders.getNights());
+        ordersPojo.setOrder_no(orders.getOrder_no());
+        ordersPojo.setOrdered_on(orders.getOrdered_on());
+        ordersPojo.setPaid_service_amount(orders.getPaid_service_amount());
+        ordersPojo.setItemtotal(orders.getItemtotal());
+        ordersPojo.setDiscountAmt(orders.getDiscountAmt());
+        ordersPojo.setAdvance_amount(orders.getAdvance_amount());
+        ordersPojo.setCoupon_discount(orders.getCoupon_discount());
+        ordersPojo.setPayment_gateway_name(orders.getPayment_gateway_name());
+        ordersPojo.setPayment_gateway_status(orders.getPayment_gateway_status());
+        ordersPojo.setPayment_status(orders.getPayment_status());
+        ordersPojo.setRoom_id(orders.getRoom_id());
+        ordersPojo.setRoom_no(orders.getRoom_no());
+        ordersPojo.setRoom_rent(orders.getRoom_rent());
+        ordersPojo.setRoom_type_id(orders.getRoom_type_id());
+        ordersPojo.setStatus(orders.getStatus());
+        ordersPojo.setTaxamount(orders.getTaxamount());
+        ordersPojo.setTotalamount(orders.getTotalamount());
+        ordersPojo.setTxn_id(orders.getTxn_id());
+        ordersPojo.setBookingstatus(orders.getBookingstatus());
+        if(orders.getGuestId()!=null) {
+            ordersPojo.setGuestCompanyName(orders.getGuestId().getCompanyname());
+            ordersPojo.setGuestEmail(orders.getGuestId().getEmail());
+            ordersPojo.setGuestFirstName(orders.getGuestId().getFirstname());
+            ordersPojo.setGuestLastName(orders.getGuestId().getLastname());
+            ordersPojo.setGuestMobile(orders.getGuestId().getMobile());
+        }
+        ordersPojo.setId(orders.getId());
+        return ordersPojo;
+    }
+
+
+    public static RelOrdersServices relOrderServicePojoTOEntity(RelOrderServicesPojo relOrderServicesPojo){
+        RelOrdersServices relOrdersServices = new RelOrdersServices();
+        relOrdersServices.setAmount(relOrderServicesPojo.getPrice());
+        relOrdersServices.setServiceId(relOrderServicesPojo.getServiceId());
+        relOrdersServices.setOrderId(relOrderServicesPojo.getOrdersId());
+        relOrdersServices.setId(relOrderServicesPojo.getId());
+        return relOrdersServices;
+    }
+
+    public static List<RelOrderPricesPojo> relOrderPriceToPojo(List<RelOrdersPrices> relOrdersPricesList){
+        List<RelOrderPricesPojo> list=new ArrayList<>();
+        for(RelOrdersPrices relOrdersPrices:relOrdersPricesList) {
+            RelOrderPricesPojo relOrdersPricesPojo = new RelOrderPricesPojo();
+            relOrdersPricesPojo.setDate(relOrdersPrices.getDate());
+//            relOrdersPricesPojo.setGuestName(relOrdersPrices.getOrderId().getGuestId().getFirstname());
+            list.add(relOrdersPricesPojo);
+        }
+        return list;
+    }
+
+}

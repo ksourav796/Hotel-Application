@@ -1,0 +1,50 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "categories")
+public class Categories {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long categories_id;
+    private Long company_id;
+    private String categories_name;
+    private String language_id;
+
+    public Long getCategories_id() {
+        return categories_id;
+    }
+
+    public void setCategories_id(Long categories_id) {
+        this.categories_id = categories_id;
+    }
+
+    public Long getCompany_id() {
+        return company_id;
+    }
+
+    public void setCompany_id(Long company_id) {
+        this.company_id = company_id;
+    }
+
+    public String getCategories_name() {
+        return categories_name;
+    }
+
+    public void setCategories_name(String categories_name) {
+        this.categories_name = categories_name;
+    }
+
+    public String getLanguage_id() {
+        return language_id;
+    }
+
+    public void setLanguage_id(String language_id) {
+        this.language_id = language_id;
+    }
+}

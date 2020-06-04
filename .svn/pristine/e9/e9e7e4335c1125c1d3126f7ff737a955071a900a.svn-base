@@ -1,0 +1,37 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Testimonials;
+import com.hyva.hotel.pojo.TestimonialsPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class TestimonialsMapper {
+    public static Testimonials mapPojoToEntity(TestimonialsPojo testimonialsPojo){
+        Testimonials testimonials=new Testimonials();
+        testimonials.setId(testimonialsPojo.getId());
+        testimonials.setAutherName(testimonialsPojo.getAutherName());
+        testimonials.setTitle(testimonialsPojo.getTitle());
+        testimonials.setTestimonial(testimonialsPojo.getTestimonial());
+        testimonials.setAutherName(testimonialsPojo.getAutherName());
+        testimonials.setRating(testimonialsPojo.getRating());
+        testimonials.setCountry(testimonialsPojo.getCountry());
+        return testimonials;
+    }
+    public static List<TestimonialsPojo> mapEntityToPojo(List<Testimonials> testimonialsList ){
+        List<TestimonialsPojo> list=new ArrayList<>();
+        for(Testimonials testimonials:testimonialsList) {
+            TestimonialsPojo testimonialsPojo = new TestimonialsPojo();
+            testimonialsPojo.setId(testimonials.getId());
+            testimonialsPojo.setAutherName(testimonials.getAutherName());
+            testimonialsPojo.setTitle(testimonials.getTitle());
+            testimonialsPojo.setTestimonial(testimonials.getTestimonial());
+            testimonialsPojo.setAutherName(testimonials.getAutherName());
+            testimonialsPojo.setRating(testimonials.getRating());
+            testimonialsPojo.setCountry(testimonials.getCountry());
+            list.add(testimonialsPojo);
+        }
+        return list;
+    }
+}

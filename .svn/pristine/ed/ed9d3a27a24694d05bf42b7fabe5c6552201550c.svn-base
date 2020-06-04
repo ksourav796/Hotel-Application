@@ -1,0 +1,20 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.State;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+
+public interface StateRepository extends JpaRepository<State, Long> {
+    List<State> findAllByCountryNameAndStatus(String countryName,String status);
+    State findByStateName(String stateName);
+    State findByStateNameAndIdNotIn(String stateName,Long id);
+    List<State> findAllByStateCodeContainingOrStateNameContaining(String code,String name,Pageable pageable);
+    State findFirstByStateCodeContainingOrStateNameContaining(String code,String name,Sort sort);
+    State findFirstBy(Sort sort);
+    List<State> findAllBy(Pageable pageable);
+    List<State> findAllByStateCodeContainingOrStateNameContaining(String code,String name);
+}

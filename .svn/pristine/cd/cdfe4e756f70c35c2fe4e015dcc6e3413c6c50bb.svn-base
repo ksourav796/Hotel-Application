@@ -1,0 +1,69 @@
+package com.hyva.hotel.pojo;
+
+import java.sql.Date;
+
+public class SalesDiscountPojo {
+    private Long id;
+    private String itemName;
+    private String discount_type;
+    private Date from_date;
+    private Date to_date;
+    private String discount_value;
+    private String status;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public String getDiscount_type() {
+        return discount_type;
+    }
+
+    public void setDiscount_type(String discount_type) {
+        this.discount_type = discount_type;
+    }
+
+    public Date getFrom_date() {
+        return from_date;
+    }
+
+    public void setFrom_date(Date from_date) {
+        this.from_date = from_date;
+    }
+
+    public Date getTo_date() {
+        return to_date;
+    }
+
+    public void setTo_date(Date to_date) {
+        this.to_date = to_date;
+    }
+
+    public String getDiscount_value() {
+        return discount_value;
+    }
+
+    public void setDiscount_value(String discount_value) {
+        this.discount_value = discount_value;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}

@@ -1,0 +1,32 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Floors;
+import com.hyva.hotel.pojo.FloorsPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class FloorMapper {
+    public static Floors mapPojoToEntity(FloorsPojo pojo){
+        Floors floors=new Floors();
+        floors.setId(pojo.getId());
+        floors.setDescription(pojo.getDescription());
+        floors.setName(pojo.getName());
+        floors.setActive(pojo.getActive());
+        floors.setFloor_no(pojo.getFloor_no());
+        return floors;
+    }
+    public static List<FloorsPojo> mapFloorEntityToPojo(List<Floors> floorList){
+        List<FloorsPojo> list=new ArrayList<>();
+        for(Floors floor:floorList) {
+            FloorsPojo floorPojo = new FloorsPojo();
+            floorPojo.setId(floor.getId());
+            floorPojo.setName(floor.getName());
+            floorPojo.setDescription(floor.getDescription());
+            floorPojo.setActive(floor.getActive());
+            list.add(floorPojo);
+        }
+        return list;
+    }
+
+}

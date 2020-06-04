@@ -1,0 +1,132 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.sql.Date;
+
+@Entity
+@Table(name = "specialprice")
+public class SpecialPrice {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long id;
+    private String title;
+    private Date date_from;
+    private Date date_to;
+    private double tue;
+    private double wed;
+    private double status;
+    private double thu;
+    private double fri;
+    private double sat;
+    private double sun;
+    private double mon;
+    private Long room_type_id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Date getDate_from() {
+        return date_from;
+    }
+
+    public void setDate_from(Date date_from) {
+        this.date_from = date_from;
+    }
+
+    public Date getDate_to() {
+        return date_to;
+    }
+
+    public void setDate_to(Date date_to) {
+        this.date_to = date_to;
+    }
+
+    public double getTue() {
+        return tue;
+    }
+
+    public void setTue(double tue) {
+        this.tue = tue;
+    }
+
+    public double getWed() {
+        return wed;
+    }
+
+    public void setWed(double wed) {
+        this.wed = wed;
+    }
+
+    public double getStatus() {
+        return status;
+    }
+
+    public void setStatus(double status) {
+        this.status = status;
+    }
+
+    public double getThu() {
+        return thu;
+    }
+
+    public void setThu(double thu) {
+        this.thu = thu;
+    }
+
+    public double getFri() {
+        return fri;
+    }
+
+    public void setFri(double fri) {
+        this.fri = fri;
+    }
+
+    public double getSat() {
+        return sat;
+    }
+
+    public void setSat(double sat) {
+        this.sat = sat;
+    }
+
+    public double getSun() {
+        return sun;
+    }
+
+    public void setSun(double sun) {
+        this.sun = sun;
+    }
+
+    public double getMon() {
+        return mon;
+    }
+
+    public void setMon(double mon) {
+        this.mon = mon;
+    }
+
+    public Long getRoom_type_id() {
+        return room_type_id;
+    }
+
+    public void setRoom_type_id(Long room_type_id) {
+        this.room_type_id = room_type_id;
+    }
+}

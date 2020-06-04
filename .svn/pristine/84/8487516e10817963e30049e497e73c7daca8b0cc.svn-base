@@ -1,0 +1,122 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "products")
+public class Products {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long products_id;
+    private String categories_id;
+    private String products_quantity;
+    private String products_name;
+    private String products_description;
+    private String products_image;
+    private String products_price;
+    private String products_status;
+    private String company_id;
+    private String language_id;
+    private String taxname;
+    private String taxpercentage;
+
+    public Long getProducts_id() {
+        return products_id;
+    }
+
+    public void setProducts_id(Long products_id) {
+        this.products_id = products_id;
+    }
+
+    public String getCategories_id() {
+        return categories_id;
+    }
+
+    public void setCategories_id(String categories_id) {
+        this.categories_id = categories_id;
+    }
+
+    public String getProducts_quantity() {
+        return products_quantity;
+    }
+
+    public void setProducts_quantity(String products_quantity) {
+        this.products_quantity = products_quantity;
+    }
+
+    public String getProducts_name() {
+        return products_name;
+    }
+
+    public void setProducts_name(String products_name) {
+        this.products_name = products_name;
+    }
+
+    public String getProducts_description() {
+        return products_description;
+    }
+
+    public void setProducts_description(String products_description) {
+        this.products_description = products_description;
+    }
+
+    public String getProducts_image() {
+        return products_image;
+    }
+
+    public void setProducts_image(String products_image) {
+        this.products_image = products_image;
+    }
+
+    public String getProducts_price() {
+        return products_price;
+    }
+
+    public void setProducts_price(String products_price) {
+        this.products_price = products_price;
+    }
+
+    public String getProducts_status() {
+        return products_status;
+    }
+
+    public void setProducts_status(String products_status) {
+        this.products_status = products_status;
+    }
+
+    public String getCompany_id() {
+        return company_id;
+    }
+
+    public void setCompany_id(String company_id) {
+        this.company_id = company_id;
+    }
+
+    public String getLanguage_id() {
+        return language_id;
+    }
+
+    public void setLanguage_id(String language_id) {
+        this.language_id = language_id;
+    }
+
+    public String getTaxname() {
+        return taxname;
+    }
+
+    public void setTaxname(String taxname) {
+        this.taxname = taxname;
+    }
+
+    public String getTaxpercentage() {
+        return taxpercentage;
+    }
+
+    public void setTaxpercentage(String taxpercentage) {
+        this.taxpercentage = taxpercentage;
+    }
+}

@@ -1,0 +1,20 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Designation;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import sun.security.krb5.internal.PAData;
+
+import java.util.List;
+
+public interface DesignationRepository extends JpaRepository<Designation, Long> {
+    List<Designation> findByNameAndIdNotIn(String name, Long id);
+    List<Designation> findByName(String name);
+    List<Designation> findAllByDeptname(String deptname);
+    Designation findFirstByDeptnameContaining(String searchText,Sort sort);
+    List<Designation> findAllByDeptnameContaining(String searchText,Pageable pageable);
+    Designation findFirstBy(Sort sort);
+    List<Designation> findAllBy(Pageable pageable);
+    List<Designation> findAllByDeptnameContaining(String searchText);
+}

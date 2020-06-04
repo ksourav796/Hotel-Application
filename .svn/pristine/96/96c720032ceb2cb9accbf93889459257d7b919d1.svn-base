@@ -1,0 +1,99 @@
+app.controller('expensereportCtrl',
+    function($scope, $http, $location, $filter, Notification, ngTableParams,  $timeout, $window, $rootScope) {
+        console.log("aaaaaaaaaaaaa");
+        $scope.bshimServerURL = "/hotel";
+        $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        $scope.customerId = 1;
+        $scope.userRights = [];
+        $scope.operation = 'Create';
+        $scope.customer = 1;
+        $scope.today = new Date();
+        $scope.operation='create';
+        $scope.fromDate=new Date();
+        $scope.toDate=new Date();
+
+
+        $scope.backreports=function(){
+            $window.location.href='/home#!/reports'
+        };
+
+        $scope.format = 'dd/MM/yyyy';
+
+        $scope.open1 = function () {
+            $scope.popup1.opened = true;
+        };
+
+        $scope.popup1 = {
+            opened: false
+        };
+        $scope.open2 = function () {
+            $scope.popup2.opened = true;
+        };
+
+        $scope.popup2 = {
+            opened: false
+        };
+
+
+
+        $scope.drawLineChart = function(){
+            var salesLineData = {};
+            var purchaseLinedata = {};
+            $scope.lineLabel = [];
+            $scope.lineOption = {
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: true,
+                    text: 'Daily Expanses'
+                }
+            };
+
+            angular.forEach($scope.ecpenseReportList, function (sales) {
+                if(salesLineData.hasOwnProperty(sales.date)){
+                    salesLineData[sales.date] += parseFloat(sales.amount);
+                }else{
+                    salesLineData[sales.date] = parseFloat(sales.amount);
+                }
+                if($scope.lineLabel.indexOf(sales.date) == -1){
+                    $scope.lineLabel.push(sales.date);
+                }
+
+            });
+
+            $scope.lineLabel.sort();
+            var salesArray = [];
+            for(var i=0; i< $scope.lineLabel.length; i++ ){
+                if(!salesLineData[$scope.lineLabel[i]]){
+                    salesArray.push(0);
+                }else{
+                    salesArray.push(salesLineData[$scope.lineLabel[i]])
+                }
+            }
+
+            $scope.lineData = [salesArray];
+            $scope.lineSeries = ['Expanses'];
+
+        };
+
+
+
+        $scope.getExpensesReport = function (searchText) {
+            if(angular.isUndefined(searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getExpensesReport?fromDate='+$scope.fromDate +'&toDate='+$scope.toDate).then(function (response) {
+                var data = response.data;
+                $scope.ecpenseReportList = data;
+                $scope.drawLineChart();
+
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+    });

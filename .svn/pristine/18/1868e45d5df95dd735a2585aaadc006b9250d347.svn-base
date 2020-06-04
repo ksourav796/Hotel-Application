@@ -1,0 +1,30 @@
+/**
+ * Created by harshitha on 18/06/06.
+ */
+package com.hyva.hotel.service;
+import com.hyva.hotel.entities.SMSServer;
+import com.hyva.hotel.respositories.SMSServerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+
+@Service
+public class SmsService {
+    @Autowired
+    SMSServerRepository smsServerRepository;
+
+    public String sendSms(String orderNo, String mobileNumber,String message) throws IOException {
+        String sentance = message+"BookingNo is"+ orderNo.toString();
+        SMSServer smsServer = new SMSServer();
+        smsServer=smsServerRepository.findOne(1L);
+        if(smsServer!=null) {
+            URL url = new URL(smsServer.getSmsUrl() + "?method=sms" + "&api_key=" + smsServer.getApiKey() + "&to=" + mobileNumber + "&sender=" + smsServer.getSenderId() + "&message=" + sentance);
+            URLConnection conn = url.openConnection();
+            conn.getInputStream();
+        }
+        return null;
+    }
+}

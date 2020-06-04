@@ -1,0 +1,292 @@
+app.controller('roomtypesController',
+    function($scope, $http, $location, $filter, Notification, ngTableParams,  $timeout, $window, $rootScope) {
+        console.log("aaaaaaaaaaaaa");
+        $scope.bshimServerURL = "/hotel";
+        $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        $scope.customerId = 1;
+        $scope.userRights = [];
+        $scope.operation = 'Create';
+        $scope.customer = 1;
+        $scope.firstPage = true;
+        $scope.lastPage = false;
+        $scope.pageNo = 0;
+        $scope.prevPage = false;
+        $scope.isPrev = false;
+        $scope.isNext = false;
+
+        $scope.today = new Date();
+
+        $scope.reloadPage = function () {
+            $window.location.reload();
+        };
+        $scope.getPaginatedRoomtypesList = function (page) {
+            switch (page) {
+                case 'firstPage':
+                    $scope.firstPage = true;
+                    $scope.lastPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'lastPage':
+                    $scope.lastPage = true;
+                    $scope.firstPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'nextPage':
+                    $scope.isNext = true;
+                    $scope.isPrev = false;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.pageNo = $scope.pageNo + 1;
+                    break;
+                case 'prevPage':
+                    $scope.isPrev = true;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.isNext = false;
+                    $scope.pageNo = $scope.pageNo - 1;
+                    break;
+                default:
+                    $scope.firstPage = true;
+                    $scope.lastPage = false;
+                    $scope.pageNo =0;
+                    $scope.isNext=false;
+                    $scope.isPrev = false;
+            }
+            var paginationDetails;
+            paginationDetails={
+                firstPage: $scope.firstPage,
+                lastPage: $scope.lastPage,
+                pageNo: $scope.pageNo,
+                prevPage: $scope.isPrev,
+                nextPage: $scope.isNext
+            }
+            if(angular.isUndefined($scope.searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getPaginatedRoomtypesList?searchText='+$scope.searchText,angular.toJson(paginationDetails)).then(function (response) {
+                var data = response.data;
+                console.log(data);
+                $scope.roomtypesList = data.list;
+                $scope.first = data.firstPage;
+                $scope.last = data.lastPage;
+                $scope.prev = data.prevPage;
+                $scope.next = data.nextPage;
+                $scope.pageNo = data.pageNo;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.getPaginatedRoomtypesList();
+
+        $scope.getRoomTypesList = function (searchText) {
+            if(angular.isUndefined(searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getRoomTypesList').then(function (response) {
+                var data = response.data.object;
+                $scope.roomtypesList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.addroomtypes = function () {
+            $scope.id=0;
+            $scope.title="";
+            $scope.Slug="";
+            $scope.shortCode="";
+            $scope.description="";
+            $scope.baseoccupancy="";
+            $scope.higheroccupancy="";
+            $scope.Kidsoccupancy="";
+            $scope.baseprice="";
+            $scope.additionalpersonprice="";
+            $scope.extrabedprice="";
+            $("#submit").text("Save");
+            $('#roomtypes-title').text("Add RoomTypes");
+            $("#add_room_types").modal('show');
+
+        };
+        $scope.saveRoomTypes = function () {
+            if ($scope.title == '' || $scope.title == null || angular.isUndefined($scope.title)) {
+                Notification.error({message: 'Please Enter Title ', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.baseoccupancy == '' || $scope.baseoccupancy == null || angular.isUndefined($scope.baseoccupancy)) {
+                Notification.error({message: 'Please Select Base Occupancy ', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.higheroccupancy == '' || $scope.higheroccupancy == null || angular.isUndefined($scope.higheroccupancy)) {
+                Notification.error({message: 'Please Select Higher Occupancy ', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.baseprice == '' || $scope.baseprice == null || angular.isUndefined($scope.baseprice)) {
+                Notification.error({message: 'Please Enter Base Price ', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.additionalpersonprice == '' || $scope.additionalpersonprice == null || angular.isUndefined($scope.additionalpersonprice)) {
+                Notification.error({message: 'Please Enter Additional Person Price ', positionX: 'center', delay: 2000})
+            }
+            // else if ($scope.extrabedprice == '' || $scope.extrabedprice == null || angular.isUndefined($scope.extrabedprice)) {
+            //     Notification.error({message: 'Extra Bed Price cannot be empty', positionX: 'center', delay: 2000})
+            // }
+            // else if ($scope.extrabedprice <=0) {
+            //     Notification.error({message: 'Extra Bed Should not be zero', positionX: 'center', delay: 2000})
+            // }
+            else if ($scope.additionalpersonprice <=0) {
+                Notification.error({message: 'Additional Person Price Should not be zero', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.baseprice<=0) {
+                Notification.error({message: 'Base Price Should not be zero', positionX: 'center', delay: 2000})
+            }
+            else {
+                var saveRoomTypesDetails;
+                saveRoomTypesDetails = {
+                    id: $scope.id,
+                    title: $scope.title,
+                    slug: $scope.Slug,
+                    shortcode: $scope.shortCode,
+                    description: $scope.description,
+                    base_occupancy: $scope.baseoccupancy,
+                    higher_occupancy: $scope.higheroccupancy,
+                    kids_occupancy: $scope.Kidsoccupancy,
+                    base_price: $scope.baseprice,
+                    additional_person: $scope.additionalpersonprice
+                    // extra_bed_price: $scope.extrabedprice
+                };
+                $http.post($scope.bshimServerURL + "/saveRoomTypes", angular.toJson(saveRoomTypesDetails)).then(function (response) {
+                    var data = response.data;
+                    if (data == "") {
+                        Notification.error({
+                            message: 'Already exists',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    } else {
+                        $("#add_room_types").modal('hide');
+                        $scope.getPaginatedRoomtypesList();
+                        if ($scope.operation == 'Edit') {
+                            Notification.success({
+                                message: 'RoomTypes is Updated successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+
+                        } else {
+                            Notification.success({
+                                message: 'RoomTypes is Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+
+                    }
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                });
+            };
+        }
+        $scope.backconfiguration=function(){
+            $window.location.href='/home#!/configuration'
+        };
+        $scope.importPopup = function(){
+            $("#import_RoomTypes").modal('show');
+        }
+
+        $scope.saveRoomtypesImport = function(){
+            $scope.isDisabled= true;
+            var formElement = document.getElementById("roomtypesDetails");
+            var roomtypesDetails = new FormData(formElement);
+            $http.post($scope.bshimServerURL + '/RoomtypesImportSave',roomtypesDetails,
+                { headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity,
+                }).then(function (response) {
+                    $("#import_RoomTypes").modal('hide');
+                    $scope.getRoomTypesList();
+                    $scope.getPaginatedRoomtypesList();
+                    $scope.isDisabled= false;
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                    $scope.isDisabled= false;
+                }
+            )
+        }
+
+
+
+
+        $scope.EditRoomTypes = function (data) {
+            $scope.id=data.id;
+            $scope.title = data.title;
+            $scope.Slug = data.slug;
+            $scope.shortCode = data.shortcode;
+            $scope.description = data.description;
+            $scope.baseoccupancy = data.base_occupancy;
+            $scope.higheroccupancy = data.higher_occupancy;
+            $scope.Kidsoccupancy = data.kids_occupancy;
+            $scope.baseprice = data.base_price;
+            $scope.additionalpersonprice = data.additional_person;
+            $scope.extrabedprice = data.extra_bed_price;
+            $scope.operation = 'Edit';
+            $("#submit").text("Update");
+            $('#roomtypes-title').text("Edit RoomTypes");
+            $("#add_room_types").modal('show');
+
+        }, function (error) {
+            Notification.error({message: 'Something went wrong, please try again', positionX: 'center', delay: 2000});
+        };
+
+        $scope.DeleteRoomTypes=function(data){
+            bootbox.confirm({
+                title: "Alert",
+                message: "Do you want to Continue ?",
+                buttons: {
+                    confirm: {
+                        label: 'OK'
+                    },
+                    cancel: {
+                        label: 'Cancel'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $http.post($scope.bshimServerURL + '/getDeleteRoomTypes?id=' + data.id).then(function (response) {
+                            var data = response.data;
+                            Notification.success({
+                                message: 'RoomTypes deleted  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.getPaginatedRoomtypesList();
+                        }, function (error) {
+                            Notification.error({
+                                message: 'Something went wrong, please try again',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.isDisabled = false;
+                        });
+                    }
+                }
+            });
+        };
+
+
+    });

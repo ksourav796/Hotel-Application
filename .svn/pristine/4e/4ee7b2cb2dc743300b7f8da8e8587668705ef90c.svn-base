@@ -1,0 +1,20 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Departments;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+public interface DepartmentsRepository extends JpaRepository<Departments, Long> {
+    List<Departments> findByNameAndIdNotIn(String name,Long id);
+    List<Departments> findByName(String name);
+    List<Departments> findAllByNameContaining(String searchText,Pageable pageable);
+    Departments findFirstByNameContaining(String searchText, Sort sort);
+    List<Departments> findAllBy(Pageable pageable);
+    Departments findFirstBy(Sort sort);
+    List<Departments> findAllByNameContaining(String searchText);
+}

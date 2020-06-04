@@ -1,0 +1,166 @@
+<style>
+    .modal-content {
+        width: 696px;
+    }
+
+    .modal-footer {
+        padding: 5px;
+        text-align: right;
+        border-top: 1px solid #e5e5e5;
+    }
+
+    .modal-header {
+        padding: 5px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    fieldset {
+        min-width: 0;
+        padding: 10px;
+        margin: 0;
+        border: 0;
+    }
+
+    .control-label {
+        position: relative;
+        min-height: 1px;
+        padding-right: 8px;
+        padding-left: 11px;
+    }
+
+    .form-control {
+        display: block;
+        width: 264px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row">
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>Expenses</div>
+            </h2>
+        </div>
+        <div class="row inner_row_bg">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="col-sm-12 col-md-12">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4 col-sm-3">
+                                                <p>From Date:</p>
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control"
+                                                           uib-datepicker-popup="{{format}}"
+                                                           ng-model="fromDate"
+                                                           readonly="readonly"
+                                                           is-open="popup1.opened" datepicker-options="dateOptions"
+                                                           ng-required="true"
+                                                           close-text="Close" alt-input-formats="altInputFormats"/>
+                                                    <span class="input-group-btn">
+                                                      <button type="button" class="btn btn-default" ng-click="open1()"><i
+                                                               class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-4 col-sm-3">
+                                                <p>To Date:</p>
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control"
+                                                           uib-datepicker-popup="{{format}}"
+                                                           ng-model="toDate"
+                                                           readonly="readonly"
+                                                           is-open="popup2.opened" datepicker-options="dateOptions"
+                                                           ng-required="true"
+                                                           close-text="Close" alt-input-formats="altInputFormats"/>
+                                                    <span class="input-group-btn">
+                                                         <button type="button" class="btn btn-default" ng-click="open2()"><i
+                                                                 class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="form-group">
+                                            <div class="col-sm-2">
+                                                <button type="button" class="btn btn-primary hi_btn"  ng-click="getExpensesReport()">View</button>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="button" class="btn btn-primary hi_btn"  ng-click="backreports()">Back</button>
+
+                                            </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="row mr-0">
+    <div class="panel">
+        <h3 class="pull-right">
+            <button class="btn btn-xs btn-primary" style="margin-right: 0; width: 35px;"
+                    ng-style="{ 'opacity' : !showLine ? 1 : 0.2}"
+                    ng-click="showLine = false;">
+                Bar
+            </button>
+            <button class="btn btn-xs btn-primary" style="width: 35px;"
+                    ng-style="{ 'opacity' : showLine ? 1 : 0.2}"
+                    ng-click="showLine = true;">
+                Line
+            </button>
+        </h3>
+        <div class="panel-body" style="max-height: 205px;">
+            <canvas id="line" class="chart chart-line chart_dimension"
+                    chart-data="lineData"
+                    chart-colors="colors"
+                    chart-labels="lineLabel"
+                    chart-series="lineSeries"
+                    chart-options="lineOption"
+                    ng-if="showLine">
+            </canvas>
+            <canvas id="bar" class="chart chart-bar chart_dimension"
+                    chart-data="lineData"
+                    chart-colors="colors"
+                    chart-labels="lineLabel"
+                    chart-series="lineSeries"
+                    chart-options="lineOption"
+                    ng-if="!showLine">
+            </canvas>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

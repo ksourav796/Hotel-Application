@@ -1,0 +1,20 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.taxes;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+public interface HotelTaxRepository extends JpaRepository<taxes, Long> {
+    List<taxes> findByStatus(String status);
+   List <taxes> findByName(String name);
+    List<taxes> findByNameAndIdNotIn(String name,Long id);
+    taxes findFirstByNameContaining(String searchText, Sort sort);
+    List<taxes>  findAllByNameContaining(String searchText, Pageable pageable);
+   taxes findFirstBy(Sort sort);
+   List<taxes> findAllBy(Pageable pageable);
+    List<taxes> findAllByNameContaining(String searchText);
+}

@@ -1,0 +1,23 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Coupons;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+
+public interface CouponsRepository extends JpaRepository<Coupons, Long> {
+    List<Coupons> findByTitleAndIdNotIn(String title,long id);
+    List<Coupons> findByTitle(String title);
+    Coupons findByCodeLike(String code);
+    Coupons findFirstByTitleContaining(String searchText, Sort sort);
+    List<Coupons> findAllByTitleContaining(String searchText, Pageable pageable);
+    Coupons findFirstBy(Sort sort);
+    List<Coupons> findAllBy(Pageable pageable);
+    List<Coupons> findAllByTitleContaining(String searchText);
+
+}

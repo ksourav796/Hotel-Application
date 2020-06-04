@@ -1,0 +1,71 @@
+package com.hyva.hotel.pojo;
+
+import java.sql.Date;
+
+public class RelOrderPricesPojo {
+
+    private Long order_id;
+    private double price;
+    private double additionalPersonPrice;
+    private double totalAmount;
+    private Long additionalPerson;
+    private Long room_id;
+    private Date date;
+
+    public double getAdditionalPersonPrice() {
+        return additionalPersonPrice;
+    }
+
+    public void setAdditionalPersonPrice(double additionalPersonPrice) {
+        this.additionalPersonPrice = additionalPersonPrice;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public Long getAdditionalPerson() {
+        return additionalPerson;
+    }
+
+    public void setAdditionalPerson(Long additionalPerson) {
+        this.additionalPerson = additionalPerson;
+    }
+
+    public Long getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(Long order_id) {
+        this.order_id = order_id;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+
+    public Long getRoom_id() {
+        return room_id;
+    }
+
+    public void setRoom_id(Long room_id) {
+        this.room_id = room_id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+}

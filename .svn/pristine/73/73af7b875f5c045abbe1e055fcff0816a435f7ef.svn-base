@@ -1,0 +1,20 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Amenities;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.security.access.method.P;
+
+import java.util.List;
+
+public interface AmenitiesRepository extends JpaRepository<Amenities, Long> {
+    List<Amenities> findByNameAndAcdyrIdNotIn(String name,Long id);
+    List<Amenities> findByName(String name);
+    Amenities findFirstByNameContaining(String searchText, Sort sort);
+    List<Amenities> findAllByNameContaining(String searchText, Pageable pageable);
+    Amenities findFirstBy(Sort sort);
+    List<Amenities> findAllBy(Pageable pageable);
+    List<Amenities> findAllByNameContaining(String searchText);
+}

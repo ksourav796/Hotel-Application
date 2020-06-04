@@ -1,0 +1,13 @@
+app.controller('guestsreportlistCtrl',
+    function ($scope,$http,Notification,$filter) {
+        $scope.bshimServerURL = "/hotel";
+
+        $scope.getGuestsList=function () {
+        $http.post($scope.bshimServerURL + '/getGuestsList').then(function (response) {
+            var data = response.data.object;
+            $scope.guestsList=data;
+
+        })
+    }
+  $scope.getGuestsList();
+    });

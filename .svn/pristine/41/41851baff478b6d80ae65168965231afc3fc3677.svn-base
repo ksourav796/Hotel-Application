@@ -1,0 +1,20 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Orders;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.Date;
+import java.util.List;
+
+
+public interface OrdersRepository extends CrudRepository<Orders, Long> {
+
+    List<Orders> findByOrderByIdDesc();
+    List<Orders> findAllBy(Date fromdate,Date todate);
+    List<Orders> findAllByBookingstatus(String status);
+    List<Orders> findAllByAdvanceBooking(Boolean booking);
+    List<Orders> findByBookingstatus(String status,Sort sort);
+    List<Orders> findByAdvanceBooking(boolean booking,Sort sort);
+
+}

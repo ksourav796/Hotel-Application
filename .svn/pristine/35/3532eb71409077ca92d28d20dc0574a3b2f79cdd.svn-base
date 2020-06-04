@@ -1,0 +1,246 @@
+<style>
+    .modal-content{
+        width:696px;
+    }
+
+    .modal-footer {
+        padding: 5px;
+        text-align: right;
+        border-top: 1px solid #e5e5e5;
+    }
+    .modal-header {
+        padding: 5px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    fieldset {
+        min-width: 0;
+        padding: 10px;
+        margin: 0;
+        border: 0;
+    }
+    .control-label {
+        position: relative;
+        min-height: 1px;
+        padding-right: 8px;
+        padding-left: 11px;
+    }
+
+    .form-control {
+        display: block;
+        width: 264px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+
+
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row" >
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>Email Template</div>
+            </h2>
+        </div>
+        <div class="row inner_row_bg">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="panel-body" style="height: 65px;">
+                            <div class="col-md-4 col-lg-3 col-sm-5 col-xs-5">
+                                <form class="form-horizontal ng-pristine ng-valid">
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <p class="input-group" style="display: block;">
+                                                <input id="search_grade" name="textinput"  type="text"
+                                                       placeholder="search" ng-model="searchText" class="form-control input-md"
+                                                />
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!--<div class="col-md-9 col-lg-7 col-sm-9 col-xs-7">-->
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-primary hi_btn"  ng-click="addemail()">Add</button>
+
+                                </div>
+                                <!--<div class="col-md-9 col-lg-7 col-sm-9 col-xs-7">-->
+
+                                <!--<div class="form-group">-->
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-primary hi_btn"  ng-click="backconfiguration()">Back</button>
+
+                                </div>
+                                <!--<div class="col-sm-2">-->
+                                <!--<button type="button" class="btn btn-primary hi_btn"  ng-click="feeconfigurationList()">Back</button>-->
+                                <!--</div>-->
+                                <!--<div class="col-sm-1">-->
+                                <!--<input type="checkbox"  id="checkbox" ng-model="checkboxForInActive" ng-init="checkboxForInActive = checkboxForInActive || false"-->
+                                <!--ng-click="getGradeList(searchText,checkboxForInActive)"/>-->
+
+                            </div>
+                            <!--<span style="align-content: right">InActive</span>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="fixed-table-container">
+            <div class="table_wrapfixed-table-container-inner">
+                <div class="header-background"></div>
+                <table data-toggle="table" data-cache="false" data-height="299" class="hi_table table table-hover table-bordered table-striped table-fixed-header">
+                    <thead>
+                    <tr>
+                        <th data-field="cntryname">
+                            <div class="th-inner" align="center">Email</div>
+                        </th>
+                        <th data-field="cntryname">
+                            <div class="th-inner" align="center">Subject</div>
+                        </th>
+                        <th data-field="cntryname">
+                            <div class="th-inner" align="center">Provider</div>
+                        </th>
+                        <th data-field="edit">
+                            <div class="th-inner" align="center">Edit</div>
+                        </th>
+                        <th data-field="edit">
+                            <div class="th-inner" align="center">Delete</div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="parentTable">
+                    <input type="hidden" ng-model="id" value="{{emailtemplateList.id}}"/>
+                    <tr ng-repeat="email in emailtemplateList|filter:searchText">
+                        <td>{{email.email}}</td>
+                        <td>{{email.subject}}</td>
+                        <td>{{email.provider}}</td>
+                        <td><button type="button" class="btn btn-primary hi_btn"  ng-click="EditEmail(email)">Edit</button></td>
+                        <td><button type="button" class="btn btn-primary hi_btn"  ng-click="DeleteEmail(email)">Delete</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div ng-if="searchText!=''&&(emailtemplateList|filter:searchText).length==0">
+                    <div id="notFoundDiv" style="color: red; font-weight: bold">No Records Found</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade Student" tabindex="-1" id="add_new_email" role="dialog" data-backdrop="static"
+             aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content checkout" width="696px">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 id = "email-title" class="modal-title">Add Email Template</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <form class="form-horizontal" name="student">
+                                    <fieldset>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade in active" id="sub_step12">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <label class="col-md-6 control-label" for="" >Email<span style="color:red;">*</span></label>
+                                                            <div class="col-md-4">
+                                                                <input id="email" name="email"  maxlength="32"
+                                                                       type="text" placeholder="email"
+                                                                       ng-model="email"
+                                                                       ng-pattern="word"
+                                                                       no-special-char=""
+                                                                       class="form-control input-md" required>
+                                                                <p class="error" ng-show="mail.email.$error.pattern">Enter Valid MailID</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="form-group">-->
+                                                        <!--<div class="row">-->
+                                                            <!--<label class="col-md-6 control-label" for="">Password</label>-->
+                                                            <!--<div class="col-md-4">-->
+                                                                <!--<input type="text" name="passward" ng-model="passwrd" value="" class="form-control">-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <label class="col-md-6 control-label" for="" >Email Templete Subject</label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" name="subject" ng-model="template" maxlength="50"
+                                                                       value="" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <label class="col-md-6 control-label" for="">Email Provider</label>
+                                                            <div class="col-md-4">
+                                                                <select name="provider" ng-model="emailprovider" class="form-control" required="">
+                                                                    <option value="">Select</option>
+                                                                    <option value="gmail">Gmail</option>
+                                                                    <option value="other">Other Email</option>
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-6 col-sm-6 control-label" for="">Status</label>
+                                                        <div class="col-md-6" style="position:relative;">
+                                                            <select name="Status" id="Status" ng-model="statusText" class="form-control input-md" required>
+                                                                <option value="Active">Active</option>
+                                                                <option value="InActive">InActive</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary"  id="submit" ng-click="saveemail()">Save</button>
+                        <button type="button" class="btn btn-primary" ng-click="removeFloors()" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

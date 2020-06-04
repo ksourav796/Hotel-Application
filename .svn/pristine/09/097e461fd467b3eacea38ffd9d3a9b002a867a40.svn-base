@@ -1,0 +1,11 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Email_Templete;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+public interface EmailTemplateRepository extends CrudRepository<Email_Templete, Long> {
+    List<Email_Templete> findByEmailAndIdNotIn(String email, Long id);
+    List<Email_Templete> findByEmail(String email);
+}

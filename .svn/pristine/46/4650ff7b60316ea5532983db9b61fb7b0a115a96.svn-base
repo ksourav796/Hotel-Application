@@ -1,0 +1,88 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.sql.Date;
+
+@Entity
+@Table(name = "payment")
+public class Payment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long id;
+    private String invoice;
+    private double amount;
+    private Date added_date;
+    private String is_main_amount;
+    @OneToOne
+    private Orders order_id;
+    private Date date_time;
+    private String payment_method;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(String invoice) {
+        this.invoice = invoice;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public Date getAdded_date() {
+        return added_date;
+    }
+
+    public void setAdded_date(Date added_date) {
+        this.added_date = added_date;
+    }
+
+    public String getIs_main_amount() {
+        return is_main_amount;
+    }
+
+    public void setIs_main_amount(String is_main_amount) {
+        this.is_main_amount = is_main_amount;
+    }
+
+    public Orders getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(Orders order_id) {
+        this.order_id = order_id;
+    }
+
+    public Date getDate_time() {
+        return date_time;
+    }
+
+    public void setDate_time(Date date_time) {
+        this.date_time = date_time;
+    }
+
+    public String getPayment_method() {
+        return payment_method;
+    }
+
+    public void setPayment_method(String payment_method) {
+        this.payment_method = payment_method;
+    }
+}

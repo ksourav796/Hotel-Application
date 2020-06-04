@@ -1,0 +1,168 @@
+package com.hyva.hotel.pojo;
+
+import java.sql.Date;
+
+public class CouponsPojo {
+    private Long id;
+    private String title;
+    private String description;
+    private Date date_from;
+    private Date date_to;
+    private String image;
+    private String code;
+    private String value;
+    private String include_user;
+    private String exclude_user;
+    private String include_room_type;
+    private String exclude_room_type;
+    private String paid_services;
+    private String type;
+    private Long limit_per_user;
+    private Long limit_per_coupon;
+    private double min_amount;
+    private double max_amount;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getDate_from() {
+        return date_from;
+    }
+
+    public void setDate_from(Date date_from) {
+        this.date_from = date_from;
+    }
+
+    public Date getDate_to() {
+        return date_to;
+    }
+
+    public void setDate_to(Date date_to) {
+        this.date_to = date_to;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getInclude_user() {
+        return include_user;
+    }
+
+    public void setInclude_user(String include_user) {
+        this.include_user = include_user;
+    }
+
+    public String getExclude_user() {
+        return exclude_user;
+    }
+
+    public void setExclude_user(String exclude_user) {
+        this.exclude_user = exclude_user;
+    }
+
+    public String getInclude_room_type() {
+        return include_room_type;
+    }
+
+    public void setInclude_room_type(String include_room_type) {
+        this.include_room_type = include_room_type;
+    }
+
+    public String getExclude_room_type() {
+        return exclude_room_type;
+    }
+
+    public void setExclude_room_type(String exclude_room_type) {
+        this.exclude_room_type = exclude_room_type;
+    }
+
+    public String getPaid_services() {
+        return paid_services;
+    }
+
+    public void setPaid_services(String paid_services) {
+        this.paid_services = paid_services;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Long getLimit_per_user() {
+        return limit_per_user;
+    }
+
+    public void setLimit_per_user(Long limit_per_user) {
+        this.limit_per_user = limit_per_user;
+    }
+
+    public Long getLimit_per_coupon() {
+        return limit_per_coupon;
+    }
+
+    public void setLimit_per_coupon(Long limit_per_coupon) {
+        this.limit_per_coupon = limit_per_coupon;
+    }
+
+    public double getMin_amount() {
+        return min_amount;
+    }
+
+    public void setMin_amount(double min_amount) {
+        this.min_amount = min_amount;
+    }
+
+    public double getMax_amount() {
+        return max_amount;
+    }
+
+    public void setMax_amount(double max_amount) {
+        this.max_amount = max_amount;
+    }
+}

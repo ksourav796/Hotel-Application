@@ -1,0 +1,1058 @@
+<style>
+    .form-horizontal .control-label {
+        padding-top: 7px;
+        margin-bottom: 0;
+        text-align: left !important;
+        padding: 10px 0 0 10px !important;
+    }
+    .modal-footer .btn+.btn {
+        margin-bottom: 0;
+        margin-left: 4px !important;
+        margin-right: 0px !important;
+    }
+    .modal-title {
+        margin: 0;
+        line-height: -31.571429 !important;
+    }
+    .form-horizontal .form-group {
+        margin-right: -54px;
+        margin-left: 5px;
+    }
+    .form-group {
+        margin-bottom: 5px;
+    }
+    .modal-header {
+        padding: 5px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    .modal-footer {
+        padding: 23px;
+        text-align: right;
+        border-top: 1px solid #e5e5e5;
+    }
+    label {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+        font-weight: 100;
+    }
+    .btn btn-primary back{
+        padding: 5px;
+    }
+
+</style>
+<div class="container-fluid">
+    <div class="container cus_main_row" >
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>CheckIn</div>
+            </h2>
+        </div>
+        <div class="row inner_row_bg">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="panel-body" style="height: 65px;">
+                            <div class="col-md-4 col-lg-3 col-sm-5 col-xs-5">
+                                <form class="form-horizontal ng-pristine ng-valid">
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <p class="input-group" style="display: block;">
+                                                <input id="search_grade" name="textinput" type="text"
+                                                       placeholder="search" ng-model="searchText"
+                                                       class="form-control input-md"
+                                                />
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-primary hi_btn" ng-click="newCheckIn()">Add
+                                    </button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="fixed-table-container">
+                    <div class="table_wrapfixed-table-container-inner">
+                        <div class="header-background"></div>
+                        <table data-toggle="table" data-cache="false" data-height="299"
+                               class="hi_table table table-hover table-bordered table-striped table-fixed-header">
+                            <thead>
+                            <tr>
+                                <th data-field="cntryname">
+                                    <div class="th-inner" align="center">Booking Number</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Guest Name</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Room Type</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Room No</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Check In</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Check Out</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Booking Date</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">CheckIn Status</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Payment Status</div>
+                                </th>
+
+
+                            </tr>
+                            </thead>
+                            <tbody id="parentTable">
+                            <input type="hidden" ng-model="id" value="{{checkinList.id}}"/>
+                            <tr ng-repeat="checkin in checkinList|filter:searchText" ng-click="newcheckout(checkin.id,checkin.payment_status)">
+                                <td hidden></td>
+                                <!--<td style="width: 20%!important;word-break: break-word"></td>-->
+                                <td>{{checkin.order_no}}</td>
+                                <td style="word-break:break-all;">{{checkin.guestId.firstname}}</td>
+                                <td>{{checkin.roomTypeName}}</td>
+                                <td>{{checkin.room_no}}</td>
+                                <td>{{checkin.check_in |date:'dd/MM/yyyy hh:mm'}}</td>
+                                <td>{{checkin.check_out|date:'dd/MM/yyyy hh:mm'}}</td>
+                                <td>{{checkin.ordered_on |date:'dd/MM/yyyy hh:mm'}}</td>
+                                <td>{{checkin.payment_status}}</td>
+                                <td>{{checkin.payment_status}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div ng-if="searchText!=''&&(checkinList|filter:searchText).length==0">
+                            <div id="notFoundDiv" style="color: red; font-weight: bold">No Records Found</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade Student" tabindex="-1" id="add_CheckIn_modal" role="dialog"
+                     data-backdrop="static"
+                     aria-labelledby="mySmallModalLabel" style="overflow: auto">
+                    <div class="modal-dialog modal-lg" style="width: 1000px !important;">
+                        <div class="modal-content checkout">
+                            <div class="modal-header">
+                                <button type="button" class="close" ng-click="removeStudentDetails()"
+                                        data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                                <h4 id="student-title" class="modal-title" style="color:black;" align="center">CheckIn
+                                    form</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <form class="form-horizontal" name="checkin">
+                                            <fieldset>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane fade in active" id="sub_step14">
+                                                        <h4 class="modal-title" style="color:black;" align="left">Make  reservation</h4>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Select Guest<span style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md"
+                                                                                ng-model="guests" id="guestsId"
+                                                                                ng-options="guests.id as guests.firstname for guests in guestsList"
+                                                                                class="form-control input-md">
+                                                                            <option value="" selected>Select Guest</option>
+                                                                        </select>
+                                                                    </strong>
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <button type="button" class="btn btn-primary hi_btn" ng-click="addguests()">+</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Select Adults<span style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md" ng-change="getRoomTypeObj()"
+                                                                                ng-model="adults" id="adultsId">
+                                                                            <option value="" selected>Select Adults</option>
+                                                                            <option value="1">1</option>
+                                                                            <option value="2">2</option>
+                                                                            <option value="3">3</option>
+                                                                            <option value="4">4</option>
+                                                                            <option value="5">5</option>
+                                                                            <option value="6">6</option>
+                                                                            <option value="7">7</option>
+                                                                            <option value="8">8</option>
+                                                                            <option value="9">9</option>
+                                                                            <option value="10">10</option>
+                                                                        </select>
+                                                                    </strong>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Kids</label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md" ng-change="getRoomTypeObj()"
+                                                                                ng-model="kids" id="kids">
+                                                                            <option value="" selected>Select kids</option>
+                                                                            <option value="0">0</option>
+                                                                            <option value="1">1</option>
+                                                                            <option value="2">2</option>
+                                                                            <option value="3">3</option>
+                                                                            <option value="4">4</option>
+                                                                            <option value="5">5</option>
+                                                                            <option value="6">6</option>
+                                                                            <option value="7">7</option>
+                                                                            <option value="8">8</option>
+                                                                            <option value="9">9</option>
+                                                                            <option value="10">10</option>
+                                                                        </select>
+                                                                    </strong>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">CheckIn</label>
+                                                                <div class="col-md-6" style="position:relative;">
+                                                                    <div class="col-md-4">
+                                                                        <input id="checkout" type="text" class="form-control" style="margin-left: -16px;width: 188px"  ng-model="checkIn" ng-change="getRoomTypeObj()"
+                                                                               uib-datepicker-popup="{{'MM/dd/yyyy'}}"  is-open="popup1.opened"
+                                                                               datepicker-options="dateOptions" readonly="readonly" ng-required="true"
+                                                                               close-text="Close" alt-input-formats="altInputFormats"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">CheckOut</label>
+                                                                <div class="col-md-6" style="position:relative;">
+                                                                    <div class="col-md-4">
+                                                                        <p class="input-group margin_0px">
+                                                                            <input id="checkout" type="text" class="form-control" style="margin-left: -16px;width: 188px" ng-change="getRoomTypeObj()" ng-model="checkOut"
+                                                                                   uib-datepicker-popup="{{format}}"  is-open="popup2.opened"
+                                                                                   datepicker-options="dateOptions" readonly="readonly" ng-required="true"
+                                                                                   close-text="Close" alt-input-formats="altInputFormats"/>
+                                                                            <span class="input-group-btn">
+                                                                   <button type="button" class="btn btn-default" ng-click="openDate2()"><i
+                                                                           class="glyphicon glyphicon-calendar"></i></button>
+                                                                    </span>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">CheckIn Time</label>
+                                                                <div class="col-md-6" style="position:relative;">
+                                                                    <strong><input id="checkintime" name="checkintime"
+                                                                                   type="time"
+                                                                                   ng-model="checkInTime" ng-change="setCheckinTime()"
+                                                                                   class="form-control input-md" required></strong>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">CheckOut Time</label>
+                                                                <div class="col-md-6" style="position:relative;">
+                                                                    <strong><input id="checkouttime" name="checkouttime"
+                                                                                   type="time"
+                                                                                   ng-model="checkOutTime" ng-change="setCheckoutTime()"
+                                                                                   class="form-control input-md" required></strong>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Room Type<span
+                                                                        style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md"
+                                                                                ng-model="roomTypeId" id="roomTypeId"
+                                                                                ng-options="roomType.id as roomType.title for roomType in roomtypesList"
+                                                                                ng-change="getRoomBasedOnRoomType(roomTypeId)">
+                                                                            <option value="" selected>Room Type</option>
+                                                                        </select>
+                                                                    </strong>
+                                                                </div>
+
+                                                                <div class="col-sm-2">
+                                                                    <button type="button" class="btn btn-primary hi_btn"
+                                                                            ng-click="addroomtypes()">+
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Select Room<span
+                                                                        style="color:red;"></span></label>
+                                                                <div class="col-md-6">
+                                                                    <strong>
+                                                                        <select class="form-control input-md"
+                                                                                ng-model="roomId" id="roomId" ng-change="im ge();getRoomTypeObj()"
+                                                                                ng-options="room.roomno as room.roomno for room in roomsList">
+                                                                            <option value="">Select Room</option>
+                                                                        </select>
+                                                                    </strong>
+
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-md-12" ng-show="operation=='checkInShow'">
+                                                                <table class="table" border="1">
+                                                                    <tr>
+                                                                        <th class="success">Number Of Rooms</th>
+                                                                        <td class="table-active">1</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th class="success">Adults</th>
+                                                                        <td class="table-active">{{adults}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th class="success">Kids</th>
+                                                                        <td class="table-active">{{kids}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th class="success">Nights</th>
+                                                                        <td class="table-active">{{nights}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th class="success">Price Per Night</th>
+                                                                        <td class="table-active">
+                                                                            <table width="100%" border="0">
+                                                                                <tr>
+                                                                                    <th><h6>#</h6></th>
+                                                                                    <th><h6>Date</h6></th>
+                                                                                    <th align="right"><h6>Price</h6></th>
+                                                                                    <th align="right"
+                                                                                        ng-if="pricePerNight.extraPerson > 0">
+                                                                                        <h6>Additional Price</h6></th>
+                                                                                    <!--<th align="right"-->
+                                                                                    <!--ng-if="pricePerNight.extraPerson > 0">-->
+                                                                                    <!--<h6>Total</h6></th>-->
+                                                                                    <th align="right"><h6>Number of
+                                                                                        Rooms</h6></th>
+                                                                                    <th><h6>Total Amount</h6></th>
+
+                                                                                </tr>
+                                                                                <tr ng-repeat="pricePerNight in pricePerNightList">
+                                                                                    <td>{{$index+1}}</td>
+                                                                                    <td>
+                                                                                        {{pricePerNight.date|date:'MM/dd/yyyy'}}
+                                                                                    </td>
+                                                                                    <td>{{pricePerNight.price}}</td>
+                                                                                    <td>
+                                                                                        {{pricePerNight.extraPerson}}*{{pricePerNight.additionalPersonPrice}}={{pricePerNight.totalExtraPersonAmount}}
+                                                                                    </td>
+                                                                                    <!--<td ng-if="pricePerNight.extraPerson > 0">-->
+                                                                                    <!--{{pricePerNight.totalAmount}}-->
+                                                                                    <!--</td>-->
+                                                                                    <td>1</td>
+                                                                                    <td>{{pricePerNight.totalAmount}}</td>
+
+                                                                                </tr>
+                                                                                <tr ng-repeat="totalPricePerNight in totalPricePerNightList">
+                                                                                    <td></td>
+                                                                                    <td>Total Price</td>
+                                                                                    <td>{{totalPricePerNight.price}}</td>
+                                                                                    <td ng-if="totalPricePerNight.totalExtraPersonAmount > 0">
+                                                                                        {{totalPricePerNight.totalExtraPersonAmount}}
+                                                                                    </td>
+                                                                                    <td></td>
+                                                                                    <td>{{1}}</td>
+                                                                                    <td ng-if="totalPricePerNight.totalAmount > 0">
+                                                                                        {{totalPricePerNight.totalAmount}}
+                                                                                    </td>
+                                                                                    <!--<td>{{totalPricePerNight.totalAmount}}</td>-->
+                                                                                </tr>
+                                                                            </table>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th class="success">Amount</th>
+                                                                        <td class="table-active">{{total+couponamt}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th class="success">Taxes</th>
+                                                                        <td class="table-active">
+
+                                                                            <table width="100%">
+                                                                                <tr ng-repeat="relOrderTaxes in relOrderTaxesPojoList">
+                                                                                    <td>{{$index+1}}</td>
+                                                                                    <td>{{relOrderTaxes.name}}</td>
+                                                                                    <td>{{relOrderTaxes.rate}}%</td>
+                                                                                    <td>={{relOrderTaxes.total}}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td colspan="3" align="left"><b>Total
+                                                                                        Tax</b></td>
+                                                                                    <td>={{totalTax}}</b></td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th class="success">Paid Services</th>
+                                                                        <td class="table-active">
+                                                                            <table width="100%">
+                                                                                <tr ng-repeat="paidServices in paidServiceList">
+                                                                                    <td>{{$index+1}}</td>
+                                                                                    <td>{{paidServices.title}}</td>
+                                                                                    <td><input type="checkbox" id="checkbox"
+                                                                                               ng-model="cbx"
+                                                                                               ng-click="grandTotalCalculation(paidServices,cbx,$index)">
+                                                                                    </td>
+                                                                                    <td>{{paidServices.price}}</td>
+                                                                                    <td>{{paidServices.price_type}}</td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th class="success">Total Amount</th>
+                                                                        <th class="table-active" id="grand_total">
+                                                                            {{grandTotal+couponamt}}
+                                                                        </th>
+                                                                    </tr>
+                                                                    <!--<tr class="hide">-->
+                                                                    <th class="success">coupon</th>
+                                                                    <th class="table-active">
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td><input type="coupon" name="coupon" id="coupon"
+                                                                                           ng-model="couponvalue"   placeholder='coupon' autocomplete="off"
+                                                                                           class="form-control"
+                                                                                           style="width:80%"/></td>
+                                                                                <td ng-hide="couponamt>0">
+                                                                                    <button type="button"
+                                                                                            name="coupon_apply"
+                                                                                            id="coupon_apply" ng-click="calculateCouponAmount()"
+                                                                                            value="coupon_apply"
+                                                                                            class="btn btn-success">Apply
+                                                                                    </button>
+                                                                                </td>
+                                                                                <td ng-hide="couponamt==0">
+                                                                                    <button type="button"
+                                                                                            name="coupon_apply"
+                                                                                            id="coupon_apply" ng-click="removeCoupan()"
+                                                                                            value="coupon_apply"
+                                                                                            class="btn btn-success">Remove
+                                                                                    </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                        <tr>
+                                                                            <th class="success">Coupon Amount</th>
+                                                                            <th class="table-active" id="couponamt">
+                                                                                {{couponamt}}
+                                                                            </th>
+                                                                        </tr>
+
+                                                                    </th>
+                                                                    <tr>
+                                                                        <th class="success">Total Amount After Discount</th>
+                                                                        <th class="table-active" id="totalamtaftrdisct">
+                                                                            {{grandTotal}}
+                                                                        </th>
+                                                                    </tr>
+                                                                </table>
+
+
+
+                                                                <!--</tr>-->
+
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer" style="border:none !important;">
+                                        <!--<a class="btn btn-primary hi_btn next" id="next" href="javascript:void(0)" ng-click="next_wizardEdit(acdYearId,gradeId);" data-toggle="tab" data-step="2" style="color:#D5ECFF">Next</a>-->
+                                        <!--<a class="btn btn-primary back" id="back"  href="javascript:void(0)" ng-click="back_wizardEdit()" data-toggle="tab" data-step="2">Back</a>-->
+
+                                        <button type="submit" class="btn btn-primary hi_btn" data-toggle="modal"
+                                                 ng-click="saveOrder()">Save
+                                        </button>
+                                        <button type="button" class="btn btn-primary hi_btn" data-dismiss="modal"
+                                                ng-click="reloadPage()"> Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade Student" tabindex="-1" id="add_new_CheckOut_modal" role="dialog"
+                     data-backdrop="static"
+                     aria-labelledby="mySmallModalLabel" style="overflow: auto">
+                    <div class="modal-dialog modal-lg" style="width: 1000px !important;">
+                        <div class="modal-content checkout">
+                            <div class="modal-header">
+                                <button type="button" class="close" ng-click="removeStudentDetails()"
+                                        data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                                <h4 id="student-title" class="modal-title" style="color:black;" align="center">CheckOut form</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <!--<button class="btn btn-success" data-toggle="modal" ng-click="addpayment()" data-target="#myModal"><i class="fa fa-insert"></i>Add Payment </button>-->
+                                        <button class="btn btn-success" data-toggle="modal" ng-click="additem()"
+                                                data-target="#myModal"><i class="fa fa-insert"></i>Add Item</button>
+                                        <button class="btn btn-success" data-toggle="modal" ng-click="adddiscount()"
+                                                data-target="#myModal"><i class="fa fa-insert"></i>Discount</button>
+                                        <button class="btn btn-success" data-toggle="modal" ng-click="addpayment()"
+                                                data-target="#myModal"><i class="fa fa-insert"></i>Add Payment</button>
+                                        <button class="btn btn-success" data-toggle="modal" ng-click="addnewcheckout()"
+                                                data-target="#myModal"><i class="fa fa-insert"></i>Check Out</button>
+                                        <div class="row invoice-info">
+                                            <div class="col-sm-4 invoice-col">
+                                                <address>
+                                                    <strong></strong>
+                                                </address>
+                                            </div><!-- /.col -->
+                                            <div class="col-sm-4 invoice-col">
+                                                <address>
+                                                    <strong></strong>
+                                                </address>
+                                            </div><!-- /.col -->
+
+
+                                            <div class="col-sm-4 invoice-col">
+                                                <table width="90%">
+                                                    <tr>
+                                                        <th>Guest Details</th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.guestId.firstname}}
+                                                            {{CheckOutOrderObj.guestId.lastname}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Company Name</th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.guestId.companyname}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><b>Phone</b></th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.guestId.mobile}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><b>Email</b></th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.guestId.email}}</td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+
+                                            <div class="col-sm-4 invoice-col">
+                                                <table width="90%">
+                                                    <tr>
+                                                        <th>Room</th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.room_no}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Booking Number</th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.order_no}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Check In</th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.check_in|date:'dd/MM/yyyy hh:mm'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Check Out</th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.check_out|date:'dd/MM/yyyy hh:mm'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>payment Status</th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.payment_status}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Booking Status</th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.bookingstatus}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Adults</th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.adults}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Kids</th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.kids}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Nights</th>
+                                                        <th>:</th>
+                                                        <td>{{CheckOutOrderObj.nights}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div><!-- /.col -->
+                                        </div><!-- /.row -->
+                                    </div>
+                                    <div class="row" id="receiptPritableArea">
+                                        <div class="col-xs-12 table-responsive">
+                                            <table class="col-xs-12 table table-responsive">
+                                                <thead>
+                                                <th>#</th>
+                                                <th>Date</th>
+                                                <th>Price</th>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="Checkout in CheckOutRelOrderPriceList">
+                                                    <td>{{$index+1}}</td>
+                                                    <td>{{Checkout.date}}</td>
+                                                    <td>{{Checkout.price}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Coupan Amount</td>
+                                                    <td></td>
+                                                    <td>{{CheckOutOrderObj.coupon_discount}}</td>
+                                                </tr>
+                                                <tr ng-show="CheckOutOrderObj.discount=='DiscountInRoomRent'">
+                                                    <td >Discount price In Room Rent</td>
+                                                    <td></td>
+                                                    <td>{{CheckOutOrderObj.discountAmt}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Total price</td>
+                                                    <td></td>
+                                                    <td>{{CheckOutOrderObj.amount-CheckOutOrderObj.itemtotal}}</td>
+                                                </tr>
+                                                </tbody>
+                                                <thead>
+                                                <th>Tax Name</th>
+                                                <th>Tax rate</th>
+                                                <th>Tax amount</th>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="taxes in CheckOutRelOrderTaxesList">
+                                                    <td>{{taxes.name}}</td>
+                                                    <td>{{taxes.rate}}</td>
+                                                    <td>{{taxes.total}}</td>
+                                                </tr>
+                                                <td>Total tax</td>
+                                                <td></td>
+                                                <td>{{CheckOutOrderObj.taxamount}}</td>
+                                                </tbody>
+                                                <thead>
+                                                <th>service id</th>
+                                                <th>Service Title</th>
+                                                <th>Service amount</th>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="service in CheckOutRelOrderServicesList">
+                                                    <td>{{$index+1}}</td>
+                                                    <td>{{service.title}}</td>
+                                                    <td>{{service.price}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Total service</td>
+                                                    <td></td>
+                                                    <td>{{CheckOutOrderObj.paid_service_amount}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Item</td>
+                                                    <td></td>
+                                                    <td>{{CheckOutOrderObj.itemtotal}}</td>
+                                                </tr>
+                                                </tbody>
+                                                <tr ng-show="CheckOutOrderObj.discount=='DiscountInTotal'">
+                                                    <td >Discount price In Total Amount</td>
+                                                    <td></td>
+                                                    <td>{{CheckOutOrderObj.discountAmt}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Total Amount</td>
+                                                    <td></td>
+                                                    <td>{{CheckOutOrderObj.totalamount}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Advance Payment</td>
+                                                    <td></td>
+                                                    <td>{{CheckOutOrderObj.advance_amount}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pending Balance</td>
+                                                    <td></td>
+                                                    <td>{{CheckOutOrderObj.totalamount-CheckOutOrderObj.advance_amount}}</td>
+                                                </tr>
+                                            </table>
+                                        </div><!-- /.col -->
+                                    </div><!-- /.row -->
+                                    <div class="modal-footer" style="border:none !important;">
+                                        <!--<a class="btn btn-primary hi_btn next" id="next" href="javascript:void(0)" ng-click="next_wizardEdit(acdYearId,gradeId);" data-toggle="tab" data-step="2" style="color:#D5ECFF">Next</a>-->
+                                        <!--<a class="btn btn-primary back" id="back"  href="javascript:void(0)" ng-click="back_wizardEdit()" data-toggle="tab" data-step="2">Back</a>-->
+
+                                        <!--<button type="button" class="btn-primary hi-btn" data-dismiss="modal" onclick="myFunction()">Print</button>-->
+                                        <button type="submit" id="print_invoice" ng-click="printDivA4('receiptPritableArea')"
+                                                class="btn btn-primary">Print
+                                        </button>
+                                        <button type="button" class="btn btn-primary hi_btn" data-dismiss="modal"
+                                                ng-click="reloadPage()"> Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade addCustomer" tabindex="-1" id="checkout_modal" role="dialog" data-backdrop="static"
+             aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content checkout">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 id="brand-title" class="modal-title">Add Payment</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <form class="form-horizontal">
+                                    <fieldset>
+                                        <input type="hidden" ng-model="orderId">
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-sm-4 control-label">Order Number</label>
+                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                <input id="Order Number" name="Order Number"
+                                                       type="text" placeholder="Order Number"
+                                                       ng-model="ordernumber" readonly
+                                                       class="form-control input-md" maxlength="20">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-sm-4 control-label">Added Date</label>
+                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                <input id="Added Date" name="Added Date "
+                                                       type="text" placeholder="Added Date"
+                                                       ng-model="addeddate|date:'dd/MM/yyyy hh:mm'"
+                                                       class="form-control input-md">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-sm-4 control-label">Payment Method</label>
+                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                <select name="Payment   Method" id="PaymentMethod"
+                                                        ng-model="paymentmethod" class="form-control input-md">
+                                                    <option value="">Select</option>
+                                                    <option value="Cash">Cash</option>
+                                                    <option value="Cheque">Cheque</option>
+                                                    <option value="Cheque">Card</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-sm-4 control-label">Amount</label>
+                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                <input id="Amount" name="Amount "
+                                                       type="text" placeholder="Amount"
+                                                       ng-model="amount" readonly
+                                                       class="form-control input-md" maxlength="10">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" id="submit"
+                                                ng-disabled="isDisabled"
+                                                ng-click="savePayment()">Save
+                                        </button>
+                                        <button type="button" class="btn btn-primary" ng-click="removeSoapDetails()"
+                                                data-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade addCustomer" tabindex="-1" id="item_modal" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="brand-title" class="modal-title">Add Item</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <input type="hidden" ng-model="orderId">
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Order Number</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Order Number" name="Order Number"
+                                               type="text" placeholder="Order Number"
+                                               ng-model="ordernumber" readonly
+                                               class="form-control input-md" maxlength="20">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Item Name</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="itemname" name="itemname"
+                                               type="text" placeholder="Item Name"
+                                               ng-model="itemname" alpha-with-space
+                                               class="form-control input-md" maxlength="20">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Item Price </label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Item Price" name="Item Price"
+                                               type="text" placeholder="Item Price"
+                                               ng-model="itemprice" num-with-out-space
+                                               class="form-control input-md" maxlength="5">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" for="">RoomNo</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Room_No" name="Room_No"
+                                               type="text" placeholder="RoomNo" readonly
+                                               ng-model="roomno"
+                                               class="form-control input-md" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Quantity</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Quantity" name="Quantity "
+                                               type="text" placeholder="Quantity"
+                                               ng-model="quantity" num-with-out-space
+                                               class="form-control input-md" maxlength="5">
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" id="submit"
+                                        ng-disabled="isDisabled"
+                                        ng-click="saveItem()">Save
+                                </button>
+                                <button type="button" class="btn btn-primary" ng-click="removeSoapDetails()"
+                                        data-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="modal fade addCustomer" tabindex="-1" id="discount_modal" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="brand-title" class="modal-title">Add Discount</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <input type="hidden" ng-model="orderId">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="">Select Category<span style="color:red;"></span></label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <select name="StatusText" id="status_country" ng-disabled="disabled" ng-model="discountType" ng-change="adddiscountBasedOnDiscountType()"
+                                                class="form-control input-md">
+                                            <option value="DiscountInRoomRent">Discount In RoomRent</option>
+                                            <option value="DiscountInTotal">Discount In Total</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Total Amount</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Amount" name="Amount "
+                                               type="text" placeholder="Amount"
+                                               ng-model="totalAmt" readonly
+                                               class="form-control input-md" maxlength="5">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Discount Amount</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="disctamount" name="discountamount" ng-change="calDiscountAmt()"
+                                               type="text"
+                                               ng-model="discountAmt" num-with-space
+                                               class="form-control input-md" maxlength="5">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Remaining Amount</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="remainingamt" name="remainingamt "
+                                               type="text" readonly
+                                               ng-model="remainingAmt"
+                                               class="form-control input-md" maxlength="5">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" for=""> Description</label>
+                                    <div class="col-md-6" style="position:relative;">
+                                        <input id="description" name="description"  maxlength="150"
+                                               type="text" placeholder="Description"
+                                               ng-model="description"
+                                               class="form-control input-md" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="">Date</label>
+                                    <div class="col-md-6" style="position:relative;">
+                                        <p class="input-group">
+                                            <strong>
+                                                <input type="text" class="form-control" readonly
+                                                       uib-datepicker-popup="{{format}}"
+                                                       ng-model="date" is-open="popup4.opened"
+                                                       datepicker-options="dateOptions" ng-required="true"
+                                                       close-text="Close" alt-input-formats="altInputFormats" />
+                                            </strong>
+
+                                            <span class="input-group-btn">
+                                                                            <button type="button" class="btn btn-default" ng-click="openDate4()">
+                                                                             <i class="glyphicon glyphicon-calendar"></i></button>
+                                                                        </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" id="submit"
+                                        ng-disabled="isDisabled"
+                                        ng-click="saveDiscount()">Save
+                                </button>
+                                <button type="button" class="btn btn-primary" ng-click="removeSoapDetails()"
+                                        data-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="modal fade addCustomer" tabindex="-1" id="payment_modal" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="brand-title" class="modal-title">Add Payment</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <input type="hidden" ng-model="orderId">
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Order Number</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Order Number" name="Order Number"
+                                               type="text" placeholder="Order Number"
+                                               ng-model="ordernumber" readonly
+                                               class="form-control input-md">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="">Added Date<span
+                                            style="color:red;"></span></label>
+                                    <div class="col-md-6" style="position:relative;">
+                                        <input id="addeddate" name="addeddate" type="text"
+                                               ng-model="addeddate" readonly
+                                               class="form-control input-md" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Payment Method</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <select name="PaymentMethod" id="PaymentMethod"
+                                                ng-model="paymentmethod" class="form-control input-md">
+                                            <option value="">Select</option>
+                                            <option value="Cash">Cash</option>
+                                            <option value="Cheque">Cheque</option>
+                                            <option value="Card">Card</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">Amount</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="Amount" name="Amount "
+                                               type="text" placeholder="Amount" num-with-out-space
+                                               ng-model="advanceAmount"
+                                               class="form-control input-md" maxlength="8">
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" id="submit"
+                                        ng-disabled="isDisabled"
+                                        ng-click="saveAdvancePayment()">Save
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                        data-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<add-new-modal-ctrl></add-new-modal-ctrl>
+            </div>
+        </div>
+    </div>
+</div>

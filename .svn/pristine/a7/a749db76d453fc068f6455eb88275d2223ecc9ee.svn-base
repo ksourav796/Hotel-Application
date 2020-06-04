@@ -1,0 +1,217 @@
+
+<html ng-app="myApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Hotel HYVA Residency</title>
+<link href='./css/style.css' rel="stylesheet" type="text/css" />
+<link href='./css/css/font-awesome.css' rel="stylesheet" type="text/css" />
+	<link href='./css/vendors/bootstrap-datetimepicker.min.css' rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href= './css/css/angular-ui-notification.min.css' type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+	<link href="css/login.css" rel="stylesheet" type="text/css" />
+	<link href='./css/vendors/bootstrap.min.css' rel="stylesheet" type="text/css" />
+<!--<title>HiAccounts</title>-->
+	</head>
+<body>
+<div class="generic-container">
+	<h2>Hotel HYVA Residency</h2>
+
+		<ul class="nav navbar-nav navbar-right hidden-xs">
+			<li>
+				<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false" tabindex="-1">
+					<span class="white">{{userName}}</span>
+					<i class="fa fa-angle-down white" style="font-size: inherit;"></i>
+				</a>
+
+				<ul>
+					<li><a href="#!/login" id="logoutButton" style="font-size: 15px;color: black"  tabindex="-1"><i class="fa fa-sign-out pull-right"></i> LogOut</a></li>
+				</ul>
+			</li>
+		</ul>
+
+
+
+	<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+		<div id="nav_side_menu" class="menu_section">
+			<ul class="nav side-menu">
+				<li id="bookings">
+					<a id="bookingsLink" href="#!/bookings"  tabindex="-1"> <i class="fa fa-list-alt" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i><span>  Bookings  </span></a>
+				</li>
+				<li id="checkIn">
+					<a id="checkInLink" href="#!/checkIn"  tabindex="-1"> <i class="fa fa-list-alt" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i><span>  CheckIn  </span></a>
+				</li>
+				<li id="multicheckIn">
+					<a id="multicheckInLink" href="#!/multicheckIn"  tabindex="-1"> <i class="fa fa-list-alt" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i><span>  Multi CheckIn  </span></a>
+				</li>
+				<li id="guests">
+					<a id="guestsLink" href="#!/guests"  tabindex="-1"> <i class=" fa fa-users" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i><span> Guests   </span></a>
+				</li>
+				<li id="availabilitycalender">
+					<a id="availabilitycalenderLink" href="#!/availabilitycalender"  tabindex="-1"> <i class="fa fa-calendar" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i><span> Availability Calender </span></a>
+				</li>
+				<li id="configuration">
+					<a id="configurationLink" href="#!/configuration"  tabindex="-1"> <i class="fa fa-cogs" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i><span> Hotel Configuration  </span></a>
+				</li>
+				<li id="hrmanagement">
+					<a  tabindex="-1" id="hrmanagementLink">
+						<i class="fa fa-tags" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Hr Management  </span>
+						<span class="fa fa-caret-down"></span>
+					</a>
+					<ul id="departments" class="nav child_menu" >
+						<li><a id="departmentsLink" href="#!/departments"  tabindex="-1" class="ng-scope" style=""><i class="fa fa-credit-card" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span>Department </span></a></li>
+						<li><a id="designationsLink" href="#!/designations"  tabindex="-1" ><i class="fa fa-book" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Designation </span></a></li>
+						<li><a id="employeesLink" href="#!/employees"  tabindex="-1" ><i class="fa fa-book" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Employees  </span></a></li>
+					</ul>
+				</li>
+
+
+
+
+
+				<li id="adminstrative">
+					<a  tabindex="-1" id="adminstrativeLink">
+						<i class="fa fa-tags" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Administrative  </span>
+						<span class="fa fa-caret-down"></span>
+					</a>
+					<ul id="adminstrativeNav" class="nav child_menu" >
+						<li><a id="taxmanagerLink" href="#!/taxManager"  tabindex="-1" class="ng-scope" style=""><i class="fa fa-credit-card" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span>Tax Manager </span></a></li>
+						<li><a id="salesdiscountLink" href="#!/salesdiscount"  tabindex="-1" ><i class="fa fa-book" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Sales Discount  </span></a></li>
+						<li><a id="testimonialLink" href="#!/testimonial"  tabindex="-1" ><i class="fa fa-book" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Testimonial  </span></a></li>
+						<li><a id="currencyLink" href="#!/currency"  tabindex="-1" ><i class="fa fa-money" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Currency  </span></a></li>
+						<li><a id="languageLink" href="#!/language"  tabindex="-1" ><i class="fa fa-book" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Language  </span></a></li>
+					</ul>
+				</li>
+
+
+
+
+
+
+				<li id="expenses">
+					<a  tabindex="-1" id="expensesLink">
+						<i class="fa fa-tags" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Expenses  </span>
+						<span class="fa fa-caret-down"></span>
+					</a>
+					<ul id="expensesNav" class="nav child_menu" >
+						<li><a id="expensescategoryLink" href="#!/expensescategory"  tabindex="-1" class="ng-scope" style=""><i class="fa fa-book" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Expenses Category  </span></a></li>
+						<li><a id="expansesLink" href="#!/expanses"  tabindex="-1" ><i class="fa fa-book" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Expanses  </span></a></li>
+					</ul>
+				</li>
+				<li id="reports">
+					<a  tabindex="-1" id="reportsLink">
+						<i class="fa fa-th-list" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Reports  </span>
+						<span class="fa fa-caret-down"></span>
+					</a>
+					<ul id="reportsNav" class="nav child_menu" >
+						<li><a id="expensereportLink" href="#!/expensereport"  tabindex="-1"><i class="fa fa-book" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span>Expense</span></a></li>
+						<li><a id="guestsreportLink" href="#!/guestsreport"  tabindex="-1" ><i class="fa fa-user" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Guests  </span></a></li>
+						<li><a id="occupancyreportLink" href="#!/occupancyreport"  tabindex="-1" ><i class="fa fa-book" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> Occupancy  </span></a></li>
+						<li><a id="guestsreportlist" href="#!/guestsreportlist"  tabindex="-1" ><i class="fa fa-user" style="font-size:20px;color:#3c8dbc;" aria-hidden="true"></i> <span> GuestsList Report  </span></a></li>
+					</ul>
+				</li>
+
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+
+<div ng-view="true"></div>
+<!--<script>-->
+    <!--var PAGE_NAME = '<%out.print(request.getAttribute("pageName"));%>'-->
+<!--</script>-->
+<!-- JQuery -->
+<script src="./js/vendors/jquery.min.js"></script>
+<!-- Jquery UI Scripts -->
+<script src="./js/vendors/jquery-ui.js"></script>
+<script src="./js/jspdf.min.js"></script>
+<script src="./js/base64.js"></script>
+<script src="./js/jquery-base64.js"></script>
+<script src="./js/sprintf.js"></script>
+<!-- Bootstrap -->
+<script src="./js/vendors/bootstrap.min.js"></script>
+<!-- JQuery -->
+<script src="./js/vendors/jquery.min.js"></script>
+<!-- Jquery UI Scripts -->
+<script src="./js/vendors/jquery-ui.js"></script>
+<script src="./js/jspdf.min.js"></script>
+<script src="./js/base64.js"></script>
+<script src="./js/jquery-base64.js"></script>
+<script src="./js/sprintf.js"></script>
+<!-- Bootstrap -->
+<script src="./js/vendors/bootstrap.min.js"></script>
+
+
+<!-- Angular js -->
+<script src="./js/vendors/angular.min.js"></script>
+<script src="./js/vendors/angular-route.js"></script>
+<script src="./js/vendors/angular-animate.min.js"></script>
+<script src="./js/vendors/angular-sanitize.min.js"></script>
+<script src="./js/vendors/select2.min.js"></script>
+<script src="./js/vendors/angular-ui-notification.min.js"></script>
+<script src="./js/vendors/angular-cookies.min.js"></script>
+<script type="text/javascript" src="./js/vendors/moment.js"></script>
+<script src="./js/vendors/bootstrap-datetimepicker.min.js"></script>
+<script src="./js/vendors/ng-table.min.js"></script>
+<script src="./js/vendors/Chart.min.js"></script>
+<script src="./js/vendors/angular-chart.js"></script>
+<script src="./js/vendors/bootbox.min.js"></script>
+<script src="./js/vendors/ui-bootstrap-tpls.min.js"></script>
+<script src="./js/vendors/angular-filter.js"></script>
+
+<!-- Custom Theme Scripts -->
+<script src="./js/main.js"></script>
+<script  src="./js/custom.js"></script>
+<script src="./js/bootstrap-wysiwyg.js"></script>
+<script src="./js/jquery.hotkeys.js"></script>
+<script src="./js/controller/login.js"></script>
+<script src="./js/controller/dashboard.js"></script>
+<script src="./js/controller/checkIn.js"></script>
+<script src="./js/controller/bookings.js"></script>
+<!--<script src="./js/controller/student.js"></script>-->
+<script src="./js/controller/floors.js"></script>
+<script src="./js/controller/users.js"></script>
+<script src="./js/controller/roomtypes.js"></script>
+<script src="./js/controller/rooms.js"></script>
+<script src="./js/controller/guests.js"></script>
+<script src="./js/controller/state.js"></script>
+<script src="./js/controller/country.js"></script>
+<script src="./js/controller/language.js"></script>
+<script src="./js/controller/coupon.js"></script>
+<script src="./js/controller/amenities.js"></script>
+<script src="./js/controller/departments.js"></script>
+<script src="./js/controller/availabilitycalender.js"></script>
+<script src="./js/controller/expensescategory.js"></script>
+<script src="./js/controller/expanses.js"></script>
+<script src="./js/controller/expensereport.js"></script>
+<script src="./js/controller/guestsreport.js"></script>
+<script src="./js/controller/emailserver.js"></script>
+<script src="./js/controller/guestsreportlist.js"></script>
+<script src="./js/controller/couponreport.js"></script>
+<script src="./js/controller/occupancyreport.js"></script>
+<script src="./js/controller/multicheckIn.js"></script>
+<script src="./js/controller/city.js"></script>
+<script src="./js/controller/salesdiscount.js"></script>
+<script src="./js/controller/testimonial.js"></script>
+<script src="./js/controller/currency.js"></script>
+<script src="./js/controller/emailtemplate.js"></script>
+<script src="./js/controller/designations.js"></script>
+<script src="./js/controller/employees.js"></script>
+<script src="./js/controller/housekeeping.js"></script>
+<script src="./js/controller/currency1.js"></script>
+<script src="./js/controller/formsetup.js"></script>
+<script src="./js/controller/addNewModal.js"></script>
+<script src="./js/controller/paymentMethod.js"></script>
+<script src="./js/controller/configurator.js"></script>
+<!--<script src="./js/controller/grademaster.js"></script>-->
+<script src="./js/controller/taxManager.js"></script>
+<script src="./js/controller/paidServices.js"></script>
+<script src="./js/controller/priceManager.js"></script>
+<script src="./js/controller/header.js"></script>
+<script src="./js/controller/smsConfigurator.js"></script>
+<script src="./js/controller/reportMailScheduler.js"></script>
+<script src="./js/controller/smsServer.js"></script>
+<script type="text/javascript" src="./js/controller/numberToWord.js"></script>
+</body>
+</html>

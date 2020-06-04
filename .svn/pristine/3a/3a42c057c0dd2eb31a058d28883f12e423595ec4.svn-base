@@ -1,0 +1,8 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Mail;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PosMailRepository extends JpaRepository<Mail, Long> {
+    Mail findByUserName(String name);
+}

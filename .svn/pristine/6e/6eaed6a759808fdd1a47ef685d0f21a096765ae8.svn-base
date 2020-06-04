@@ -1,0 +1,2238 @@
+package com.hyva.hotel.Hotelendpoints;
+
+import com.hyva.hotel.entities.*;
+import com.hyva.hotel.pojo.*;
+import com.hyva.hotel.respositories.HotelFloorRepository;
+import com.hyva.hotel.respositories.HotelRoomTypesRepository;
+import com.hyva.hotel.respositories.HotelRoomsRepository;
+import com.hyva.hotel.service.HotelService;
+import com.hyva.hotel.respositories.OrdersRepository;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.JSONException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+
+/**
+ * Created by kishore on 8/6/18.
+ */
+@RestController
+@RequestMapping("/hotel")
+public class HotelController {
+    @Autowired
+    HotelService hotelService;
+    @Autowired
+    OrdersRepository ordersRepository;
+    @Autowired
+    HotelRoomTypesRepository hotelRoomTypesRepository;
+    @Autowired
+    HotelRoomsRepository hotelRoomsRepository;
+    @Autowired
+    HotelFloorRepository hotelFloorRepository;
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse login(@RequestBody User credentials) throws Exception {
+//            User bshimData = bshimUserService.get(credentials) ;
+        String accessToken = "12345";
+        if (StringUtils.isBlank(credentials.getEmail()) || StringUtils.isBlank(credentials.getUserName()) || StringUtils.isBlank(credentials.getPasswordUser())) {
+            return new EntityResponse(HttpStatus.OK.value(), "Invalid User");
+        }
+        return new EntityResponse(HttpStatus.OK.value(), "success", credentials);
+    }
+
+    @RequestMapping(value = "/saveLoginDetails", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public User saveLoginDetails(@RequestBody UserPojo userPojo) {
+        return hotelService.saveUserDetails(userPojo);
+    }
+
+    @RequestMapping(value = "/saveNewFloors", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveNewFloors(@RequestBody FloorsPojo floors) throws Exception {
+        Floors pojo = null;
+        pojo = hotelService.saveFloors(floors);
+        return ResponseEntity.status(200).body(pojo);
+    }
+
+    @RequestMapping(value = "/saveConfigurator", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveConfigurator(@RequestBody ConfiguratorPojo configuratorPojo) throws Exception {
+        Configurator configurator = null;
+        configurator = hotelService.saveConfigurator(configuratorPojo);
+        return ResponseEntity.status(200).body(configurator);
+    }
+
+    @RequestMapping(value = "/getDeleteFloors", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteFloors(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteFloors(id);
+        return ResponseEntity.status(200).body(null);
+
+    }
+
+    @RequestMapping(value = "/saveRoomTypes", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveRoomTypes(@RequestBody RoomTypesPojo roomTypesPojo) throws Exception {
+        roomTypesPojo = hotelService.saveRoomTypes(roomTypesPojo);
+        return ResponseEntity.status(200).body(roomTypesPojo);
+    }
+
+    @RequestMapping(value = "/savecoupon", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity savecoupon(@RequestBody CouponsPojo couponsPojo) throws Exception {
+        couponsPojo = hotelService.savecoupon(couponsPojo);
+        return ResponseEntity.status(200).body(couponsPojo);
+    }
+
+    @RequestMapping(value = "/getcoupon", method = RequestMethod.POST)
+    public ResponseEntity getcoupon(@RequestParam(value = "coupon") String coupon) throws Exception {
+        return ResponseEntity.status(200).body(hotelService.getcoupon(coupon));
+    }
+
+    @RequestMapping(value = "/getDeleteRoomTypes", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteRoomTypes(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteRoomTypes(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteCoupons", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteCoupons(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteCoupons(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/saveguests", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveguests(@RequestBody GuestsPojo guestsPojo) throws Exception {
+        guestsPojo = hotelService.saveguests(guestsPojo);
+        return ResponseEntity.status(200).body(guestsPojo);
+    }
+
+    @RequestMapping(value = "/saveAmenities", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveAmenities(@RequestBody AmenitiesPojo amenitiesPojo) throws Exception {
+        amenitiesPojo = hotelService.saveAmenities(amenitiesPojo);
+        return ResponseEntity.status(200).body(amenitiesPojo);
+    }
+
+    @RequestMapping(value = "/savecurrency", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity savecurrency(@RequestBody CurrencyPojo currencyPojo) throws Exception {
+        currencyPojo = hotelService.savecurrency(currencyPojo);
+        return ResponseEntity.status(200).body(currencyPojo);
+    }
+
+    @RequestMapping(value = "/saveHouse", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveHouse(@RequestBody HouseKeepingStatusPojo houseKeepingStatusPojo) throws Exception {
+        houseKeepingStatusPojo = hotelService.saveHouse(houseKeepingStatusPojo);
+        return ResponseEntity.status(200).body(houseKeepingStatusPojo);
+    }
+
+    @RequestMapping(value = "/savedepartments", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity savedepartments(@RequestBody DepartmentsPojo departmentsPojo) throws Exception {
+        departmentsPojo = hotelService.savedepartments(departmentsPojo);
+        return ResponseEntity.status(200).body(departmentsPojo);
+    }
+
+    @RequestMapping(value = "/savedesignation", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity savedesignation(@RequestBody DesignationPojo designationPojo) throws Exception {
+        designationPojo = hotelService.savedesignation(designationPojo);
+        return ResponseEntity.status(200).body(designationPojo);
+    }
+
+    @RequestMapping(value = "/getGuestsList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getGuestsList() {
+        List<GuestsPojo> guestsPojo = hotelService.getGuestsList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", guestsPojo);
+    }
+
+    @RequestMapping(value = "/getCurrencyList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getCurrencyList() {
+        List<CurrencyPojo> currencyPojos = hotelService.getCurrencyList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", currencyPojos);
+    }
+
+    @RequestMapping(value = "/getFloorsList1", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getFloorsList() {
+        List<FloorsPojo> floorsPojos = hotelService.getFloorsList3();
+        return new EntityResponse(HttpStatus.OK.value(), " success", floorsPojos);
+    }
+
+    @RequestMapping(value = "/getAmenetiesList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getAmenetiesList() {
+        List<AmenitiesPojo> amenitiesPojo = hotelService.getAmenetiesList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", amenitiesPojo);
+    }
+
+    @RequestMapping(value = "/getHouseKeepingList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getHouseKeepingList() {
+        List<HouseKeepingStatusPojo> houseKeepingStatusPojo = hotelService.getHouseKeepingList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", houseKeepingStatusPojo);
+    }
+
+    @RequestMapping(value = "/getdepartmentsList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getdepartmentsList() {
+        List<DepartmentsPojo> departmentsPojo = hotelService.getdepartmentsList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", departmentsPojo);
+    }
+
+    @RequestMapping(value = "/getdesignationList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getdesignationList() {
+        List<DesignationPojo> designationPojo = hotelService.getdesignationList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", designationPojo);
+    }
+
+    @RequestMapping(value = "/getDeleteGuests", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteGuests(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteGuests(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteCurrency", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteCurrency(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteCurrency(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteAmenities", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteAmenities(@RequestParam(value = "acdyrId") Long acdyrId) {
+        hotelService.getDeleteAmenities(acdyrId);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteHouseKeeping", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteHouseKeeping(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteHouseKeeping(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteDepartments", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteDepartments(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteDepartments(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteDesignation", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteDesignation(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteDesignation(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteEmail", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteEmail(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteEmail(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/saveRooms", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveRooms(@RequestBody RoomsPojo roomsPojo) throws Exception {
+        roomsPojo = hotelService.saveRooms(roomsPojo);
+        return ResponseEntity.status(200).body(roomsPojo);
+    }
+
+    @RequestMapping(value = "/getStateList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getStateList(@RequestParam(value = "type", required = false) String type,
+                                       @RequestParam(value = "searchText", required = false) String searchText,
+                                       @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getStateList(type, basePojo, searchText));
+    }
+
+    @RequestMapping(value = "/saveState", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public ResponseEntity saveState(@RequestBody StatePojo state) {
+        return ResponseEntity.status(200).body(hotelService.saveState(state));
+    }
+
+    @RequestMapping(value = "/deleteState", method = RequestMethod.POST, produces = "application/json")
+    public void deleteState(@RequestParam(value = "stateName", required = false) String stateName) {
+        hotelService.deleteState(stateName);
+    }
+
+    @RequestMapping(value = "/editState", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity editState(@RequestParam(value = "stateName", required = false) String stateName) {
+        return ResponseEntity.status(200).body(hotelService.editState(stateName));
+    }
+
+    @RequestMapping(value = "/editCity", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity editCity(@RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "countryName", required = false) String countryName,
+                                   @RequestParam(value = "state", required = false) String state) {
+        return ResponseEntity.status(200).body(hotelService.editCity(name, countryName, state));
+    }
+
+    @RequestMapping(value = "/getCountryList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getCountryList(@RequestParam(value = "type", required = false) String type) {
+        return ResponseEntity.status(200).body(hotelService.getCountryList(type));
+    }
+
+    @RequestMapping(value = "/getCityList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getCityList(@RequestParam(value = "type", required = false) String type) {
+        return ResponseEntity.status(200).body(hotelService.getCityList(type));
+    }
+
+    @RequestMapping(value = "/saveCountry", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public ResponseEntity saveCountry(@RequestBody CountryPojo countryPojo) {
+        return ResponseEntity.status(200).body(hotelService.saveCountry(countryPojo));
+    }
+
+    @RequestMapping(value = "/saveCity", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public ResponseEntity saveCity(@RequestBody CityPojo cityPojo) {
+        return ResponseEntity.status(200).body(hotelService.saveCity(cityPojo));
+    }
+
+    @RequestMapping(value = "/savelanguage", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public ResponseEntity savelanguage(@RequestBody LanguagePojo languagePojo) throws JSONException {
+        return ResponseEntity.status(200).body(hotelService.savelanguage(languagePojo));
+    }
+
+    @RequestMapping(value = "/saveemail", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public ResponseEntity saveemail(@RequestBody EmailTemplatePojo emailTemplatePojo) throws JSONException {
+        return ResponseEntity.status(200).body(hotelService.saveemail(emailTemplatePojo));
+    }
+
+    @RequestMapping(value = "/deleteCountry", method = RequestMethod.POST, produces = "application/json")
+    public void deleteCountry(@RequestParam(value = "countryName", required = false) String countryName) {
+        hotelService.deleteCountry(countryName);
+    }
+
+    @RequestMapping(value = "/deleteCity", method = RequestMethod.POST, produces = "application/json")
+    public void deleteCity(@RequestParam(value = "name", required = false) String name,
+                           @RequestParam(value = "country", required = false) String countryName,
+                           @RequestParam(value = "state", required = false) String state) {
+        hotelService.deleteCity(name, countryName, state);
+    }
+
+    @RequestMapping(value = "/editCountry", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity editCountry(@RequestParam(value = "countryName", required = false) String countryName) {
+        return ResponseEntity.status(200).body(hotelService.editCountry(countryName));
+    }
+
+    @RequestMapping(value = "/saveCurrency1", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public ResponseEntity saveCurrency(@RequestBody CurrencyPojo1 currencyPojo) {
+        return ResponseEntity.status(200).body(hotelService.saveCurrency(currencyPojo));
+    }
+
+    @RequestMapping(value = "/getCurrencyList1", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getCurrencyList(@RequestParam(value = "type", required = false) String type) {
+        return ResponseEntity.status(200).body(hotelService.getCurrencyList(type));
+    }
+
+    @RequestMapping(value = "/deleteCurrency1", method = RequestMethod.POST, produces = "application/json")
+    public void deleteCurrency(@RequestParam(value = "currencyName", required = false) String currencyName) {
+        hotelService.deleteCurrency(currencyName);
+    }
+
+    @RequestMapping(value = "/editCurrency", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity editCurrency(@RequestParam(value = "currencyName", required = false) String currencyName) {
+        return ResponseEntity.status(200).body(hotelService.editCurrency(currencyName));
+    }
+
+    @RequestMapping(value = "/getPaymentMethodList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPAymentMethodList(@RequestParam(value = "type", required = false) String type) {
+        return ResponseEntity.status(200).body(hotelService.getPaymentMethodList(type));
+    }
+
+    @RequestMapping(value = "/savePaymentMethod", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public ResponseEntity savePaymentMethod(@RequestBody PaymentMethodPojo paymentMethodPojo) {
+        return ResponseEntity.status(200).body(hotelService.savePaymentMethod(paymentMethodPojo));
+    }
+
+    @RequestMapping(value = "/deletePaymentMethod", method = RequestMethod.POST, produces = "application/json")
+    public void deletePaymentMethod(@RequestParam(value = "paymentmethodId", required = false) Long paymentmethodId) {
+        hotelService.deletePaymentMethod(paymentmethodId);
+    }
+
+    @RequestMapping(value = "/editPaymentMethod", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity editPaymentMethod(@RequestParam(value = "id", required = false) Long id) {
+        return ResponseEntity.status(200).body(hotelService.editPaymentMethod(id));
+    }
+
+
+    @RequestMapping(value = "/DeleteRooms", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity DeleteRooms(@RequestParam(value = "id") Long id) {
+        hotelService.DeleteRooms(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/savePriceManager", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity savePriceManager(@RequestBody PriceManagerPojo Pojo) throws Exception {
+        Pojo = hotelService.savePriceManager(Pojo);
+        return ResponseEntity.status(200).body(Pojo);
+    }
+
+    @RequestMapping(value = "/DeletePriceManager", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity DeletePriceManager(@RequestParam(value = "id") Long id) {
+        hotelService.DeletePriceManager(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getPriceManagerList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getPriceManagerList() {
+        List<PriceManagerPojo> priceManagerPojo = hotelService.getPriceManagerList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", priceManagerPojo);
+    }
+
+    @RequestMapping(value = "/getemailList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getemailList() {
+        List<EmailTemplatePojo> emailTemplatePojos = hotelService.getemailList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", emailTemplatePojos);
+    }
+
+    @RequestMapping(value = "/getRoomTypesList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getRoomTypesList() {
+        List<RoomTypesPojo> roomTypesPojos = hotelService.getRoomTypesList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", roomTypesPojos);
+    }
+
+    @RequestMapping(value = "/getRoomsList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getRoomsList() {
+        List<RoomsPojo> roomsPojo = hotelService.getRoomsList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", roomsPojo);
+    }
+
+    @RequestMapping(value = "/getEmptyRoomList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getEmptyRoomList(@RequestParam(value = "roomTypeId") Long roomTypeId, @RequestParam(value = "fromDate", required = false) String fromDate,
+                                           @RequestParam(value = "toDate", required = false) String toDate) throws ParseException {
+        DateFormat date = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z ");
+        Date fromdate = date.parse(fromDate);
+        Date todate = date.parse(toDate);
+        List<Rooms> rooms = hotelService.getEmptyRoomList(roomTypeId, fromdate, todate);
+        return new EntityResponse(HttpStatus.OK.value(), " success", rooms);
+    }
+
+    @RequestMapping(value = "/getcouponsList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getcouponsList() {
+        List<CouponsPojo> couponsPojos = hotelService.getcouponsList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", couponsPojos);
+    }
+
+    @RequestMapping(value = "/getlanguageList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getlanguageList() {
+        List<LanguagePojo> languagePojos = hotelService.getlanguageList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", languagePojos);
+    }
+
+    @RequestMapping(value = "/getcheckinList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getcheckinList(@RequestParam(value = "type") String status) {
+        List<OrdersPojo> ordersPojo = hotelService.getcheckinList(status);
+        return new EntityResponse(HttpStatus.OK.value(), " success", ordersPojo);
+    }
+
+    @RequestMapping(value = "/getordersobj", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getordersobj(@RequestParam(value = "id") Long id) {
+        CheckOutPojo checkOutPojo = new CheckOutPojo();
+        Orders orders = ordersRepository.findOne(id);
+        OrdersPojo ordersPojo = hotelService.getordersobj(id);
+        checkOutPojo.setOrdersObj(ordersPojo);
+        List<RelOrdersPrices> relOrderPrices = hotelService.getrelOrderPrices(orders);
+        checkOutPojo.setRelOrdersPricesList(relOrderPrices);
+        List<RelOrderTaxesPojo> relOrdersTaxes = hotelService.getRelOrderTaxes(orders);
+        checkOutPojo.setRelOrdersTaxesList(relOrdersTaxes);
+        List<RelOrderServicesPojo> relOrdersServices = hotelService.getRelOrderServices(orders);
+        checkOutPojo.setRelOrdersServicesList(relOrdersServices);
+        return new EntityResponse(HttpStatus.OK.value(), " success", checkOutPojo);
+    }
+
+    @RequestMapping(value = "/userValidate", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public User userValidate(@RequestBody UserPojo userPojo) {
+        return hotelService.userValidate(userPojo);
+    }
+
+    @RequestMapping(value = "/getRoomList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getRoomList(@RequestParam(value = "roomTypeId") Long roomTypeId) {
+        List<Rooms> rooms = hotelService.roomList(roomTypeId);
+        return new EntityResponse(HttpStatus.OK.value(), " success", rooms);
+    }
+
+    @RequestMapping(value = "/getuserDetails", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity getuserDetails(@RequestBody UserPojo userpojo) {
+        userpojo = hotelService.getuserDetails(userpojo);
+        return ResponseEntity.status(200).body(userpojo);
+    }
+
+    @RequestMapping(value = "/saveEmployee", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveEmployee(@RequestBody EmployeesPojo employeesPojo) {
+        employeesPojo = hotelService.saveEmployee(employeesPojo);
+        return ResponseEntity.status(200).body(employeesPojo);
+    }
+
+    @RequestMapping(value = "/saveDiscount", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveDiscount(@RequestBody OrdersPojo ordersPojo) {
+        ordersPojo = hotelService.saveDiscount(ordersPojo);
+        return ResponseEntity.status(200).body(ordersPojo);
+    }
+
+    @RequestMapping(value = "/advancePayment", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity advancePayment(@RequestBody OrdersPojo ordersPojo) {
+        ordersPojo = hotelService.saveAdvancePayment(ordersPojo);
+        return ResponseEntity.status(200).body(ordersPojo);
+    }
+
+    @RequestMapping(value = "/itemPayment", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity itemPayment(@RequestBody OrdersPojo ordersPojo) {
+        ordersPojo = hotelService.saveItemPayment(ordersPojo);
+        return ResponseEntity.status(200).body(ordersPojo);
+    }
+
+    @RequestMapping(value = "/saveCheckinRoom", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveCheckinRoom(@RequestBody OrdersPojo ordersPojo) {
+        ordersPojo = hotelService.saveCheckinRoom(ordersPojo);
+        return ResponseEntity.status(200).body(ordersPojo);
+    }
+
+    @RequestMapping(value = "/saveexpensecategory", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveexpensecategory(@RequestBody ExpensesCategoryPojo expensesCategoryPojo) {
+        expensesCategoryPojo = hotelService.saveexpensecategory(expensesCategoryPojo);
+        return ResponseEntity.status(200).body(expensesCategoryPojo);
+    }
+
+    @RequestMapping(value = "/saveexpense", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveexpense(@RequestBody ExpensesPojo expensesPojo) {
+        expensesPojo = hotelService.saveexpense(expensesPojo);
+        return ResponseEntity.status(200).body(expensesPojo);
+    }
+
+    @RequestMapping(value = "/saveSales", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveSales(@RequestBody SalesDiscountPojo salesDiscountPojo) {
+        salesDiscountPojo = hotelService.saveSales(salesDiscountPojo);
+        return ResponseEntity.status(200).body(salesDiscountPojo);
+    }
+
+    @RequestMapping(value = "/saveTestimonials", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveTestimonials(@RequestBody TestimonialsPojo testimonialsPojo) {
+        testimonialsPojo = hotelService.saveTestimonials(testimonialsPojo);
+        return ResponseEntity.status(200).body(testimonialsPojo);
+    }
+
+    @RequestMapping(value = "/getUserList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getUserList() {
+        List<UserPojo> userPojo = hotelService.getUserList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", userPojo);
+    }
+
+    @RequestMapping(value = "/getExpenseCategoryList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getExpenseCategoryList() {
+        List<ExpensesCategoryPojo> expensesCategoryPojo = hotelService.getExpenseCategoryList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", expensesCategoryPojo);
+    }
+
+    @RequestMapping(value = "/getExpenseList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getExpenseList() {
+        List<ExpensesPojo> expensesPojos = hotelService.getExpenseList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", expensesPojos);
+    }
+
+    @RequestMapping(value = "/getTestimonialsList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getTestimonialsList() {
+        List<TestimonialsPojo> testimonialsPojos = hotelService.getTestimonialsList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", testimonialsPojos);
+    }
+
+    @RequestMapping(value = "/getsalesList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getsalesList() {
+        List<SalesDiscountPojo> salesDiscountPojos = hotelService.getsalesList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", salesDiscountPojos);
+    }
+
+    @RequestMapping(value = "/getEmployeesList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getEmployeesList() {
+        List<EmployeesPojo> employeesPojo = hotelService.getEmployeesList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", employeesPojo);
+    }
+
+    @RequestMapping(value = "/getDeleteUser", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteUser(@RequestParam(value = "useraccountId") Long useraccountId) {
+        hotelService.getDeleteUser(useraccountId);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteLanguage", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteLanguage(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteLanguage(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/DeleteExpenseCategory", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity DeleteExpenseCategory(@RequestParam(value = "id") Long id) {
+        hotelService.DeleteExpenseCategory(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/DeleteExpense", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity DeleteExpense(@RequestParam(value = "id") Long id) {
+        hotelService.DeleteExpense(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteTestimonials", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteTestimonials(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteTestimonials(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteSales", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity DeleteSales(@RequestParam(value = "id") Long id) {
+        hotelService.DeleteSales(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteEmployees", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteEmployees(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteEmployees(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getDeleteConfigurator", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteConfigurator(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteConfigurator(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getRoomTypeObj", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getRoomTypeObj(@RequestParam(value = "roomTypeId") Long roomTypeId) {
+        RoomTypes roomTypes = hotelService.roomTypeObj(roomTypeId);
+        return new EntityResponse(HttpStatus.OK.value(), " success", roomTypes);
+    }
+
+    @RequestMapping(value = "/saveTax", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveTax(@RequestBody TaxPojo taxPojo) {
+        taxPojo = hotelService.saveTax(taxPojo);
+        return ResponseEntity.status(200).body(taxPojo);
+    }
+
+    @RequestMapping(value = "/getTaxList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getTaxList() {
+        List<TaxPojo> taxPojos = hotelService.getTaxList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", taxPojos);
+    }
+
+    @RequestMapping(value = "/getConfiguratorList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getConfiguratorList() {
+        List<ConfiguratorPojo> configuratorPojos = hotelService.getConfiguratorList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", configuratorPojos);
+    }
+
+    @RequestMapping(value = "/getDeleteTaxManager", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeleteTaxManager(@RequestParam(value = "id") Long id) {
+        hotelService.getDeleteTaxManager(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/savePaidServices", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity savePaidServices(@RequestBody ServicesPojo servicesPojo) throws Exception {
+        servicesPojo = hotelService.savePaidServices(servicesPojo);
+        return ResponseEntity.status(200).body(servicesPojo);
+    }
+
+    @RequestMapping(value = "/getDeletePaidServices", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDeletePaidServices(@RequestParam(value = "id") Long id) {
+        hotelService.getDeletePaidServices(id);
+        return ResponseEntity.status(200).body(null);
+    }
+
+    @RequestMapping(value = "/getPaidServiceList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getPaidServiceList() {
+        List<ServicesPojo> servicesPojos = hotelService.getServicesList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", servicesPojos);
+    }
+
+    @RequestMapping(value = "/getServiceListBasedOnRoomType", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getServiceListBasedOnRoomType(@RequestParam(value = "roomTypeId") Long roomTypeId) {
+        List<ServicesPojo> servicesPojos = hotelService.getServiceListBasedOnRoomType(roomTypeId);
+        return new EntityResponse(HttpStatus.OK.value(), " success", servicesPojos);
+    }
+
+    @RequestMapping(value = "/getTaxData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getTaxData() {
+        List<TaxPojo> taxList = hotelService.getTaxData();
+        return new EntityResponse(HttpStatus.OK.value(), " success", taxList);
+    }
+
+    @RequestMapping(value = "/saveOrder", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveOrder(@RequestBody OrdersPojo ordersPojo) throws Exception {
+        ordersPojo = hotelService.saveOrderService(ordersPojo);
+        return ResponseEntity.status(200).body(ordersPojo);
+    }
+
+    @RequestMapping(value = "getGuestList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntityResponse getGuestList() {
+        List<GuestsPojo> guestsPojos = hotelService.getGuestsList();
+        return new EntityResponse(HttpStatus.OK.value(), " success", guestsPojos);
+    }
+
+    @RequestMapping(value = "/savePayment", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity savePayment(@RequestBody PaymentPojo paymentPojo) throws Exception {
+        paymentPojo = hotelService.savePaymentService(paymentPojo);
+        return ResponseEntity.status(200).body(paymentPojo);
+    }
+
+    @RequestMapping(value = "/getExpensesReport", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getExpensesReport(@RequestParam(value = "fromDate", required = false) String fromDate,
+                                            @RequestParam(value = "toDate", required = false) String toDate) throws ParseException {
+        DateFormat date = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z ");
+        Date fromdate = date.parse(fromDate);
+        Date todate = date.parse(toDate);
+        return ResponseEntity.status(200).body(hotelService.getExpenseCustomDatesReport(fromdate, todate));
+    }
+
+    //    @RequestMapping(value = "/getCouponsReport", method = RequestMethod.POST, produces = "application/json")
+//    public ResponseEntity getCouponsReport(@RequestParam(value = "fromDate", required = false) String fromDate,
+//                                            @RequestParam(value = "toDate", required = false) String toDate) throws ParseException {
+//        DateFormat date = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z ");
+//        Date fromdate = date.parse(fromDate);
+//        Date todate = date.parse(toDate);
+//        return ResponseEntity.status(200).body(hotelService.getCouponCustomDatesReport(fromdate,todate));
+//    }
+    @RequestMapping(value = "/getGuestsReport", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getGuestsReport(@RequestParam(value = "fromDate", required = false) String fromDate,
+                                          @RequestParam(value = "toDate", required = false) String toDate) throws ParseException {
+        DateFormat date = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z ");
+        Date fromdate = date.parse(fromDate);
+        Date todate = date.parse(toDate);
+        return ResponseEntity.status(200).body(hotelService.getGuestReport(fromdate, todate));
+    }
+
+    @RequestMapping(value = "/getOccupancyReport", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getOccupancyReport(@RequestParam(value = "fromDate", required = false) String fromDate,
+                                             @RequestParam(value = "toDate", required = false) String toDate) throws ParseException {
+        DateFormat date = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z ");
+        Date fromdate = date.parse(fromDate);
+        Date todate = date.parse(toDate);
+        return ResponseEntity.status(200).body(hotelService.getOccupancyReport(fromdate, todate));
+    }
+
+    @RequestMapping(value = "/getStateListBasedOnCountry", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getStateListBasedOnCountry(@RequestParam(value = "country", required = false) String country1) {
+        return ResponseEntity.status(200).body(hotelService.getStateListBasedOnCountry(country1));
+    }
+
+    @RequestMapping(value = "/getCityListBasedonState", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getCityListBasedonState(@RequestParam(value = "state", required = false) String state) {
+        return ResponseEntity.status(200).body(hotelService.getCityListBasedonState(state));
+    }
+
+    @RequestMapping(value = "/getDesignationListBasedOnDepartment", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getDesignationListBasedOnDepartment(@RequestParam(value = "department", required = false) String department) {
+        return ResponseEntity.status(200).body(hotelService.getDesignationListBasedOnDepartment(department));
+    }
+
+    @RequestMapping(value = "/saveOrUpdateformsetup", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public ResponseEntity saveOrUpdateformsetup(@RequestBody FormSetUpPojo formSetUpPojo) {
+        return ResponseEntity.status(200).body(hotelService.saveOrUpdateformsetup(formSetUpPojo));
+    }
+
+    @RequestMapping(value = "/getFormsetupList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getFormsetupList() {
+        return ResponseEntity.status(200).body(hotelService.getFormSetupList());
+    }
+
+    @RequestMapping(value = "/editFormSetupMethod", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity editFormSetupMethod(@RequestParam(value = "typeName", required = false) String typeName) {
+        return ResponseEntity.status(200).body(hotelService.editFormsetupMethod(typeName));
+    }
+
+    @RequestMapping(value = "/getPaginatedfloorsList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedfloorsList(@RequestParam(value = "searchText", required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedfloorsList(basePojo, searchText));
+    }
+
+    @RequestMapping(value = "/getPaginatedRoomtypesList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedRoomtypesList(@RequestParam(value = "searchText", required = false) String searchText,
+                                                    @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedRoomtypesList(basePojo, searchText));
+    }
+
+    @RequestMapping(value = "/getPaginatedRoomList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedRoomList(@RequestParam(value = "searchText", required = false) String searchText,
+                                               @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedRoomList(basePojo, searchText));
+    }
+
+    @RequestMapping(value = "/getPaginatedPaidList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedPaidList(@RequestParam(value = "searchText", required = false) String searchText,
+                                               @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedPaidList(basePojo, searchText));
+    }
+
+    @RequestMapping(value = "/getPaginatedPriceManagerList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedPriceManagerList(@RequestParam(value = "searchText", required = false) String searchText,
+                                                       @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedPriceManagerList(basePojo, searchText));
+    }
+
+    @RequestMapping(value = "/getPaginatedUsersList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedUsersList(@RequestParam(value = "searchText", required = false) String searchText,
+                                                @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedUsersList(basePojo, searchText));
+    }
+
+    @RequestMapping(value = "/getPaginatedCountryList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedCountryList(@RequestParam(value = "searchText", required = false) String searchText,
+                                                  @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedCountryList(basePojo, searchText));
+    }
+    @RequestMapping(value = "/getPaginatedCityList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedCityList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                  @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedCityList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedMailList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedMailList() {
+        return ResponseEntity.status(200).body(hotelService.getMailList());
+    }
+    @RequestMapping(value = "/editMail", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity editMail(@RequestParam(value = "userName", required = false)String  userName) {
+        return ResponseEntity.status(200).body(hotelService.editMail(userName));
+    }
+    @RequestMapping(value = "/deleteMail", method = RequestMethod.POST, produces = "application/json")
+    public void deleteMail(@RequestParam(value = "userName", required = false) String userName) {
+        hotelService.deleteMail(userName);
+    }
+    @RequestMapping(value = "/saveMail", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity saveMail(@RequestBody MailDTO saveMailDetails) {
+        MailDTO camDTO = null;
+        camDTO = hotelService.createSaveMailDetails(saveMailDetails);
+        return ResponseEntity.status(200).body(camDTO);
+    }
+    @RequestMapping(value = "/saveScheduler", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity saveScheduler(@RequestBody MailSchedulerData mailSchedulerData)throws Exception {
+        hotelService.saveMailSchedule(mailSchedulerData);
+        return ResponseEntity.status(HttpStatus.OK).body(mailSchedulerData  );
+    }
+
+    @RequestMapping(value = "/getPaginatedCurrency1List", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedCurrency1List(@RequestParam(value = "searchText",required = false) String searchText,
+                                                  @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedCurrency1List(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedPaymentMethodList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedPaymentMethodList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                        @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedPaymentMethodList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedCouponList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedCouponList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedCouponList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedAmenitiesList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedAmenitiesList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedAmenitiesList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedHouseKeepingList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedHouseKeepingList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedHouseKeepingList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedDepartmentsList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedDepartmentsList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedDepartmentsList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedDesignationList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedDesignationList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedDesignationList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedEmployeesList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedEmployeesList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedEmployeesList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedTaxManagerList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedTaxManagerList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedTaxManagerList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedSalesDiscountList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedSalesDiscountList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedSalesDiscountList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedTestimonialsList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedTestimonialsList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedTestimonialsList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedCurrencyList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedCurrencyList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedCurrencyList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedLanguageList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedLanguageList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedLanguageList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedExpenseCategoryList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedExpenseCategoryList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedExpenseCategoryList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedExpansesList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedExpansesList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedExpansesList(basePojo,searchText));
+    }
+    @RequestMapping(value = "/getPaginatedGuestsList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getPaginatedGuestsList(@RequestParam(value = "searchText",required = false) String searchText,
+                                                 @RequestBody BasePojo basePojo) {
+        return ResponseEntity.status(200).body(hotelService.getPaginatedGuestsList(basePojo,searchText));
+    }
+
+    @RequestMapping(path = "/countryExport", method = RequestMethod.GET)
+    public ResponseEntity countryExport(@RequestParam(value = "type") String type,
+                                        @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadCountryPdf(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Country.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadCountryExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Country.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/StateExport", method = RequestMethod.GET)
+    public ResponseEntity StateExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadStatePdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "State.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadStateExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "State.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/FloorsExport", method = RequestMethod.GET)
+    public ResponseEntity FloorsExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadFloorsPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Floors.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadFloorsExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Floors.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/UsersExport", method = RequestMethod.GET)
+    public ResponseEntity UsersExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadUsersPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Users.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadUsersExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "users.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/RoomsExport", method = RequestMethod.GET)
+    public ResponseEntity RoomsExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadRoomsPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Rooms.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadRoomsExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Rooms.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/PaidservicesExport", method = RequestMethod.GET)
+    public ResponseEntity PaidservicesExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadPaidServicesPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "PaidServices.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadPaidServicesExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "PaidServices.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/PriceManagerExport", method = RequestMethod.GET)
+    public ResponseEntity PriceManagerExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadPriceManagerPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "PriceManager.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadPriceManagerExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "PriceManager.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/CityExport", method = RequestMethod.GET)
+    public ResponseEntity CityExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadCityPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "City.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadCityExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "City.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/Currency1Export", method = RequestMethod.GET)
+    public ResponseEntity Currency1Export(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadCurrency1Pdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Currecncy.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadCurrency1ExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Currency.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/PaymentMethodExport", method = RequestMethod.GET)
+    public ResponseEntity PaymentMethodExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadPaymentMethodPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "PaymentMethod.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadPaymentMethodExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "PaymentMethod.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/CouponExport", method = RequestMethod.GET)
+    public ResponseEntity CouponExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadCouponPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "PaymentMethod.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadCouponExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "PaymentMethod.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/roomtypeExport", method = RequestMethod.GET)
+    public ResponseEntity roomtypeExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadRoomTypesPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "RoomTypes.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadRoomTypesExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "RoomTypes.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/AmenitiesExport", method = RequestMethod.GET)
+    public ResponseEntity AmenitiesExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadAmenitiesPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Amenities.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadAmenitiesExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Amenities.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/HouseKeepingExport", method = RequestMethod.GET)
+    public ResponseEntity HouseKeepingExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadHouseKeepingPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Housekeeping.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadHouseKeepingExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Housekeeping.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/DepartmentsExport", method = RequestMethod.GET)
+    public ResponseEntity DepartmentsExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadDepartmentsPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Departments.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadDepartmentsExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Departments.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+ @RequestMapping(path = "/DesignationExport", method = RequestMethod.GET)
+    public ResponseEntity DesignationExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadDesignationPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Designation.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadDesignationExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Designation.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+@RequestMapping(path = "/EmployeesExport", method = RequestMethod.GET)
+    public ResponseEntity EmployeesExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadEmployeesPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Employees.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadEmployeesExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Employees.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+@RequestMapping(path = "/ExpenseCategoryExport", method = RequestMethod.GET)
+    public ResponseEntity ExpenseCategoryExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadExpenseCategoryPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "ExpenseCategory.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadExpenseCategoryExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "ExpenseCategory.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+@RequestMapping(path = "/ExpenseExport", method = RequestMethod.GET)
+    public ResponseEntity ExpenseExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadExpensePdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Expense.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadExpenseExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Expense.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+@RequestMapping(path = "/TaxManagerExport", method = RequestMethod.GET)
+    public ResponseEntity TaxManagerExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadTaxManagerPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "TaxManager.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadTaxManagerExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "TaxManager.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+@RequestMapping(path = "/SalesDiscountExport", method = RequestMethod.GET)
+    public ResponseEntity SalesDiscountExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadSalesDiscountPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "SalesDiscount.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadSalesDiscountExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "SalesDiscount.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+@RequestMapping(path = "/TestimonialExport", method = RequestMethod.GET)
+    public ResponseEntity TestimonialExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadTestimonialPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Testimonial.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadTestimonialExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Testimonial.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/CurrencyExport", method = RequestMethod.GET)
+    public ResponseEntity CurrencyExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadCurrencyPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Currency.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadCurrencyExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Currency.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+    @RequestMapping(path = "/LanguageExport", method = RequestMethod.GET)
+    public ResponseEntity LanguageExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadLanguagePdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Language.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadLanguageExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Language.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+ @RequestMapping(path = "/GuestsExport", method = RequestMethod.GET)
+    public ResponseEntity GuestsExport(@RequestParam(value = "type") String type,
+                                      @RequestParam(value = "val") String searchText) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if (StringUtils.equalsIgnoreCase(type, "Pdf")) {
+            hotelService.downloadGuestsPdf(outputStream, searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Guests.pdf" + "\"");
+        } else if (StringUtils.equalsIgnoreCase(type, "Excel")) {
+            hotelService.downloadGuestsExcelSheet(outputStream,searchText);
+            headers.add("Content-Disposition", "attachment; filename=\"" + "Guests.xlsx" + "\"");
+        }
+        ByteArrayResource byteArrayResource = new ByteArrayResource(outputStream.toByteArray());
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(byteArrayResource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayResource);
+    }
+
+    @RequestMapping(value = "/countryImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity countryImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell countryName = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell status = row.getCell(1);
+                    CountryPojo countryPojo = new CountryPojo();
+                    countryPojo.setCountryId( 0L );
+                    countryPojo.setCountryName(countryName == null ? null : countryName.toString());
+                    countryPojo.setStatus("Active");
+                    hotelService.saveCountry(countryPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/floorsImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity floorsImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum(); i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell name = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell description = row.getCell(1);
+                    FloorsPojo floorsPojo = new FloorsPojo();
+                    floorsPojo.setId( 0L );
+                    floorsPojo.setName(name == null ? null : name.toString());
+                    floorsPojo.setDescription(description == null ? null : description.toString());
+                    floorsPojo.setActive("Active");
+                    hotelService.saveFloors(floorsPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/RoomtypesImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity RoomtypesImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                    if(row==null)
+                        break;
+                    if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell title = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell slug = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell shortcode = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell description = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell base_occupancy = row.getCell(4);
+                    org.apache.poi.ss.usermodel.Cell higher_occupancy = row.getCell(5);
+                    org.apache.poi.ss.usermodel.Cell kids_occupancy = row.getCell(6);
+                    org.apache.poi.ss.usermodel.Cell base_price = row.getCell(7);
+                    org.apache.poi.ss.usermodel.Cell additional_person = row.getCell(8);
+                    RoomTypesPojo roomTypesPojo = new RoomTypesPojo();
+                    roomTypesPojo.setId( 0L );
+                    roomTypesPojo.setTitle(title == null ? null : title.toString());
+                    roomTypesPojo.setSlug(slug == null ? null : slug.toString());
+                    roomTypesPojo.setShortcode(shortcode == null ? null : shortcode.toString());
+                    roomTypesPojo.setDescription(description == null ? null : description.toString());
+                    roomTypesPojo.setBase_occupancy(base_occupancy == null ? null : new java.text.DecimalFormat("0").format( base_occupancy.getNumericCellValue()));
+                    roomTypesPojo.setHigher_occupancy(higher_occupancy == null ? null : new java.text.DecimalFormat("0").format( higher_occupancy.getNumericCellValue()));
+                    roomTypesPojo.setKids_occupancy(kids_occupancy == null ? null : new java.text.DecimalFormat("0").format( kids_occupancy.getNumericCellValue()));
+
+                   if(base_price!=null) {
+                       roomTypesPojo.setBase_price( base_price == null ? null : Double.parseDouble( base_price.toString() ) );
+                   }
+                   if(additional_person!=null) {
+                       roomTypesPojo.setAdditional_person( additional_person == null ? null : Double.parseDouble( additional_person.toString() ) );
+                   }
+                    hotelService.saveRoomTypes(roomTypesPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/RoomsImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity RoomsImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell roomno = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell floorId = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell roomTypeId = row.getCell(2);
+                    RoomsPojo roomsPojo = new RoomsPojo();
+                    roomsPojo.setId( 0L );
+                    roomsPojo.setRoomno(roomno == null ? null : new java.text.DecimalFormat("0").format( roomno.getNumericCellValue()));
+//                    roomsPojo.setRoomno(roomno == null ? null :  roomno.toString() );
+                    Floors floors=hotelFloorRepository.findByName(floorId.toString()).get( 0 );
+                    roomsPojo.setFloor_Id(floorId == null ? null :floors.getId() );
+                    RoomTypes roomTypes=hotelRoomTypesRepository.findByTitle(roomTypeId.toString()).get( 0 );
+                    roomsPojo.setRoom_typeId(roomTypeId == null ? null :roomTypes.getId() );
+                    hotelService.saveRooms(roomsPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/paidservicesImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity paidservicesImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell title = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell roomTypes = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell price_type = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell price = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell description = row.getCell(5);
+                    org.apache.poi.ss.usermodel.Cell short_description = row.getCell(6);
+                    ServicesPojo servicesPojo = new ServicesPojo();
+                    servicesPojo.setId( 0L );
+                    servicesPojo.setTitle(title == null ? null :  title.toString() );
+                    RoomTypes roomTypes1=hotelRoomTypesRepository.findByTitle(roomTypes.toString()).get( 0 );
+                    servicesPojo.setRoomTypeId(roomTypes == null ? null :  roomTypes1.getId() );
+                    servicesPojo.setPrice_type(price_type == null ? null :  price_type.toString() );
+                    servicesPojo.setPrice(price == null ? null : new java.text.DecimalFormat("0").format( price.getNumericCellValue()));
+                    servicesPojo.setDescription(description == null ? null :  description.toString() );
+                    servicesPojo.setShort_description(short_description == null ? null :  short_description.toString() );
+                    servicesPojo.setStatus("Active");
+                    hotelService.savePaidServices(servicesPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/pricemanagerImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity pricemanagerImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell roomtype = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell fromDate = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell toDate = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell mon = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell tue = row.getCell(4);
+                    org.apache.poi.ss.usermodel.Cell wed = row.getCell(5);
+                    org.apache.poi.ss.usermodel.Cell thu = row.getCell(6);
+                    org.apache.poi.ss.usermodel.Cell fri = row.getCell(7);
+                    org.apache.poi.ss.usermodel.Cell sat = row.getCell(8);
+                    org.apache.poi.ss.usermodel.Cell sun = row.getCell(9);
+                    PriceManagerPojo priceManagerPojo = new PriceManagerPojo();
+                    priceManagerPojo.setId( 0L );
+                    priceManagerPojo.setRoomtype(roomtype == null ? null :  roomtype.toString() );
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                    Date formattedDate = formatter.parse(fromDate.toString());
+                    Date formattedDate1 = formatter.parse(toDate.toString());
+                    priceManagerPojo.setFromDate(fromDate == null ? null : new java.sql.Date( formattedDate.getTime() ));
+                    priceManagerPojo.setToDate(toDate == null ? null : new java.sql.Date(formattedDate1.getTime()) );
+                    priceManagerPojo.setMon(mon == null ? null :  Double.parseDouble(mon.toString()));
+                    priceManagerPojo.setTue(tue == null ? null :  Double.parseDouble(tue.toString()));
+                    priceManagerPojo.setWed(wed == null ? null : Double.parseDouble(wed.toString()));
+                    priceManagerPojo.setThu(thu == null ? null :  Double.parseDouble(thu.toString()));
+                    priceManagerPojo.setFri(fri == null ? null :  Double.parseDouble(fri.toString()));
+                    priceManagerPojo.setSat(sat == null ? null :  Double.parseDouble(sat.toString()));
+                    priceManagerPojo.setSun(sun == null ? null : Double.parseDouble (sun.toString()));
+                    hotelService.savePriceManager(priceManagerPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/stateImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity stateImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell countryName = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell stateName = row.getCell(1);
+                    StatePojo statePojo = new StatePojo();
+                    statePojo.setId( 0L );
+                    statePojo.setCountry(countryName == null ? null :  countryName.toString() );
+                    statePojo.setStateName(stateName == null ? null :  stateName.toString() );
+                    hotelService.saveState(statePojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/cityImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity cityImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell country = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell state = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell name = row.getCell(2);
+                    CityPojo cityPojo = new CityPojo();
+                    cityPojo.setId( 0L );
+                    cityPojo.setCountry(country == null ? null :  country.toString() );
+                    cityPojo.setState(state == null ? null :  state.toString() );
+                    cityPojo.setName(name == null ? null :  name.toString() );
+                    hotelService.saveCity(cityPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/saveCurrencyImport" ,method = RequestMethod.POST)
+    public ResponseEntity saveCurrencyImport(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell currencyCode = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell currencyName = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell currencyDescription = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell currencySymbol = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell status = row.getCell(4);
+                    CurrencyPojo1 currencyPojo1 = new CurrencyPojo1();
+                    currencyPojo1.setCurrencyId( 0L );
+                    currencyPojo1.setCurrencyCode(currencyCode == null ? null :  currencyCode.toString() );
+                    currencyPojo1.setCurrencyName(currencyName == null ? null :  currencyName.toString() );
+                    currencyPojo1.setCurrencyDescription(currencyDescription == null ? null :  currencyDescription.toString() );
+                    currencyPojo1.setCurrencySymbol(currencySymbol == null ? null :  currencySymbol.toString() );
+                    currencyPojo1.setStatus("Active");
+                    hotelService.saveCurrency(currencyPojo1);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+ @RequestMapping(value = "/paymentmethodImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity paymentmethodImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell paymentmethodName = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell paymentmethodDescription = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell paymentmethodType = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell defaultType = row.getCell(3);
+//                    org.apache.poi.ss.usermodel.Cell status = row.getCell(4);
+                    PaymentMethodPojo paymentMethodPojo = new PaymentMethodPojo();
+                    paymentMethodPojo.setPaymentmethodId( 0L );
+                    paymentMethodPojo.setPaymentmethodName(paymentmethodName == null ? null :  paymentmethodName.toString() );
+                    paymentMethodPojo.setPaymentmethodDescription(paymentmethodDescription == null ? null :  paymentmethodDescription.toString() );
+                    paymentMethodPojo.setPaymentmethodType(paymentmethodType == null ? null :  paymentmethodType.toString() );
+                    paymentMethodPojo.setDefaultType(defaultType == null ? "true" : defaultType.toString() );
+                    paymentMethodPojo.setStatus("Active");
+                    hotelService.savePaymentMethod(paymentMethodPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/CouponsImportsave" ,method = RequestMethod.POST)
+    public ResponseEntity CouponsImportsave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    Cell title = row.getCell(0);
+                    Cell description = row.getCell(1);
+                    Cell date_from = row.getCell(2);
+                    Cell date_to = row.getCell(3);
+                    Cell code = row.getCell(4);
+                    Cell type = row.getCell(5);
+                    Cell value = row.getCell(6);
+                    Cell min_amount = row.getCell(7);
+                    Cell max_amount = row.getCell(8);
+                    CouponsPojo couponsPojo = new CouponsPojo();
+                    couponsPojo.setId( 0L );
+                    couponsPojo.setTitle(title == null ? null :  title.toString() );
+                    couponsPojo.setDescription(description == null ? null :  description.toString() );
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                    Date formattedDate = formatter.parse(date_from.toString());
+                    Date formattedDate1 = formatter.parse(date_to.toString());
+                    couponsPojo.setDate_from(date_from == null ? null : new java.sql.Date( formattedDate.getTime() ));
+                    couponsPojo.setDate_to(date_to == null ? null : new java.sql.Date(formattedDate1.getTime()) );
+                    couponsPojo.setCode(code == null ? null :  code.toString() );
+                    couponsPojo.setType(type == null ? null :  type.toString() );
+                    couponsPojo.setValue(value == null ? null : new java.text.DecimalFormat("0").format(value.getNumericCellValue()));
+                    couponsPojo.setMin_amount(min_amount == null ? null :  Double.parseDouble(min_amount.toString() ));
+                    couponsPojo.setMax_amount(max_amount == null ? null :  Double.parseDouble( max_amount.toString() ));
+                    hotelService.savecoupon(couponsPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/amenitiesImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity amenitiesImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell name = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell description = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell active = row.getCell(2);
+                    AmenitiesPojo amenitiesPojo = new AmenitiesPojo();
+                    amenitiesPojo.setAcdyrId( 0L );
+                    amenitiesPojo.setName(name == null ? null :  name.toString() );
+                    amenitiesPojo.setDescription(description == null ? null :  description.toString() );
+                    amenitiesPojo.setActive("Active");
+                    hotelService.saveAmenities(amenitiesPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/housekeepingImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity housekeepingImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell title = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell short_description = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell status = row.getCell(2);
+                    HouseKeepingStatusPojo houseKeepingStatusPojo = new HouseKeepingStatusPojo();
+                    houseKeepingStatusPojo.setId( 0L );
+                    houseKeepingStatusPojo.setTitle(title == null ? null :  title.toString() );
+                    houseKeepingStatusPojo.setShort_description(short_description == null ? null :  short_description.toString() );
+                    houseKeepingStatusPojo.setStatus("Active");
+                    hotelService.saveHouse(houseKeepingStatusPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/TaxImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity TaxImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell name = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell code = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell rate = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell cgst = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell sgst = row.getCell(4);
+                    org.apache.poi.ss.usermodel.Cell igst = row.getCell(5);
+                    org.apache.poi.ss.usermodel.Cell minimum_amount = row.getCell(6);
+                    org.apache.poi.ss.usermodel.Cell max_amount = row.getCell(7);
+                    TaxPojo taxPojo = new TaxPojo();
+                    taxPojo.setId( 0L );
+                    taxPojo.setName(name == null ? null :  name.toString() );
+                    taxPojo.setCode(code == null ? null : new java.text.DecimalFormat("0").format( code.getNumericCellValue()));
+                    taxPojo.setRate(rate == null ? null : Double.parseDouble(rate.toString() ));
+                    taxPojo.setCgst(cgst == null ? null : new java.text.DecimalFormat("0").format( cgst.getNumericCellValue()));
+                    taxPojo.setSgst(sgst == null ? null : new java.text.DecimalFormat("0").format( sgst.getNumericCellValue()));
+                    taxPojo.setIgst(igst == null ? null : new java.text.DecimalFormat("0").format( igst.getNumericCellValue()));
+                    taxPojo.setMinimum_amount(minimum_amount == null ? null : new java.text.DecimalFormat("0").format( minimum_amount.getNumericCellValue()));
+                    taxPojo.setMax_amount(max_amount == null ? null : new java.text.DecimalFormat("0").format( max_amount.getNumericCellValue()));
+                    taxPojo.setStatus("Active");
+                    hotelService.saveTax(taxPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/SalesImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity SalesImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell itemName = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell discount_type = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell from_date = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell to_date = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell discount_value = row.getCell(4);
+                    SalesDiscountPojo salesDiscountPojo = new SalesDiscountPojo();
+                    salesDiscountPojo.setId( 0L );
+                    salesDiscountPojo.setItemName(itemName == null ? null :  itemName.toString() );
+                    salesDiscountPojo.setDiscount_type(discount_type == null ? null :  discount_type.toString() );
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                    if(from_date!=null) {
+                        Date formattedDate = formatter.parse( from_date.toString() );
+                        salesDiscountPojo.setFrom_date(from_date == null ? null : new java.sql.Date( formattedDate.getTime() ));
+                    }
+                    if(to_date!=null) {
+                        Date formattedDate1 = formatter.parse( to_date.toString() );
+                        salesDiscountPojo.setTo_date( to_date == null ? null : new java.sql.Date( formattedDate1.getTime() ) );
+                    }
+                    salesDiscountPojo.setDiscount_value(discount_value == null ? null : new java.text.DecimalFormat("0").format( discount_value.getNumericCellValue()));
+                    salesDiscountPojo.setStatus("Active");
+                    hotelService.saveSales(salesDiscountPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/TestimonialsImportsave" ,method = RequestMethod.POST)
+    public ResponseEntity TestimonialsImportsave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell autherName = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell title = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell testimonial = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell rating = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell country = row.getCell(4);
+                    TestimonialsPojo testimonialsPojo = new TestimonialsPojo();
+                    testimonialsPojo.setId( 0L );
+                    testimonialsPojo.setAutherName(autherName == null ? null :  autherName.toString() );
+                    testimonialsPojo.setTitle(title == null ? null :  title.toString() );
+                    testimonialsPojo.setTestimonial(testimonial == null ? null :testimonial.toString() );
+                    testimonialsPojo.setRating(rating == null ? null :new java.text.DecimalFormat("0").format( rating.getNumericCellValue()));
+                    testimonialsPojo.setCountry(country == null ? null :  country.toString() );
+                    hotelService.saveTestimonials(testimonialsPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/CurrencyImportsave" ,method = RequestMethod.POST)
+    public ResponseEntity CurrencyImportsave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell name = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell iso_alpha2 = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell iso_alpha3 = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell iso_numeric = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell currency_code = row.getCell(4);
+                    org.apache.poi.ss.usermodel.Cell currency_name = row.getCell(5);
+                    org.apache.poi.ss.usermodel.Cell currrency_symbol = row.getCell(6);
+                    org.apache.poi.ss.usermodel.Cell status = row.getCell(7);
+                    CurrencyPojo currencyPojo = new CurrencyPojo();
+                    currencyPojo.setId( 0L );
+                    currencyPojo.setName(name == null ? null :  name.toString() );
+                    currencyPojo.setIso_alpha2(iso_alpha2 == null ? null :  iso_alpha2.toString() );
+                    currencyPojo.setIso_alpha3(iso_alpha3 == null ? null :iso_alpha3.toString() );
+                    currencyPojo.setIso_numeric(iso_numeric == null ? null : Long.valueOf(iso_numeric.toString()));
+                    currencyPojo.setCurrency_code(currency_code == null ? null :  currency_code.toString() );
+                    currencyPojo.setCurrency_name(currency_name == null ? null :  currency_name.toString() );
+                    currencyPojo.setCurrrency_symbol(currrency_symbol == null ? null :  currrency_symbol.toString() );
+                    currencyPojo.setStatus("Active");
+                    hotelService.savecurrency(currencyPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/LanguageImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity LanguageImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell name = row.getCell(0);
+                    LanguagePojo languagePojo = new LanguagePojo();
+                    languagePojo.setId( 0L );
+                    languagePojo.setName(name == null ? null :  name.toString() );
+                    hotelService.savelanguage(languagePojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/DepartmentImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity DepartmentImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell name = row.getCell(0);
+                    DepartmentsPojo departmentsPojo = new DepartmentsPojo();
+                    departmentsPojo.setId( 0L );
+                    departmentsPojo.setName(name == null ? null :  name.toString() );
+                    hotelService.savedepartments(departmentsPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/DesignationImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity DesignationImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell name = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell deptname = row.getCell(0);
+                    DesignationPojo designationPojo = new DesignationPojo();
+                    designationPojo.setId( 0L );
+                    designationPojo.setDeptname(deptname == null ? null :  deptname.toString() );
+                    designationPojo.setName(name == null ? null :  name.toString() );
+                    hotelService.savedesignation(designationPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/EmployeesImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity EmployeesImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell title = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell gender = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell firstname = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell lastname = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell username = row.getCell(4);
+                    org.apache.poi.ss.usermodel.Cell email = row.getCell(5);
+                    org.apache.poi.ss.usermodel.Cell password = row.getCell(6);
+                    org.apache.poi.ss.usermodel.Cell dob = row.getCell(7);
+                    org.apache.poi.ss.usermodel.Cell phone = row.getCell(8);
+                    org.apache.poi.ss.usermodel.Cell department = row.getCell(9);
+                    org.apache.poi.ss.usermodel.Cell designation = row.getCell(10);
+                    org.apache.poi.ss.usermodel.Cell country = row.getCell(11);
+                    org.apache.poi.ss.usermodel.Cell state = row.getCell(12);
+                    org.apache.poi.ss.usermodel.Cell city = row.getCell(13);
+                    org.apache.poi.ss.usermodel.Cell address = row.getCell(14);
+                    org.apache.poi.ss.usermodel.Cell id_type = row.getCell(15);
+                    org.apache.poi.ss.usermodel.Cell id_no = row.getCell(16);
+                    org.apache.poi.ss.usermodel.Cell remarks = row.getCell(17);
+                    org.apache.poi.ss.usermodel.Cell join_date = row.getCell(18);
+                    org.apache.poi.ss.usermodel.Cell salary = row.getCell(19);
+                    EmployeesPojo employeesPojo = new EmployeesPojo();
+                    employeesPojo.setId( 0L );
+                    employeesPojo.setTitle(title == null ? null :  title.toString() );
+                    employeesPojo.setGender(gender == null ? null :  gender.toString() );
+                    employeesPojo.setFirstname(firstname == null ? null :  firstname.toString() );
+                    employeesPojo.setLastname(lastname == null ? null :  lastname.toString() );
+                    employeesPojo.setUsername(username == null ? null :  username.toString() );
+                    employeesPojo.setEmail(email == null ? null :  email.toString() );
+                    employeesPojo.setPassword(password == null ? null :  password.toString() );
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                    if(dob!=null) {
+                        Date formattedDate = formatter.parse( dob.toString() );
+                        employeesPojo.setDob(dob == null ? null : new java.sql.Date(formattedDate.getTime()) );
+                    }
+                    employeesPojo.setPhone(phone == null ? null : new java.text.DecimalFormat("0").format( phone.getNumericCellValue()));
+
+                    employeesPojo.setDepartment(department == null ? null :  department.toString() );
+                    employeesPojo.setDesignation(designation == null ? null :  designation.toString() );
+                    employeesPojo.setCountry(country == null ? null :  country.toString() );
+                    employeesPojo.setState(state == null ? null :  state.toString() );
+                    employeesPojo.setCity(city == null ? null :  city.toString() );
+                    employeesPojo.setAddress(address == null ? null :  address.toString() );
+                    employeesPojo.setId_type(id_type == null ? null :  id_type.toString() );
+                    employeesPojo.setId_no(id_no == null ? null :Long.valueOf(new java.text.DecimalFormat("0").format( id_no.getNumericCellValue())));
+                    employeesPojo.setRemarks(remarks == null ? null :  remarks.toString() );
+                    SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MMM-yyyy");
+                    if(join_date!=null) {
+                        Date formattedDate1 = formatter1.parse( join_date.toString() );
+                        employeesPojo.setJoin_date(join_date == null ? null : new java.sql.Date(formattedDate1.getTime()) );
+                    }
+                    if(salary!=null) {
+                        employeesPojo.setSalary( salary == null ? null : Double.parseDouble( salary.toString() ) );
+                    }
+                    hotelService.saveEmployee(employeesPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/ExpenseCategoryImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity ExpenseCategoryImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell name = row.getCell(0);
+                    ExpensesCategoryPojo expensesCategoryPojo = new ExpensesCategoryPojo();
+                    expensesCategoryPojo.setId( 0L );
+                    expensesCategoryPojo.setName(name == null ? null :  name.toString() );
+                    hotelService.saveexpensecategory(expensesCategoryPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/ExpansesImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity ExpansesImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell date = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell title = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell expanses_category_id = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell amount = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell remarks = row.getCell(4);
+                    ExpensesPojo expensesPojo = new ExpensesPojo();
+                    expensesPojo.setId( 0L );
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                    if(date!=null) {
+                        Date formattedDate = formatter.parse( date.toString() );
+                        expensesPojo.setDate(date == null ? null : new java.sql.Date(formattedDate.getTime()) );
+                    }
+                    expensesPojo.setTitle(title == null ? null :  title.toString() );
+                    expensesPojo.setExpanses_category_id(expanses_category_id == null ? null :  expanses_category_id.toString() );
+                    expensesPojo.setAmount(amount == null ? null : Double.parseDouble(amount.toString()) );
+                    expensesPojo.setRemarks(remarks == null ? null :  remarks.toString() );
+                    hotelService.saveexpense(expensesPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/guestsImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity guestsImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell firstname = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell lastname = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell gender = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell email = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell address = row.getCell(4);
+                    org.apache.poi.ss.usermodel.Cell mobile = row.getCell(5);
+                    org.apache.poi.ss.usermodel.Cell companyname = row.getCell(6);
+                    org.apache.poi.ss.usermodel.Cell dob = row.getCell(7);
+                    org.apache.poi.ss.usermodel.Cell country = row.getCell(8);
+                    org.apache.poi.ss.usermodel.Cell vip = row.getCell(9);
+                    GuestsPojo guestsPojo = new GuestsPojo();
+                    guestsPojo.setId( 0L );
+                    guestsPojo.setFirstname(firstname == null ? null :  firstname.toString() );
+                    guestsPojo.setLastname(lastname == null ? null :  lastname.toString() );
+                    guestsPojo.setGender(gender == null ? null :  gender.toString() );
+                    guestsPojo.setEmail(email == null ? null :  email.toString() );
+                    guestsPojo.setAddress(address == null ? null :  address.toString() );
+                    guestsPojo.setMobile(mobile == null ? null : new java.text.DecimalFormat("0").format( mobile.getNumericCellValue()));
+                    guestsPojo.setCompanyname(companyname == null ? null :  companyname.toString() );
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                    if(dob!=null) {
+                        Date formattedDate = formatter.parse( dob.toString() );
+                        guestsPojo.setDob(dob == null ? null : new java.sql.Date(formattedDate.getTime()) );
+                    }
+                    guestsPojo.setCountry(country == null ? null :  country.toString() );
+                    guestsPojo.setVip(vip == null ? "true" : vip.toString() );
+
+//                    guestsPojo.setVip(vip == null ? null :  vip.toString() );
+                    guestsPojo.setStatus("Active");
+
+                    hotelService.saveguests(guestsPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value = "/usersImportSave" ,method = RequestMethod.POST)
+    public ResponseEntity usersImportSave(@RequestParam("myFile") MultipartFile uploadfiles) throws Exception {
+        System.out.println(uploadfiles.getOriginalFilename());
+        try {
+            boolean b=false;
+            XSSFWorkbook workbook = new XSSFWorkbook(uploadfiles.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
+                if(row==null)
+                    break;
+                if(row!=null&&row.getPhysicalNumberOfCells()>0) {
+                    org.apache.poi.ss.usermodel.Cell userName = row.getCell(0);
+                    org.apache.poi.ss.usermodel.Cell passwordUser = row.getCell(1);
+                    org.apache.poi.ss.usermodel.Cell full_name = row.getCell(2);
+                    org.apache.poi.ss.usermodel.Cell securityQuestion = row.getCell(3);
+                    org.apache.poi.ss.usermodel.Cell securityAnswer = row.getCell(4);
+                    org.apache.poi.ss.usermodel.Cell phone = row.getCell(5);
+                    org.apache.poi.ss.usermodel.Cell email = row.getCell(6);
+                    UserPojo userPojo = new UserPojo();
+                    userPojo.setUseraccountId( 0L );
+                    userPojo.setUserName(userName == null ? null :  userName.toString() );
+                    userPojo.setPasswordUser(passwordUser == null ? null :  passwordUser.toString() );
+                    userPojo.setFull_name(full_name == null ? null :  full_name.toString() );
+                    userPojo.setSecurityQuestion(securityQuestion == null ? null :  securityQuestion.toString() );
+                    userPojo.setSecurityAnswer(securityAnswer == null ? null :  securityAnswer.toString() );
+                    userPojo.setPhone(phone == null ? null : new java.text.DecimalFormat("0").format( phone.getNumericCellValue()));
+                    userPojo.setEmail(email == null ? null :  email.toString() );
+                    userPojo.setStatus("Active");
+                    hotelService.saveUserDetails(userPojo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+}

@@ -1,0 +1,267 @@
+package com.hyva.hotel.pojo;
+
+public class CustomerPojo {
+
+    private Long customerId;
+    private String customerName;
+    private String customerNumber;
+    private String customerCode;
+    private String email;
+    private String customerContact;
+    private String gstCode;
+    private String bankName;
+    private String accountNo;
+    private String iFSCCode;
+    private String branchName;
+    private String personIncharge;
+    private String panNO;
+    private String website;
+    private String billingAddress;
+    private double loyaltyPoints;
+    private double totalLoyaltyPoints;
+    private String phoneNumber;
+    private String address;
+    private String contactPerson;
+    private String companyNumber;
+    private String faxTelex;
+    private String creditedLimit;
+    private String creditedTerm;
+    private Long terms;
+    private String status;
+    private String countryId;
+    private String currencyId;
+    private String stateId;
+
+    public String getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(String currencyId) {
+        this.currencyId = currencyId;
+    }
+
+    public String getCreditedTerm() {
+        return creditedTerm;
+    }
+
+    public void setCreditedTerm(String creditedTerm) {
+        this.creditedTerm = creditedTerm;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerNumber() {
+        return customerNumber;
+    }
+
+    public void setCustomerNumber(String customerNumber) {
+        this.customerNumber = customerNumber;
+    }
+
+    public String getCustomerCode() {
+        return customerCode;
+    }
+
+    public void setCustomerCode(String customerCode) {
+        this.customerCode = customerCode;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCustomerContact() {
+        return customerContact;
+    }
+
+    public void setCustomerContact(String customerContact) {
+        this.customerContact = customerContact;
+    }
+
+    public String getGstCode() {
+        return gstCode;
+    }
+
+    public void setGstCode(String gstCode) {
+        this.gstCode = gstCode;
+    }
+
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    public String getiFSCCode() {
+        return iFSCCode;
+    }
+
+    public void setiFSCCode(String iFSCCode) {
+        this.iFSCCode = iFSCCode;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getPersonIncharge() {
+        return personIncharge;
+    }
+
+    public void setPersonIncharge(String personIncharge) {
+        this.personIncharge = personIncharge;
+    }
+
+    public String getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(String countryId) {
+        this.countryId = countryId;
+    }
+
+    public String getPanNO() {
+        return panNO;
+    }
+
+    public void setPanNO(String panNO) {
+        this.panNO = panNO;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(String billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    public double getLoyaltyPoints() {
+        return loyaltyPoints;
+    }
+
+    public void setLoyaltyPoints(double loyaltyPoints) {
+        this.loyaltyPoints = loyaltyPoints;
+    }
+
+    public double getTotalLoyaltyPoints() {
+        return totalLoyaltyPoints;
+    }
+
+    public void setTotalLoyaltyPoints(double totalLoyaltyPoints) {
+        this.totalLoyaltyPoints = totalLoyaltyPoints;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
+    public String getCompanyNumber() {
+        return companyNumber;
+    }
+
+    public void setCompanyNumber(String companyNumber) {
+        this.companyNumber = companyNumber;
+    }
+
+    public String getFaxTelex() {
+        return faxTelex;
+    }
+
+    public void setFaxTelex(String faxTelex) {
+        this.faxTelex = faxTelex;
+    }
+
+    public String getCreditedLimit() {
+        return creditedLimit;
+    }
+
+    public void setCreditedLimit(String creditedLimit) {
+        this.creditedLimit = creditedLimit;
+    }
+
+    public Long getTerms() {
+        return terms;
+    }
+
+    public void setTerms(Long terms) {
+        this.terms = terms;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}

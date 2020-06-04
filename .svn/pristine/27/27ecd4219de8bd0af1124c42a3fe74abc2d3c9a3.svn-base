@@ -1,0 +1,27 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Departments;
+import com.hyva.hotel.pojo.DepartmentsPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DepartmentsMapper {
+    public static Departments mapPojoToEntity(DepartmentsPojo pojo){
+        Departments departments=new Departments();
+        departments.setId(pojo.getId());
+        departments.setName(pojo.getName());
+        return departments;
+    }
+    public static List<DepartmentsPojo> mapEntityToPojo(List<Departments> departmentsList){
+        List<DepartmentsPojo> list=new ArrayList<>();
+        for(Departments departments:departmentsList) {
+            DepartmentsPojo departmentsPojo = new DepartmentsPojo();
+            departmentsPojo.setId(departments.getId());
+            departmentsPojo.setName(departments.getName());
+            list.add(departmentsPojo);
+        }
+        return list;
+    }
+}
+

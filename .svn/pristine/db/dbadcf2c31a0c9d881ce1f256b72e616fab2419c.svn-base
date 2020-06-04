@@ -1,0 +1,29 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.ExpensesCategory;
+import com.hyva.hotel.pojo.ExpensesCategoryPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class ExpenseCategoryMapper {
+    public static ExpensesCategory mapPojoToEntity(ExpensesCategoryPojo expensesCategoryPojo){
+        ExpensesCategory expensesCategory=new ExpensesCategory();
+        expensesCategory.setId(expensesCategoryPojo.getId());
+        expensesCategory.setName(expensesCategoryPojo.getName());
+
+
+        return expensesCategory;
+    }
+    public static List<ExpensesCategoryPojo> mapEntityToPojo(List<ExpensesCategory> expensesCategoryList){
+        List<ExpensesCategoryPojo> list=new ArrayList<>();
+        for(ExpensesCategory expensesCategory:expensesCategoryList) {
+            ExpensesCategoryPojo expensesCategoryPojo = new ExpensesCategoryPojo();
+            expensesCategoryPojo.setId(expensesCategory.getId());
+            expensesCategoryPojo.setName(expensesCategory.getName());
+            list.add(expensesCategoryPojo);
+        }
+        return list;
+    }
+}

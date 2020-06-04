@@ -1,0 +1,1549 @@
+<div class="modal fade addCustomer" tabindex="-1" id="add_new_country_modal" role="dialog"
+     data-backdrop="static"
+     aria-labelledby="mySmallModalLabel"
+    style="z-index: 1051;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="country-title" class="modal-title">Add Country</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal" name="form">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input type="hidden" ng-model="setupobj.countryId"
+                                           value="{{setupobj.countryId}}"/>
+                                    <label class="col-md-4 col-sm-4 control-label" for="">Country Name<span>*</span></label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="CountryName" name="CountryName" alpha-with-space
+                                               ng-pattern="/[aA-zZ\s]$/" ng-change="countryState(CountryNameText)
+                                                           type="text" placeholder="CountryName"
+                                        ng-model="CountryNameText" maxlength="125"
+                                        ng-value="setupobj.countryName"
+                                        class="form-control input-md" autocomplete="off" required>
+                                        <p class="error" ng-show="form.CountryName.$error.pattern">Alphabets
+                                            only, please.</p>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" for="">Status</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <select name="StatusText" id="StatusText" ng-model="StatusText"
+                                                ng-init="StatusText='Active'" class="form-control input-md">
+                                            <option value="Active">Active</option>
+                                            <option value="InActive">InActive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-toggle="modal" ng-disabled="isDisabled"
+                        data-target=".print-me" ng-disabled="!form.$valid" id="submit" ng-click="saveCountry('add_new_country_modal')">Save
+                </button>
+                <button type="button" class="btn btn-primary" ng-click="removeCountryDetails()"
+                        data-dismiss="modal">Close
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade Student" tabindex="-1"
+     id="add_guests" role="dialog"
+     data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content checkout"
+             width="696px">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="guests-title"
+                    class="modal-title">Add Guests</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal"
+                              name="student">
+                            <fieldset>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active"
+                                         id="sub_step12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label" for="">Firstname</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="firstname" name="firstname" maxlength="32" type="text" placeholder="firstname" ng-model="firstname" alpha-with-space class="form-control input-md" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">Lastname</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="lastname" name="lastname" maxlength="32" type="text" placeholder="lastname" ng-model="lastname" alpha-with-space class="form-control input-md" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Gender</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input type="radio"name="gender" ng-model="gender" value="male">Male
+                                                    <input type="radio" name="gender" ng-model="gender" value="female">Female
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label" for="">Email</label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <input id="email" name="email" maxlength="32" type="text" placeholder="email" ng-model="email" ng-pattern="word" no-special-char="" class="form-control input-md" required>
+                                                    <!--<p class="error" ng-show="mail.email.$error.pattern">Enter Valid MailID</p>-->
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">Address</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="address"
+                                                           name="address"
+                                                           maxlength="150"
+                                                           type="text"
+                                                           placeholder=" address"
+                                                           ng-model="address"
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">Mobile</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="mobile"
+                                                           name="mobile"
+                                                           maxlength="13"
+                                                           type="text"
+                                                           placeholder=" mobile"
+                                                           ng-model="mobile"
+                                                           num-with-out-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">Companyname</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="companyname"
+                                                           name="companyname"
+                                                           maxlength="32"
+                                                           type="text"
+                                                           placeholder="companyname"
+                                                           ng-model="companyname"
+                                                           alpha-with-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 col-sm-6 control-label"
+                                                       for="">Dob<span
+                                                        style="color:red;"></span></label>
+                                                <div class="col-md-6 col-sm-6"
+                                                     style="position:relative;">
+                                                    <p class="input-group">
+                                                        <strong>
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   uib-datepicker-popup="{{format}}"
+                                                                   ng-model="dob"
+                                                                   is-open="popup8.opened"
+                                                                   datepicker-options="dateOptions1"
+                                                                   readonly
+                                                                   ng-required="true"
+                                                                   close-text="Close"
+                                                                   alt-input-formats="altInputFormats"/>
+                                                        </strong>
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                    class="btn btn-default"
+                                                                    ng-click="openDate()">
+                                                                <i class="glyphicon glyphicon-calendar"></i></button>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 col-sm-6 control-label" for="">Country</label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <select class="form-control input-md" ng-model="country" ng-options="country.countryName as country.countryName for country in countryList">
+                                                        <option value="">Select Country</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-sm-2">
+                                                    <button type="button"
+                                                            class="btn btn-primary hi_btn"
+                                                            ng-click="addNewcountryPopulate()">+</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-6 col-sm-6 control-label" for="">Status</label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <select name="Status" id="Status" ng-model="statusText" class="form-control input-md" required>
+                                                        <option value="Active">Active</option>
+                                                        <option value="InActive">InActive</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">Vip</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input type="checkbox" id="vip" name="vip" ng-model="vip" value="yes">Yes
+                                                    <!--<input type="radio"  name="vip" ng-model="vip" value="no">No-->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                            <div align='right'>
+                                <button type="button" class="btn btn-primary" ng-click="saveguests()">Save</button>
+                                <button type="button" class="btn btn-primary" ng-click="removeFloors()" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade addCustomer"
+     tabindex="-1"
+     id="add_new_country_modal"
+     role="dialog"
+     data-backdrop="static"
+     aria-labelledby="mySmallModalLabel"
+    style="z-index: 1051;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="country-title" class="modal-title">Add Country</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal" name="form">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input type="hidden" ng-model="setupobj.countryId" value="{{setupobj.countryId}}"/>
+                                    <label class="col-md-4 col-sm-4 control-label" for="">Country Name<span>*</span></label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="CountryName" name="CountryName"
+                                               alpha-with-space ng-pattern="/[aA-zZ\s]$/" ng-readonly="operation === 'Edit' " type="text" placeholder="CountryName" ng-model="CountryNameText" maxlength="125" ng-value="setupobj.countryName" class="form-control input-md" autocomplete="off" required>
+                                        <p class="error" ng-show="form.CountryName.$error.pattern">Alphabets only, please.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" for="">Status</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <select name="StatusText" id="StatusText" ng-model="StatusText" ng-init="StatusText='Active'" class="form-control input-md">
+                                            <option value="Active">Active</option>
+                                            <option value="InActive">InActive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-toggle="modal"
+                        ng-disabled="isDisabled" data-target=".print-me"
+                        ng-disabled="!form.$valid" ng-click="saveCountry('add_new_country_modal')">Save</button>
+                <button type="button"
+                        class="btn btn-primary"
+                        ng-click="reloadPage()"
+                        data-dismiss="modal">
+                    Close
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade Student" tabindex="-1"
+     id="add_room_types" role="dialog"
+     data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content checkout" width="696px">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="roomtypes-title"
+                    class="modal-title">Add RoomTypes</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal"
+                              name="student">
+                            <fieldset>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active"
+                                         id="sub_step12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Title</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="Title"
+                                                           name="Title"
+                                                           maxlength="32"
+                                                           type="text"
+                                                           placeholder="Title"
+                                                           ng-model="title"
+                                                           alpha-with-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Slug</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="Slug"
+                                                           name="Slug"
+                                                           maxlength="32"
+                                                           type="text"
+                                                           placeholder="Slug"
+                                                           ng-model="Slug"
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Short
+                                                    Code</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="ShortCode"
+                                                           name="ShortCode"
+                                                           maxlength="3"
+                                                           type="text"
+                                                           placeholder="Short Code"
+                                                           ng-model="shortCode"
+                                                           alphanum-without-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Description</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="gradedesc"
+                                                           name="gradedesc"
+                                                           maxlength="150"
+                                                           type="text"
+                                                           placeholder=" Description"
+                                                           ng-model="description"
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Base
+                                                    Occupancy</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <strong>
+                                                        <select class="form-control input-md"
+                                                                ng-model="baseoccupancy"
+                                                                id="baseoccupancy">
+                                                            <option value=""
+                                                                    selected>
+                                                                Select
+                                                                Base
+                                                                Occupancy
+                                                            </option>
+                                                            <option value="1">
+                                                                1
+                                                            </option>
+                                                            <option value="2">
+                                                                2
+                                                            </option>
+                                                            <option value="3">
+                                                                3
+                                                            </option>
+                                                            <option value="4">
+                                                                4
+                                                            </option>
+                                                            <option value="5">
+                                                                5
+                                                            </option>
+                                                            <option value="6">
+                                                                6
+                                                            </option>
+                                                            <option value="7">
+                                                                7
+                                                            </option>
+                                                            <option value="8">
+                                                                8
+                                                            </option>
+                                                            <option value="9">
+                                                                9
+                                                            </option>
+                                                            <option value="10">
+                                                                10
+                                                            </option>
+                                                        </select>
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Higher
+                                                    Occupancy</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <strong>
+                                                        <select class="form-control input-md"
+                                                                ng-model="higheroccupancy"
+                                                                id="higheroccupancy">
+                                                            <option value=""
+                                                                    selected>
+                                                                Select
+                                                                Higher
+                                                                Occupancy
+                                                            </option>
+                                                            <option value="1">
+                                                                1
+                                                            </option>
+                                                            <option value="2">
+                                                                2
+                                                            </option>
+                                                            <option value="3">
+                                                                3
+                                                            </option>
+                                                            <option value="4">
+                                                                4
+                                                            </option>
+                                                            <option value="5">
+                                                                5
+                                                            </option>
+                                                            <option value="6">
+                                                                6
+                                                            </option>
+                                                            <option value="7">
+                                                                7
+                                                            </option>
+                                                            <option value="8">
+                                                                8
+                                                            </option>
+                                                            <option value="9">
+                                                                9
+                                                            </option>
+                                                            <option value="10">
+                                                                10
+                                                            </option>
+                                                        </select>
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Kids
+                                                    Occupancy</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <strong>
+                                                        <select class="form-control input-md"
+                                                                ng-model="Kidsoccupancy"
+                                                                id="Kidsoccupancy">
+                                                            <option value=""
+                                                                    selected>
+                                                                Select
+                                                                Kids
+                                                                Occupancy
+                                                            </option>
+                                                            <option value="0">
+                                                                0
+                                                            </option>
+                                                            <option value="1">
+                                                                1
+                                                            </option>
+                                                            <option value="2">
+                                                                2
+                                                            </option>
+                                                            <option value="3">
+                                                                3
+                                                            </option>
+                                                            <option value="4">
+                                                                4
+                                                            </option>
+                                                            <option value="5">
+                                                                5
+                                                            </option>
+                                                            <option value="6">
+                                                                6
+                                                            </option>
+                                                            <option value="7">
+                                                                7
+                                                            </option>
+                                                            <option value="8">
+                                                                8
+                                                            </option>
+                                                            <option value="9">
+                                                                9
+                                                            </option>
+                                                            <option value="10">
+                                                                10
+                                                            </option>
+                                                        </select>
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Base
+                                                    Price</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="BasePrice"
+                                                           name="BasePrice"
+                                                           maxlength="10"
+                                                           type="text"
+                                                           placeholder=" Base Price"
+                                                           ng-model="baseprice"
+                                                           num-with-out-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">Additional Person Price</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="AdditionalPersonPrice"
+                                                           name="AdditionalPersonPrice"
+                                                           maxlength="10"
+                                                           type="text"
+                                                           placeholder="Additional Person Price"
+                                                           ng-model="additionalpersonprice"
+                                                           num-with-out-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <!--<div class="form-group">-->
+                                                <!--<label class="col-md-6 control-label"-->
+                                                       <!--for="">Extra Bed Price</label>-->
+                                                <!--<div class="col-md-6"-->
+                                                     <!--style="position:relative;">-->
+                                                    <!--<input id="ExtraBedPrice"-->
+                                                           <!--name="ExtraBedPrice"-->
+                                                           <!--maxlength="10"-->
+                                                           <!--type="text"-->
+                                                           <!--placeholder="Extra Bed Price"-->
+                                                           <!--ng-model="extrabedprice"-->
+                                                           <!--num-with-out-space-->
+                                                           <!--class="form-control input-md"-->
+                                                           <!--required>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                            <div align='right'>
+                                <button type="button" class="btn btn-primary" ng-click="saveRoomTypes()">Save</button>
+                                <button type="button" class="btn btn-primary" ng-click="removeFloors()" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade Student" tabindex="-1" id="add_new_departments" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content checkout" width="696px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id = "departments-title" class="modal-title">Add Departments</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal" name="student">
+                            <fieldset>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="sub_step12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label" for=""> Name<span style="color:red;">*</span></label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <input id="name" name="name"  maxlength="32"
+                                                           type="text"  alpha-with-space
+                                                           ng-model="name" ng-pattern="regexp"
+                                                           class="form-control input-md" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  id="submit" ng-click="savedepartments()">Save</button>
+                <button type="button" class="btn btn-primary" ng-click="removeFloors()" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade Student" tabindex="-1" id="add_new_designation" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content checkout" width="696px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id = "designation-title" class="modal-title">Add Designation</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal" name="student">
+                            <fieldset>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="sub_step12">
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label" for=""> Department Name<span style="color:red;">*</span></label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <select class="form-control input-md"
+                                                            ng-model="deptname"
+                                                            ng-options="dept.name as dept.name for dept in departmentsList">
+                                                        <option value="">--Select Department--</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label" for=""> Name<span style="color:red;">*</span></label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <input name="name"  maxlength="32"
+                                                           type="text"   alpha-with-space
+                                                           ng-model="name" ng-pattern="regexp"
+                                                           class="form-control input-md" required>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  id="submit" ng-click="savedesignation()">Save</button>
+                <button type="button" class="btn btn-primary" ng-click="removeFloors()" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade addCustomer" tabindex="-1" id="add_new_country_modal" role="dialog"
+     data-backdrop="static"
+     aria-labelledby="mySmallModalLabel"
+     style="z-index: 1051;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="country-title" class="modal-title">Add Country</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal" name="form">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input type="hidden" ng-model="setupobj.countryId"
+                                           value="{{setupobj.countryId}}"/>
+                                    <label class="col-md-4 col-sm-4 control-label" for="">Country Name
+                                        <span>*</span></label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="CountryName" name="CountryName" alpha-with-space
+                                               ng-pattern="/[aA-zZ\s]$/" ng-change="countryState(CountryNameText)
+                                               type="text" placeholder="CountryName"
+                                        ng-model="CountryNameText" maxlength="125"
+                                        ng-value="setupobj.countryName"
+                                        class="form-control input-md" autocomplete="off" required>
+                                        <p class="error" ng-show="form.CountryName.$error.pattern">Alphabets
+                                            only, please.</p>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" for="">Status</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <select name="StatusText"  ng-model="StatusText"
+                                                ng-init="StatusText='Active'" class="form-control input-md">
+                                            <option value="Active">Active</option>
+                                            <option value="InActive">InActive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-toggle="modal" ng-disabled="isDisabled"
+                        data-target=".print-me" ng-disabled="!form.$valid" id="submit"
+                        ng-click="saveCountry('add_new_country_modal')">Save
+                </button>
+                <button type="button" class="btn btn-primary" ng-click="removeCountryDetails()"
+                        data-dismiss="modal">Close
+                </button>
+
+            </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade State" tabindex="-1" id="add_new_State_modal" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="state-title" class="modal-title">Add State</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <input type="hidden" ng-model="stateObj" value="{{stateObj.id}}"/>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" >Country</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <select id="countryId" name="countryId" ng-model="countryId" ng-options="country.countryName as
+											country.countryName for country in countryList" class="form-control input-md">
+                                            <option value="">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" for="stateName">state </label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="stateNameText" name="stateNameText"
+                                               type="text" placeholder="State Name"
+                                               ng-model="stateNameText"
+                                               class="form-control input-md" autocomplete="off" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" for="">Status</label>
+                                    <div class="col-md-6 col-sm-6" >
+                                        <select name="StatusText"  ng-model="StatusText" ng-init="StatusText='Active'"class="form-control input-md">
+                                            <option value="Active">Active</option>
+                                            <option value="InActive">InActive</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-default" id="submit" data-toggle="modal" ng-disabled="isDisabled"
+                                        data-target=".print-me" ng-click="saveState('add_new_State_modal')">Save
+                                </button>
+                                <button type="button" class="btn btn-default" ng-click="removeStateDetails()" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade addCustomer" tabindex="-1" id="add_new_city_modal" role="dialog"
+     data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="city-title" class="modal-title">Add City</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal" name="form">
+                            <fieldset>
+
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="sub_step12">
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label" for=""> Country</label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <select class="form-control input-md"
+                                                            ng-model="country" ng-change="getStateListBasedonContry(country)"
+                                                            ng-options="country.countryName as country.countryName for country in countryList">
+                                                        <option value="">Select Country</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label" for=""> State</label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <select class="form-control input-md"
+                                                            ng-model="state" ng-change="getCityListBasedonState(state)"
+                                                            ng-options="state.stateName as state.stateName for state in stateList">
+                                                        <option value="">Select State</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label" for=""> Name<span style="color:red;">*</span></label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <input  name="name"  maxlength="32"
+                                                            type="text"  alpha-with-space
+                                                            ng-model="name" ng-pattern="regexp"
+                                                            class="form-control input-md" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default" data-toggle="modal" ng-disabled="isDisabled"
+                        data-target=".print-me" ng-disabled="!form.$valid" id="submit"
+                        ng-click="saveCity('add_new_city_modal')">Save
+                </button>
+                <button type="button" class="btn btn-default" ng-click="removeCountryDetails()"
+                        data-dismiss="modal">Close
+                </button>
+
+            </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade Student" tabindex="-1"
+     id="add_room_types" role="dialog"
+     data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content checkout" width="696px">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="roomtypes-title"
+                    class="modal-title">Add RoomTypes</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal"
+                              name="student">
+                            <fieldset>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active"
+                                         id="sub_step12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Title</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="Title"
+                                                           name="Title"
+                                                           maxlength="32"
+                                                           type="text"
+                                                           placeholder="Title"
+                                                           ng-model="title"
+                                                           alpha-with-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Slug</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="Slug"
+                                                           name="Slug"
+                                                           maxlength="32"
+                                                           type="text"
+                                                           placeholder="Slug"
+                                                           ng-model="Slug"
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Short
+                                                    Code</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="ShortCode"
+                                                           name="ShortCode"
+                                                           maxlength="3"
+                                                           type="text"
+                                                           placeholder="Short Code"
+                                                           ng-model="shortCode"
+                                                           alphanum-without-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Description</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="gradedesc"
+                                                           name="gradedesc"
+                                                           maxlength="150"
+                                                           type="text"
+                                                           placeholder=" Description"
+                                                           ng-model="description"
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Base
+                                                    Occupancy</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <strong>
+                                                        <select class="form-control input-md"
+                                                                ng-model="baseoccupancy"
+                                                                id="baseoccupancy">
+                                                            <option value=""
+                                                                    selected>
+                                                                Select
+                                                                Base
+                                                                Occupancy
+                                                            </option>
+                                                            <option value="1">
+                                                                1
+                                                            </option>
+                                                            <option value="2">
+                                                                2
+                                                            </option>
+                                                            <option value="3">
+                                                                3
+                                                            </option>
+                                                            <option value="4">
+                                                                4
+                                                            </option>
+                                                            <option value="5">
+                                                                5
+                                                            </option>
+                                                            <option value="6">
+                                                                6
+                                                            </option>
+                                                            <option value="7">
+                                                                7
+                                                            </option>
+                                                            <option value="8">
+                                                                8
+                                                            </option>
+                                                            <option value="9">
+                                                                9
+                                                            </option>
+                                                            <option value="10">
+                                                                10
+                                                            </option>
+                                                        </select>
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Higher
+                                                    Occupancy</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <strong>
+                                                        <select class="form-control input-md"
+                                                                ng-model="higheroccupancy"
+                                                                id="higheroccupancy">
+                                                            <option value=""
+                                                                    selected>
+                                                                Select
+                                                                Higher
+                                                                Occupancy
+                                                            </option>
+                                                            <option value="1">
+                                                                1
+                                                            </option>
+                                                            <option value="2">
+                                                                2
+                                                            </option>
+                                                            <option value="3">
+                                                                3
+                                                            </option>
+                                                            <option value="4">
+                                                                4
+                                                            </option>
+                                                            <option value="5">
+                                                                5
+                                                            </option>
+                                                            <option value="6">
+                                                                6
+                                                            </option>
+                                                            <option value="7">
+                                                                7
+                                                            </option>
+                                                            <option value="8">
+                                                                8
+                                                            </option>
+                                                            <option value="9">
+                                                                9
+                                                            </option>
+                                                            <option value="10">
+                                                                10
+                                                            </option>
+                                                        </select>
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Kids
+                                                    Occupancy</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <strong>
+                                                        <select class="form-control input-md"
+                                                                ng-model="Kidsoccupancy"
+                                                                id="Kidsoccupancy">
+                                                            <option value=""
+                                                                    selected>
+                                                                Select
+                                                                Kids
+                                                                Occupancy
+                                                            </option>
+                                                            <option value="0">
+                                                                0
+                                                            </option>
+                                                            <option value="1">
+                                                                1
+                                                            </option>
+                                                            <option value="2">
+                                                                2
+                                                            </option>
+                                                            <option value="3">
+                                                                3
+                                                            </option>
+                                                            <option value="4">
+                                                                4
+                                                            </option>
+                                                            <option value="5">
+                                                                5
+                                                            </option>
+                                                            <option value="6">
+                                                                6
+                                                            </option>
+                                                            <option value="7">
+                                                                7
+                                                            </option>
+                                                            <option value="8">
+                                                                8
+                                                            </option>
+                                                            <option value="9">
+                                                                9
+                                                            </option>
+                                                            <option value="10">
+                                                                10
+                                                            </option>
+                                                        </select>
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Base
+                                                    Price</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="BasePrice"
+                                                           name="BasePrice"
+                                                           maxlength="10"
+                                                           type="text"
+                                                           placeholder=" Base Price"
+                                                           ng-model="baseprice"
+                                                           num-with-out-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Additional
+                                                    Person
+                                                    Price</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="AdditionalPersonPrice"
+                                                           name="AdditionalPersonPrice"
+                                                           maxlength="10"
+                                                           type="text"
+                                                           placeholder="Additional Person Price"
+                                                           ng-model="additionalpersonprice"
+                                                           num-with-out-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <!--<div class="form-group">-->
+                                                <!--<label class="col-md-6 control-label"-->
+                                                       <!--for="">Extra Bed Price</label>-->
+                                                <!--<div class="col-md-6"-->
+                                                     <!--style="position:relative;">-->
+                                                    <!--<input id="ExtraBedPrice"-->
+                                                           <!--name="ExtraBedPrice"-->
+                                                           <!--maxlength="10"-->
+                                                           <!--type="text"-->
+                                                           <!--placeholder="Extra Bed Price"-->
+                                                           <!--ng-model="extrabedprice"-->
+                                                           <!--num-with-out-space-->
+                                                           <!--class="form-control input-md"-->
+                                                           <!--required>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                            <div align='right'>
+                                <button type="button" class="btn btn-primary" ng-click="saveRoomTypes()">Save</button>
+                                <button type="button" class="btn btn-primary" ng-click="removeFloors()" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade Student" tabindex="-1"
+     id="add_room_types" role="dialog"
+     data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content checkout" width="696px">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="roomtypes-title"
+                    class="modal-title">Add RoomTypes</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal"
+                              name="student">
+                            <fieldset>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active"
+                                         id="sub_step12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Title</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="Title"
+                                                           name="Title"
+                                                           maxlength="32"
+                                                           type="text"
+                                                           placeholder="Title"
+                                                           ng-model="title"
+                                                           alpha-with-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Slug</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="Slug"
+                                                           name="Slug"
+                                                           maxlength="32"
+                                                           type="text"
+                                                           placeholder="Slug"
+                                                           ng-model="Slug"
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Short
+                                                    Code</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="ShortCode"
+                                                           name="ShortCode"
+                                                           maxlength="3"
+                                                           type="text"
+                                                           placeholder="Short Code"
+                                                           ng-model="shortCode"
+                                                           alphanum-without-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Description</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="gradedesc"
+                                                           name="gradedesc"
+                                                           maxlength="150"
+                                                           type="text"
+                                                           placeholder=" Description"
+                                                           ng-model="description"
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Base
+                                                    Occupancy</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <strong>
+                                                        <select class="form-control input-md"
+                                                                ng-model="baseoccupancy"
+                                                                id="baseoccupancy">
+                                                            <option value=""
+                                                                    selected>
+                                                                Select
+                                                                Base
+                                                                Occupancy
+                                                            </option>
+                                                            <option value="1">
+                                                                1
+                                                            </option>
+                                                            <option value="2">
+                                                                2
+                                                            </option>
+                                                            <option value="3">
+                                                                3
+                                                            </option>
+                                                            <option value="4">
+                                                                4
+                                                            </option>
+                                                            <option value="5">
+                                                                5
+                                                            </option>
+                                                            <option value="6">
+                                                                6
+                                                            </option>
+                                                            <option value="7">
+                                                                7
+                                                            </option>
+                                                            <option value="8">
+                                                                8
+                                                            </option>
+                                                            <option value="9">
+                                                                9
+                                                            </option>
+                                                            <option value="10">
+                                                                10
+                                                            </option>
+                                                        </select>
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Higher
+                                                    Occupancy</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <strong>
+                                                        <select class="form-control input-md"
+                                                                ng-model="higheroccupancy"
+                                                                id="higheroccupancy">
+                                                            <option value=""
+                                                                    selected>
+                                                                Select
+                                                                Higher
+                                                                Occupancy
+                                                            </option>
+                                                            <option value="1">
+                                                                1
+                                                            </option>
+                                                            <option value="2">
+                                                                2
+                                                            </option>
+                                                            <option value="3">
+                                                                3
+                                                            </option>
+                                                            <option value="4">
+                                                                4
+                                                            </option>
+                                                            <option value="5">
+                                                                5
+                                                            </option>
+                                                            <option value="6">
+                                                                6
+                                                            </option>
+                                                            <option value="7">
+                                                                7
+                                                            </option>
+                                                            <option value="8">
+                                                                8
+                                                            </option>
+                                                            <option value="9">
+                                                                9
+                                                            </option>
+                                                            <option value="10">
+                                                                10
+                                                            </option>
+                                                        </select>
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Kids
+                                                    Occupancy</label>
+                                                <div class="col-md-6">
+                                                    <strong>
+                                                        <select class="form-control input-md"
+                                                                ng-model="Kidsoccupancy"
+                                                                id="Kidsoccupancy">
+                                                            <option value=""
+                                                                    selected>
+                                                                Select
+                                                                Kids
+                                                                Occupancy
+                                                            </option>
+                                                            <option value="0">0</option>
+                                                            <option value="1">
+                                                                1
+                                                            </option>
+                                                            <option value="2">
+                                                                2
+                                                            </option>
+                                                            <option value="3">
+                                                                3
+                                                            </option>
+                                                            <option value="4">
+                                                                4
+                                                            </option>
+                                                            <option value="5">
+                                                                5
+                                                            </option>
+                                                            <option value="6">
+                                                                6
+                                                            </option>
+                                                            <option value="7">
+                                                                7
+                                                            </option>
+                                                            <option value="8">
+                                                                8
+                                                            </option>
+                                                            <option value="9">
+                                                                9
+                                                            </option>
+                                                            <option value="10">
+                                                                10
+                                                            </option>
+                                                        </select>
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Base
+                                                    Price</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="BasePrice"
+                                                           name="BasePrice"
+                                                           maxlength="10"
+                                                           type="text"
+                                                           placeholder=" Base Price"
+                                                           ng-model="baseprice"
+                                                           num-with-out-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-6 control-label"
+                                                       for="">
+                                                    Additional
+                                                    Person
+                                                    Price</label>
+                                                <div class="col-md-6"
+                                                     style="position:relative;">
+                                                    <input id="AdditionalPersonPrice"
+                                                           name="AdditionalPersonPrice"
+                                                           maxlength="10"
+                                                           type="text"
+                                                           placeholder="Additional Person Price"
+                                                           ng-model="additionalpersonprice"
+                                                           num-with-out-space
+                                                           class="form-control input-md"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <!--<div class="form-group">-->
+                                            <!--<label class="col-md-6 control-label"-->
+                                            <!--for="">Extra Bed Price</label>-->
+                                            <!--<div class="col-md-6"-->
+                                            <!--style="position:relative;">-->
+                                            <!--<input id="ExtraBedPrice"-->
+                                            <!--name="ExtraBedPrice"-->
+                                            <!--maxlength="10"-->
+                                            <!--type="text"-->
+                                            <!--placeholder="Extra Bed Price"-->
+                                            <!--ng-model="extrabedprice"-->
+                                            <!--num-with-out-space-->
+                                            <!--class="form-control input-md"-->
+                                            <!--required>-->
+                                            <!--</div>-->
+                                            <!--</div>-->
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                            <div align='right'>
+                                <button type="button" class="btn btn-primary" ng-click="saveRoomTypes()">Save</button>
+                                <button type="button" class="btn btn-primary" ng-click="removeFloors()" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

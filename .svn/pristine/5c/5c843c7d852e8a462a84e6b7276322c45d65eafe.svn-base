@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row" >
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>Reports</div>
+            </h2>
+        </div>
+
+        <div class="row">
+
+
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="expensereportLink"  href="#!/expensereport"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Expense</div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="guestsreportLink"  href="#!/guestsreport"  tabindex="-1"> <i class=" fa fa-users" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Guests</div>
+                </div>
+                </a>
+            </div>
+            <!--<div class="col-md-3 rep_list_info">-->
+                <!--<div class="custom_notif">-->
+                    <!--&nbsp;&nbsp;&nbsp; <a id="couponreportLink"  href="#!/couponreport"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>-->
+                    <!--<div class="rep_info">Coupon</div>-->
+                <!--</div>-->
+                <!--</a>-->
+            <!--</div>-->
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="occupancyreportLink"  href="#!/occupancyreport"  tabindex="-1"> <i class="fa fa-book" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">Occupancy</div>
+                </div>
+                </a>
+            </div>
+
+            <div class="col-md-3 rep_list_info">
+                <div class="custom_notif">
+                    &nbsp;&nbsp;&nbsp; <a id="guestsreportlist"  href="#!/guestsreportlist"  tabindex="-1"> <i class=" fa fa-users" style="font-size:60px;color:#3c8dbc;" aria-hidden="true"></i></a>
+                    <div class="rep_info">GuestsList Report</div>
+                </div>
+                </a>
+            </div>
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

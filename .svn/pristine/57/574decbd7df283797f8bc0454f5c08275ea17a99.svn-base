@@ -1,0 +1,73 @@
+package com.hyva.sms;
+import com.hyva.hotel.entities.FormSetUp;
+import com.hyva.hotel.entities.SMSServer;
+import com.hyva.hotel.entities.SmsConfigurator;
+import com.hyva.hotel.mapper.MailMapper;
+import com.hyva.hotel.pojo.SMSServerDTO;
+import com.hyva.hotel.pojo.SmsConfiguratorDto;
+import com.hyva.hotel.respositories.SMSServerRepository;
+import com.hyva.hotel.service.SmsService;
+import com.hyva.hotel.respositories.FormSetupRepository;
+import com.hyva.hotel.respositories.SmsConfiguratorRepository;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class MessageService {
+    @Autowired
+    FormSetupRepository formSetupRepository;
+    @Autowired
+    SmsConfiguratorRepository smsConfiguratorRepository;
+    @Autowired
+    SMSServerRepository smsServerRepository;
+    @Autowired
+    SmsService smsService;
+
+    @Transactional
+    public String getMobNumber(SmsConfiguratorDto smsConfiguratorDto) throws IOException {
+        FormSetUp formterms =formSetupRepository.findAllByTypename(smsConfiguratorDto.getType());
+        SmsConfigurator smsConfigurator=smsConfiguratorRepository.findOne(formterms.getSmsId());
+        if (StringUtils.equals(smsConfigurator.getEnableSms(),"true")) {
+            smsService.sendSms(smsConfiguratorDto.getOrderNo(), smsConfiguratorDto.getPhoneNumber(), smsConfigurator.getMessage());
+        }
+        return smsConfiguratorDto.getType();
+    }
+
+    public SmsConfiguratorDto saveSmsConfig(SmsConfiguratorDto smsConfiguratorDto) {
+        FormSetUp formsetup = formSetupRepository.findOne(smsConfiguratorDto.getFormsetupId());
+        try {
+                SmsConfigurator smsConfigurator = smsConfiguratorRepository.findOne(formsetup.getSmsId());
+                smsConfigurator.setMessage(smsConfiguratorDto.getMessage());
+                smsConfiguratorRepository.save(smsConfigurator);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return smsConfiguratorDto;
+    }
+
+    public List<SMSServerDTO> getSmsServerList() {
+        List<SMSServer> list = smsServerRepository.findAll();
+        List<SMSServerDTO> smsServerDTOList = MailMapper.mapSMSServerEntityToPojo(list);
+        return smsServerDTOList;
+    }
+    public SMSServer saveSMSDetails(SMSServerDTO smsServerDTO) {
+        SMSServer smsServer = MailMapper.mapSMSServerPojoToEntity(smsServerDTO);
+        smsServerRepository.save(smsServer);
+        return smsServer;
+    }
+    public List<SMSServerDTO> editSMSDetails() {
+        List<SMSServer> smsServer = new ArrayList<>();
+        smsServer = smsServerRepository.findAll();
+        List<SMSServerDTO> smsServerList = MailMapper.mapSMSServerEntityToPojo(smsServer);
+        return smsServerList;
+    }
+    public void deleteSMSDetails(Long id) {
+        smsServerRepository.delete(id);
+    }
+}

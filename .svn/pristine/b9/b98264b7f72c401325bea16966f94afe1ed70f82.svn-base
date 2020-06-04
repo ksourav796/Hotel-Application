@@ -1,0 +1,682 @@
+app.directive("addNewModalCtrl", function ($http, $timeout, $window, Notification) {
+    return {
+        restrict: 'E',
+        templateUrl: "partials/addNewModal.html",
+        link: function ($scope) {
+
+            $scope.addguests = function () {
+                $scope.id="0";
+                $scope.firstname="";
+                $scope.lastname="";
+                $scope.gender="";
+                $scope.email="";
+                $scope.password="";
+                $scope.address="";
+                $scope.mobile="";
+                $scope.companyname="";
+                $scope.dob="";
+                $scope.country=null;
+                $scope.statusText="Active";
+                $scope.vip="";
+
+                $scope.getGuestsList();
+                $scope.getCountryList();
+                $("#submit").text("Save");
+                $('#guests-title').text("Add Guests");
+                $("#add_guests").modal('show');
+
+            };
+            $scope.saveguests = function () {
+                if ($scope.firstname == ''||$scope.firstname == null||angular.isUndefined($scope.firstname) ) {
+                    Notification.error({message: 'FirstName can not be empty', positionX: 'center', delay: 2000})
+                }
+                else if($scope.lastname == ''||angular.isUndefined($scope.firstname)||$scope.lastname==null){
+                    Notification.error({message: 'Lastname can not be empty', positionX: 'center', delay: 2000})
+                }
+                else if($scope.mobile == ''||angular.isUndefined($scope.mobile)||$scope.mobile==null){
+                    Notification.error({message: 'Mobile Number can not be empty', positionX: 'center', delay: 2000})
+                }
+                else if($scope.country == ''||angular.isUndefined($scope.country)||$scope.country==null){
+                    Notification.error({message: 'Please Select Country', positionX: 'center', delay: 2000})
+                }
+                else {
+                    var saveGuestDetails;
+                    saveGuestDetails = {
+                        id: $scope.id,
+                        firstname: $scope.firstname,
+                        lastname: $scope.lastname,
+                        gender: $scope.gender,
+                        email: $scope.email,
+                        password: $scope.password,
+                        address: $scope.address,
+                        mobile: $scope.mobile,
+                        companyname: $scope.companyname,
+                        dob: $scope.dob,
+                        status: $scope.statusText,
+                        country: $scope.country,
+                        state_id: $scope.stateid,
+                        vip: $scope.vip
+                    };
+                    $http.post($scope.bshimServerURL + "/saveguests", angular.toJson(saveGuestDetails)).then(function (response) {
+                        var data = response.data;
+                        if (data == "" || data == 'undefined') {
+                            Notification.error({message: ' Already exists', positionX: 'center', delay: 2000});
+                        }
+                        else {
+                            $("#add_guests").modal('hide');
+                            $scope.getGuestsList();
+                            if ($scope.operation == 'Edit') {
+                                Notification.success({
+                                    message: 'Guests is Updated successfully',
+                                    positionX: 'center',
+                                    delay: 2000
+                                });
+
+                            } else {
+                                Notification.success({
+                                    message: 'Guests  Created  successfully',
+                                    positionX: 'center',
+                                    delay: 2000
+                                });
+                            }
+
+                        }
+                    }, function (error) {
+                        Notification.error({
+                            message: 'Something went wrong, please try again',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    });
+                };
+            }
+
+            $scope.addNewcountryPopulate = function () {
+                $scope.CountryNameText="";
+                $scope.StatusText = "Active";
+                $("#submit").text("Save");
+                $('#country-title').text("Add Country");
+                $("#add_new_country_modal").modal('show');
+            };
+
+            $scope.saveCountry = function () {
+                if ($scope.CountryNameText == ''||$scope.CountryNameText == null||angular.isUndefined($scope.CountryNameText)) {
+                    Notification.warning({message: 'Country Name can not be empty', positionX: 'center', delay: 2000});
+                }
+                else {
+                    var saveCountryDetails;
+                    saveCountryDetails = {
+                        countryId: $scope.countryId,
+                        countryName: $scope.CountryNameText,
+                        status: $scope.StatusText
+                    };
+                    $http.post($scope.bshimServerURL+ '/saveCountry', angular.toJson(saveCountryDetails, "Create")).then(function (response, status, headers, config) {
+                        var data = response.data;
+                        if (data == "") {
+                            Notification.error({message: 'Already exists', positionX: 'center', delay: 2000});
+                        }
+                        else {
+                            $scope.getCountryList();
+                            $("#add_new_country_modal").modal('hide');
+                            if (!angular.isUndefined(data) && data !== null) {
+                                $scope.countrySearchText = "";
+                            }
+                            Notification.success({
+                                message: 'Country Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+                    }, function (error) {
+                        Notification.error({
+                            message: 'Something went wrong, please try again',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    });
+
+                }
+                ;
+            };
+            $scope.getCountryList();
+
+
+
+            $scope.addroomtypes = function () {
+                $scope.id="0";
+                $scope.title="";
+                $scope.Slug="";
+                $scope.shortCode="";
+                $scope.description="";
+                $scope.baseoccupancy="";
+                $scope.higheroccupancy="";
+                $scope.Kidsoccupancy="";
+                $scope.baseprice="";
+                $scope.additionalpersonprice="";
+                $scope.extrabedprice="";
+                $scope.getRoomTypesList();
+                $("#add_room_types").modal('show');
+
+            };
+            $scope.saveRoomTypes = function () {
+                if ($scope.title == '' || $scope.title == null || angular.isUndefined($scope.title)) {
+                    Notification.error({message: 'Title cannot be empty', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.baseoccupancy == '' || $scope.baseoccupancy == null || angular.isUndefined($scope.baseoccupancy)) {
+                    Notification.error({message: 'Baseoccupancy cannot be empty', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.higheroccupancy == '' || $scope.higheroccupancy == null || angular.isUndefined($scope.higheroccupancy)) {
+                    Notification.error({message: 'Higheroccupancy cannot be empty', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.baseprice == '' || $scope.baseprice == null || angular.isUndefined($scope.baseprice)) {
+                    Notification.error({message: 'Base Price cannot be empty', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.additionalpersonprice == '' || $scope.additionalpersonprice == null || angular.isUndefined($scope.additionalpersonprice)) {
+                    Notification.error({message: 'Additional Person Price cannot be empty', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.additionalpersonprice <=0) {
+                    Notification.error({message: 'Additional Person Price Should not be zero', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.baseprice<=0) {
+                    Notification.error({message: 'Base Price Should not be zero', positionX: 'center', delay: 2000})
+                }
+                else {
+                    var saveRoomTypesDetails;
+                    saveRoomTypesDetails = {
+                        id: $scope.id,
+                        title: $scope.title,
+                        slug: $scope.Slug,
+                        shortcode: $scope.shortCode,
+                        description: $scope.description,
+                        base_occupancy: $scope.baseoccupancy,
+                        higher_occupancy: $scope.higheroccupancy,
+                        kids_occupancy: $scope.Kidsoccupancy,
+                        base_price: $scope.baseprice,
+                        additional_person: $scope.additionalpersonprice,
+                        // extra_bed_price: $scope.extrabedprice
+                    };
+                    $http.post($scope.bshimServerURL + "/saveRoomTypes", angular.toJson(saveRoomTypesDetails)).then(function (response) {
+                        var data = response.data;
+                        if (data == "") {
+                            Notification.error({
+                                message: 'Already exists',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        } else {
+                            $("#add_room_types").modal('hide');
+                            $scope.getRoomTypesList();
+                            if ($scope.operation == 'Edit') {
+                                Notification.success({
+                                    message: 'RoomTypes is Updated successfully',
+                                    positionX: 'center',
+                                    delay: 2000
+                                });
+
+                            } else {
+                                Notification.success({
+                                    message: 'RoomTypes is Created  successfully',
+                                    positionX: 'center',
+                                    delay: 2000
+                                });
+                            }
+
+                        }
+                    }, function (error) {
+                        Notification.error({
+                            message: 'Something went wrong, please try again',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    });
+                };
+            }
+
+            $scope.addNewcountryPopulate = function () {
+                $scope.countryId = 0;
+                $scope.CountryNameText = "";
+                $scope.StatusText = "Active";
+                $("#submit").text("Save");
+                $('#country-title').text("Add Country");
+                $("#add_new_country_modal").modal('show');
+            };
+
+            $scope.saveCountry = function () {
+                if ($scope.CountryNameText === '') {
+                    Notification.warning({message: 'Country Name can not be empty', positionX: 'center', delay: 2000});
+                }
+                else {
+                    $scope.isDisabled = true;
+                    $timeout(function () {
+                        $scope.isDisabled = false;
+                    }, 3000)
+                    var saveCountryDetails;
+                    saveCountryDetails = {
+                        countryId: $scope.countryId,
+                        countryName: $scope.CountryNameText,
+                        status: $scope.StatusText
+                    };
+                    $http.post($scope.bshimServerURL + '/saveCountry', angular.toJson(saveCountryDetails, "Create")).then(function (response, status, headers, config) {
+                        var data = response.data;
+                        if (data == "") {
+                            Notification.error({message: 'Already exists', positionX: 'center', delay: 2000});
+                        }
+                        else {
+                            $("#add_new_country_modal").modal('hide');
+                            $scope.getCountryList();
+                            if (!angular.isUndefined(data) && data !== null) {
+                                $scope.countrySearchText = "";
+                            }
+                            Notification.success({
+                                message: 'Country Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+                    }, function (error) {
+                        Notification.error({
+                            message: 'Something went wrong, please try again',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    });
+
+                }
+                ;
+            };
+            $scope.getCountryList();
+
+
+            $scope.adddepartments = function () {
+                $scope.id=0;
+                $scope.name="";
+                $("#submit").text("Save");
+                $('#departments-title').text("Add Departments");
+                $("#add_new_departments").modal('show');
+
+            };
+
+            $scope.savedepartments = function () {
+                if ($scope.name == '' || $scope.name == null || angular.isUndefined($scope.name)) {
+                    Notification.error({message: 'Department Name can not be empty', positionX: 'center', delay: 2000});
+                }
+                else {
+                    var savedepartmentsDetails;
+                    savedepartmentsDetails = {
+                        id: $scope.id,
+                        name: $scope.name,
+
+                    };
+                    $http.post($scope.bshimServerURL + "/savedepartments", angular.toJson(savedepartmentsDetails)).then(function (response) {
+                        var data = response.data;
+                        if (data == "" || data == 'undefined'|| data ==null) {
+                            Notification.error({message: ' Already exists', positionX: 'center', delay: 2000});
+                        }
+                        else {
+                            $("#add_new_departments").modal('hide');
+                            $scope.getdepartmentsList();
+                            if ($scope.operation == 'Edit') {
+                                Notification.success({
+                                    message: 'Departments is Updated successfully',
+                                    positionX: 'center',
+                                    delay: 2000
+                                });
+
+                            } else {
+                                Notification.success({
+                                    message: 'Departments is Created  successfully',
+                                    positionX: 'center',
+                                    delay: 2000
+                                });
+                            }
+
+                        }
+                    }, function (error) {
+                        Notification.error({
+                            message: 'Something went wrong, please try again',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    });
+                };
+            }
+            $scope.adddesignation = function () {
+                $scope.id=0;
+                $scope.name="";
+                $scope.deptname=null;
+                $scope.getdepartmentsList();
+                $scope.getDesignationListBasedOnDepartment($scope.deptname);
+                $("#submit").text("Save");
+                $('#designation-title').text("Add Designation");
+                $("#add_new_designation").modal('show');
+
+            };
+
+            $scope.savedesignation = function () {
+                if ($scope.deptname == '' || $scope.deptname == null || angular.isUndefined($scope.deptname)) {
+                    Notification.error({message: 'Department can not be empty', positionX: 'center', delay: 2000});
+                }
+                else if ($scope.name == '' || $scope.name == null || angular.isUndefined($scope.name)) {
+                    Notification.error({message: 'Designation Name can not be empty', positionX: 'center', delay: 2000});
+                }
+                else {
+                    var savedesignationDetails;
+                    savedesignationDetails = {
+                        id: $scope.id,
+                        name: $scope.name,
+                        deptname: $scope.deptname,
+
+                    };
+                    $http.post($scope.bshimServerURL + "/savedesignation", angular.toJson(savedesignationDetails)).then(function (response) {
+                        var data = response.data;
+                        if (data == "" || data == 'undefined'|| data ==null) {
+                            Notification.error({message: ' Already exists', positionX: 'center', delay: 2000});
+                        }
+                        else {
+                            $("#add_new_designation").modal('hide');
+                            $scope.getDesignationListBasedOnDepartment();
+                            if ($scope.operation == 'Edit') {
+                                Notification.success({
+                                    message: 'Designation is Updated successfully',
+                                    positionX: 'center',
+                                    delay: 2000
+                                });
+
+                            } else {
+                                Notification.success({
+                                    message: 'Designation is Created  successfully',
+                                    positionX: 'center',
+                                    delay: 2000
+                                });
+                            }
+
+                        }
+                    }, function (error) {
+                        Notification.error({
+                            message: 'Something went wrong, please try again',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    });
+                };
+            }
+
+            $scope.addNewcountryPopulate = function () {
+                $('#country-title').text("Add Country");
+                $scope.countryId=0;
+                $scope.CountryNameText="";
+                $scope.StatusText = "Active";
+                $("#submit").text("Save");
+                $('#country-title').text("Add Country");
+                $("#add_new_country_modal").modal('show');
+            };
+
+            $scope.saveCountry = function () {
+                if ($scope.CountryNameText == ''||$scope.CountryNameText==null||angular.isUndefined($scope.CountryNameText)) {
+                    Notification.error({message: 'Country Name can not be empty', positionX: 'center', delay: 2000});
+                }
+                else {
+                    var saveCountryDetails;
+                    saveCountryDetails = {
+                        countryId: $scope.countryId,
+                        countryName: $scope.CountryNameText,
+                        status: $scope.StatusText
+                    };
+                    $http.post($scope.bshimServerURL+ '/saveCountry', angular.toJson(saveCountryDetails, "Create")).then(function (response, status, headers, config) {
+                        var data = response.data;
+                        if (data == "") {
+                            Notification.error({message: 'Already exists', positionX: 'center', delay: 2000});
+                        }
+                        else {
+                            $scope.getCountryList();
+                            $("#add_new_country_modal").modal('hide');
+                            if (!angular.isUndefined(data) && data !== null) {
+                                $scope.countrySearchText = "";
+                            }
+                            Notification.success({
+                                message: 'Country Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+                    }, function (error) {
+                        Notification.error({
+                            message: 'Something went wrong, please try again',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    });
+
+                }
+                ;
+            };
+            $scope.getCountryList();
+
+            $scope.addNewState = function () {
+                $scope.id=0;
+                $scope.stateNameText="";
+                $scope.countryId=null;
+                $scope.StatusText = "Active";
+                $scope.getCountryList();
+                $scope.getStateListBasedonContry();
+                $("#submit").text("Save");
+                $('#state-title').text("Add State");
+                $("#add_new_State_modal").modal('show');
+            };
+
+            $scope.saveState = function () {
+                if ($scope.countryId == ''||$scope.countryId==null||angular.isUndefined($scope.countryId)) {
+                    Notification.error({message: 'Please Select Country', positionX: 'center', delay: 2000});
+                }
+                else if ($scope.stateNameText == ''||$scope.stateNameText==null||angular.isUndefined($scope.stateNameText)) {
+                    Notification.error({message: 'State can not be empty', positionX: 'center', delay: 2000});
+                }
+                else if ($scope.StatusText == ''||$scope.StatusText==null||angular.isUndefined($scope.StatusText)) {
+                    Notification.error({message: 'Status  can not be empty', positionX: 'center', delay: 2000});
+                } else {
+                    $scope.isDisabled = true;
+                    $timeout(function () {
+                        $scope.isDisabled = false;
+                    }, 3000)
+                    var saveStateDetails;
+                    saveStateDetails = {
+                        id: $scope.id,
+                        status: $scope.StatusText,
+                        stateName: $scope.stateNameText,
+                        country: $scope.countryId
+                    };
+                    $http.post($scope.bshimServerURL + '/saveState', angular.toJson(saveStateDetails, "Create")).then(function (response, status, headers, config) {
+                        var data = response.data;
+                        if (data == "") {
+                            Notification.error({message: 'Already exists', positionX: 'center', delay: 2000});
+                        }
+                        else {
+                            $scope.removeStateDetails();
+                            $scope.getStateList();
+                            $("#add_new_State_modal").modal('hide');
+                            if (!angular.isUndefined(data) && data !== null) {
+                                $scope.stateNameText = "";
+                            }
+                            Notification.success({
+                                message: 'State  Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+                    }, function (error) {
+                        Notification.error({
+                            message: 'Something went wrong, please try again',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    });
+
+                }
+                ;
+            };
+
+
+            $scope.addNewcityPopulate = function () {
+                $scope.id=0
+                $scope.name="";
+                $scope.country=null;
+                $scope.city=null;
+                $scope.state=null;
+                $scope.getCountryList();
+                $("#submit").text("Save");
+                $('#city-title').text("Add City");
+                $("#add_new_city_modal").modal('show');
+            };
+
+
+            $scope.saveCity = function () {
+                if ($scope.country == ''||$scope.country == null||angular.isUndefined($scope.country)) {
+                    Notification.error({message: 'Country  can not be empty', positionX: 'center', delay: 2000});
+                }
+                else if ($scope.state == ''||$scope.state == null||angular.isUndefined($scope.state)) {
+                    Notification.error({message: 'State  can not be empty', positionX: 'center', delay: 2000});
+                }
+                else if ($scope.name == ''||$scope.name == null||angular.isUndefined($scope.name)) {
+                    Notification.error({message: 'City Name  can not be empty', positionX: 'center', delay: 2000});
+                }
+                else {
+                    var saveCityDetails;
+                    saveCityDetails = {
+                        id:$scope.id,
+                        country:$scope.country,
+                        name:$scope.name,
+                        state:$scope.state
+                    };
+                    $http.post($scope.bshimServerURL+ '/saveCity', angular.toJson(saveCityDetails, "Create")).then(function (response, status, headers, config) {
+                        var data = response.data;
+                        if (data == "") {
+                            Notification.error({message: 'Already exists', positionX: 'center', delay: 2000});
+                        }
+                        else {
+                            $scope.getCityList();
+                            $("#add_new_city_modal").modal('hide');
+                            if (!angular.isUndefined(data) && data !== null) {
+                                $scope.countrySearchText = "";
+                            }
+                            Notification.success({
+                                message: 'City Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+                    }, function (error) {
+                        Notification.error({
+                            message: 'Something went wrong, please try again',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    });
+
+                };
+            };
+
+            $scope.addroomtypes = function () {
+                $scope.id = "0";
+                $scope.title = "";
+                $scope.Slug = "";
+                $scope.shortCode = "";
+                $scope.description = "";
+                $scope.baseoccupancy = "";
+                $scope.higheroccupancy = "";
+                $scope.Kidsoccupancy = "";
+                $scope.baseprice = "";
+                $scope.additionalpersonprice = "";
+                $scope.extrabedprice = "";
+                $scope.getRoomTypesList();
+                $("#add_room_types").modal('show');
+
+            };
+            $scope.saveRoomTypes = function () {
+                if ($scope.title == '' || $scope.title == null || angular.isUndefined($scope.title)) {
+                    Notification.error({message: 'Title cannot be empty', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.baseoccupancy == '' || $scope.baseoccupancy == null || angular.isUndefined($scope.baseoccupancy)) {
+                    Notification.error({message: 'Baseoccupancy cannot be empty', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.higheroccupancy == '' || $scope.higheroccupancy == null || angular.isUndefined($scope.higheroccupancy)) {
+                    Notification.error({message: 'Higheroccupancy cannot be empty', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.baseprice == '' || $scope.baseprice == null || angular.isUndefined($scope.baseprice)) {
+                    Notification.error({message: 'Base Price cannot be empty', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.additionalpersonprice == '' || $scope.additionalpersonprice == null || angular.isUndefined($scope.additionalpersonprice)) {
+                    Notification.error({message: 'Additional Person Price cannot be empty', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.additionalpersonprice <=0) {
+                    Notification.error({message: 'Additional Person Price Should not be zero', positionX: 'center', delay: 2000})
+                }
+                else if ($scope.baseprice<=0) {
+                    Notification.error({message: 'Base Price Should not be zero', positionX: 'center', delay: 2000})
+                }
+                else {
+                    var saveRoomTypesDetails;
+                    saveRoomTypesDetails = {
+                        id: $scope.id,
+                        title: $scope.title,
+                        slug: $scope.Slug,
+                        shortcode: $scope.shortCode,
+                        description: $scope.description,
+                        base_occupancy: $scope.baseoccupancy,
+                        higher_occupancy: $scope.higheroccupancy,
+                        kids_occupancy: $scope.Kidsoccupancy,
+                        base_price: $scope.baseprice,
+                        additional_person: $scope.additionalpersonprice
+                        // extra_bed_price: $scope.extrabedprice
+                    };
+                    $http.post($scope.bshimServerURL + "/saveRoomTypes", angular.toJson(saveRoomTypesDetails)).then(function (response) {
+                        var data = response.data;
+                        if (data == "") {
+                            Notification.error({
+                                message: 'Already exists',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        } else {
+                            $("#add_room_types").modal('hide');
+                            $scope.getRoomTypesList();
+                            if ($scope.operation == 'Edit') {
+                                Notification.success({
+                                    message: 'RoomTypes is Updated successfully',
+                                    positionX: 'center',
+                                    delay: 2000
+                                });
+
+                            } else {
+                                Notification.success({
+                                    message: 'RoomTypes is Created  successfully',
+                                    positionX: 'center',
+                                    delay: 2000
+                                });
+                            }
+
+                        }
+                    }, function (error) {
+                        Notification.error({
+                            message: 'Something went wrong, please try again',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    });
+                };
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    }
+});

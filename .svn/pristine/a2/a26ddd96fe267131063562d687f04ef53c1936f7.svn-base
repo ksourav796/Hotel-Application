@@ -1,0 +1,87 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.sql.Date;
+
+@Entity
+@Table(name = "housekeeping")
+public class HouseKeeping {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long id;
+    private Long room_id;
+    private Long housekeeping_status;
+    private Long assigned_to;
+    private String room_availblity;
+    private String remark;
+    private Date date;
+    private String roomstatus;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getRoom_id() {
+        return room_id;
+    }
+
+    public void setRoom_id(Long room_id) {
+        this.room_id = room_id;
+    }
+
+    public Long getHousekeeping_status() {
+        return housekeeping_status;
+    }
+
+    public void setHousekeeping_status(Long housekeeping_status) {
+        this.housekeeping_status = housekeeping_status;
+    }
+
+    public Long getAssigned_to() {
+        return assigned_to;
+    }
+
+    public void setAssigned_to(Long assigned_to) {
+        this.assigned_to = assigned_to;
+    }
+
+    public String getRoom_availblity() {
+        return room_availblity;
+    }
+
+    public void setRoom_availblity(String room_availblity) {
+        this.room_availblity = room_availblity;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getRoomstatus() {
+        return roomstatus;
+    }
+
+    public void setRoomstatus(String roomstatus) {
+        this.roomstatus = roomstatus;
+    }
+}

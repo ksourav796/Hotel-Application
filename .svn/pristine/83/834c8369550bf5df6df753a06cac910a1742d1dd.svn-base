@@ -1,0 +1,50 @@
+package com.hyva.hotel.pojo;
+
+public class RelOrderTaxesPojo {
+
+    private Long order_id;
+    private Long tax_id;
+    private double total;
+    private String name;
+    private double rate;
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(Long order_id) {
+        this.order_id = order_id;
+    }
+
+    public Long getTax_id() {
+        return tax_id;
+    }
+
+    public void setTax_id(Long tax_id) {
+        this.tax_id = tax_id;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+}

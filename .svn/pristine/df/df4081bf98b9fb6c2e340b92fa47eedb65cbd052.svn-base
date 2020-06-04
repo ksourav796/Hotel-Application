@@ -1,0 +1,286 @@
+app.controller('taxManagerController',
+    function($scope, $http, $location, $filter, Notification, ngTableParams,  $timeout, $window, $rootScope) {
+        console.log("aaaaaaaaaaaaa");
+        $scope.bshimServerURL = "/hotel";
+        $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        $scope.customerId = 1;
+        $scope.userRights = [];
+        $scope.operation = 'Create';
+        $scope.customer = 1;
+        $scope.today = new Date();
+        // $scope.regEX="/^[0-9]+(\.[0-9]{1,2})?$/";
+        $scope.reloadPage = function () {
+            $window.location.reload();
+        };
+
+        $scope.getPaginatedTaxManagerList = function (page) {
+            switch (page) {
+                case 'firstPage':
+                    $scope.firstPage = true;
+                    $scope.lastPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'lastPage':
+                    $scope.lastPage = true;
+                    $scope.firstPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'nextPage':
+                    $scope.isNext = true;
+                    $scope.isPrev = false;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.pageNo = $scope.pageNo + 1;
+                    break;
+                case 'prevPage':
+                    $scope.isPrev = true;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.isNext = false;
+                    $scope.pageNo = $scope.pageNo - 1;
+                    break;
+                default:
+                    $scope.firstPage = true;
+                    $scope.lastPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isPrev = false;
+                    $scope.isNext = false;
+            }
+            var paginationDetails;
+            paginationDetails={
+                firstPage: $scope.firstPage,
+                lastPage: $scope.lastPage,
+                pageNo: $scope.pageNo,
+                prevPage: $scope.isPrev,
+                nextPage: $scope.isNext
+            }
+            if(angular.isUndefined($scope.searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getPaginatedTaxManagerList?searchText='+$scope.searchText,angular.toJson(paginationDetails)).then(function (response) {
+                var data = response.data;
+                console.log(data);
+                $scope.cityList = data.list;
+                $scope.first = data.firstPage;
+                $scope.last = data.lastPage;
+                $scope.prev = data.prevPage;
+                $scope.next = data.nextPage;
+                $scope.pageNo = data.pageNo;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.getPaginatedTaxManagerList();
+
+
+
+
+        $scope.getTaxList = function (searchText) {
+            if(angular.isUndefined(searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getTaxList').then(function (response) {
+                var data = response.data.object;
+                $scope.taxList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+        $scope.getTaxList();
+
+        $scope.EditTax = function (data) {
+            $scope.id=data.id;
+            $scope.name = data.name;
+            $scope.igst = data.igst;
+            $scope.sgst = data.sgst;
+            $scope.cgst = data.cgst;
+            $scope.taxRate = data.rate;
+            $scope.status = data.status;
+            $scope.code = data.code;
+            $scope.taxType = data.type;
+            $scope.minAmount=data.minimum_amount
+            $scope.maxAmount = data.max_amount;
+            $scope.operation = 'Edit';
+            $("#submit").text("Update");
+            $('#tax-title').text("Edit Tax");
+            $("#add_new_taxManager").modal('show');
+
+        }, function (error) {
+            Notification.error({message: 'Something went wrong, please try again', positionX: 'center', delay: 2000});
+        };
+
+
+
+
+        $scope.addTax = function () {
+            $scope.id="0";
+            $scope.name="";
+            $scope.code="";
+            $scope.taxType="Fixed";
+            $scope.taxRate="";
+            $scope.cgst="";
+            $scope.sgst="";
+            $scope.igst="";
+            $scope.status="Active";
+            $scope.minAmount="";
+            $scope.maxAmount="";
+            $("#submit").text("Save");
+            $('#tax-title').text("Add Tax");
+            $("#add_new_taxManager").modal('show');
+
+        };
+
+        $scope.backconfiguration=function(){
+            $window.location.href='/home#!/adminstrative'
+        };
+
+        $scope.importPopup = function(){
+            $("#import_Taxmanager").modal('show');
+        }
+
+        $scope.saveTaxmanagerImport = function(){
+            $scope.isDisabled= true;
+            var formElement = document.getElementById("TaxDetails");
+            var TaxDetails = new FormData(formElement);
+            $http.post($scope.bshimServerURL + '/TaxImportSave',TaxDetails,
+                { headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity,
+                }).then(function (response) {
+                    $("#import_Taxmanager").modal('hide');
+                $scope.getTaxList();
+                $scope.getPaginatedTaxManagerList();
+                    $scope.isDisabled= false;
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                    $scope.isDisabled= false;
+                }
+            )
+        }
+
+        $scope.saveTax = function () {
+            if ($scope.name == '' || $scope.name == null || angular.isUndefined($scope.name)) {
+                Notification.error({message: 'Please Enter Tax Name ', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.taxRate == '' || $scope.taxRate == null || angular.isUndefined($scope.taxRate)) {
+                Notification.error({message: 'Please Enter TaxRate ', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.cgst == '' || $scope.cgst == null || angular.isUndefined($scope.cgst)) {
+                Notification.error({message: 'Please Enter Cgst', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.igst == '' || $scope.igst == null || angular.isUndefined($scope.igst)) {
+                Notification.error({message: 'Please Enter Igst ', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.minAmount == '' || $scope.minAmount == null || angular.isUndefined($scope.minAmount)) {
+                Notification.error({message: 'Please Enter MinAmount', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.maxAmount == '' || $scope.maxAmount == null || angular.isUndefined($scope.maxAmount)) {
+                Notification.error({message: 'Please Enter MaxAmount', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.minAmount>=  $scope.maxAmount ) {
+                Notification.error({message: 'maxAmount should not less than minAmount', positionX: 'center', delay: 2000})
+            }
+            else {
+                var saveTaxDetails;
+                saveTaxDetails = {
+                    id: $scope.id,
+                    name: $scope.name,
+                    code: $scope.code,
+                    type: $scope.taxType,
+                    rate: $scope.taxRate,
+                    cgst: $scope.cgst,
+                    sgst: $scope.sgst,
+                    igst: $scope.igst,
+                    minimum_amount: $scope.minAmount,
+                    max_amount: $scope.maxAmount,
+                    status:$scope.status
+
+                };
+                $http.post($scope.bshimServerURL + "/saveTax", angular.toJson(saveTaxDetails)).then(function (response) {
+                    var data = response.data;
+                    if (data == "" || data == 'undefined') {
+                        Notification.error({message: ' Already exists', positionX: 'center', delay: 2000});
+                    }
+                    else {
+                        $("#add_new_taxManager").modal('hide');
+                        $scope.getTaxList();
+                        if ($scope.operation == 'Edit') {
+                            Notification.success({
+                                message: 'Tax is Updated successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+
+                        } else {
+                            Notification.success({
+                                message: 'Tax is Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+
+                    }
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                });
+            };
+        }
+        $scope.DeleteTaxManager=function(data) {
+            bootbox.confirm({
+                title: "Alert",
+                message: "Do you want to Continue ?",
+                buttons: {
+                    confirm: {
+                        label: 'OK'
+                    },
+                    cancel: {
+                        label: 'Cancel'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $http.post($scope.bshimServerURL + '/getDeleteTaxManager?id=' + data.id).then(function (response) {
+                            var data = response.data;
+                            Notification.success({
+                                message: 'Tax Manager deleted  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.getTaxList();
+                        }, function (error) {
+                            Notification.error({
+                                message: 'Something went wrong, please try again',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.isDisabled = false;
+                        });
+                    }
+                }
+            });
+        };
+
+
+
+
+    });

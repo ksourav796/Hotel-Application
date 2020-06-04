@@ -1,0 +1,104 @@
+app.controller('occupancyreportCtrl',
+    function($scope, $http, $location, $filter, Notification, ngTableParams,  $timeout, $window, $rootScope) {
+        console.log("aaaaaaaaaaaaa");
+        $scope.bshimServerURL = "/hotel";
+        $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        $scope.customerId = 1;
+        $scope.userRights = [];
+        $scope.operation = 'Create';
+        $scope.customer = 1;
+        $scope.today = new Date();
+        $scope.operation='create';
+        $scope.fromDate=new Date();
+        $scope.toDate=new Date();
+
+
+
+        $scope.backreports=function(){
+            $window.location.href='/home#!/reports'
+        };
+
+        $scope.format = 'dd/MM/yyyy';
+
+        $scope.open1 = function () {
+            $scope.popup1.opened = true;
+        };
+
+        $scope.popup1 = {
+            opened: false
+        };
+        $scope.open2 = function () {
+            $scope.popup2.opened = true;
+        };
+
+        $scope.popup2 = {
+            opened: false
+        };
+
+
+
+        $scope.drawLineChart = function(){
+            var data = {};
+            $scope.lineLabel = [];
+            $scope.lineOption = {
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: true,
+                    text: 'Daily Occupancy'
+                }
+            };
+
+            angular.forEach($scope.occupancyList, function (val) {
+                if(data.hasOwnProperty(val.date)){
+                    data[val.date] += parseFloat(1);
+                }else{
+                    data[val.date] = parseFloat(1);
+                }
+                if($scope.lineLabel.indexOf(val.date) == -1){
+                    $scope.lineLabel.push(val.date);
+                }
+
+            });
+
+            $scope.lineLabel.sort();
+            var array = [];
+            for(var i=0; i< $scope.lineLabel.length; i++ ){
+                if(!data[$scope.lineLabel[i]]){
+                    array.push(0);
+                }else{
+                    array.push(data[$scope.lineLabel[i]])
+                }
+            }
+            $scope.lineData = [array];
+            $scope.lineSeries = ['Occupancy'];
+        };
+
+        $scope.getOccupancyReport = function (searchText) {
+            if(angular.isUndefined(searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getOccupancyReport?fromDate='+$scope.fromDate +'&toDate='+$scope.toDate).then(function (response) {
+                var data = response.data;
+                $scope.guestList = data;
+                $scope.drawLineChart();
+
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+
+
+
+
+
+
+
+
+    });

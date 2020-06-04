@@ -1,0 +1,39 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Expanses;
+import com.hyva.hotel.pojo.ExpensesPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class ExpenseMapper {
+    public static Expanses mapPojoToEntity(ExpensesPojo expensesPojo){
+        Expanses expanses=new Expanses();
+        expanses.setId(expensesPojo.getId());
+        expanses.setTitle(expensesPojo.getTitle());
+        expanses.setAmount(expensesPojo.getAmount());
+        expanses.setDate(expensesPojo.getDate());
+        expanses.setRemarks(expensesPojo.getRemarks());
+        expanses.setExpanses_category_id(expensesPojo.getExpanses_category_id());
+        expanses.setAttachment(expensesPojo.getAttachment());
+
+
+        return expanses;
+    }
+    public static List<ExpensesPojo> mapEntityToPojo(List<Expanses> expansesList){
+        List<ExpensesPojo> list=new ArrayList<>();
+        for(Expanses expanses:expansesList) {
+            ExpensesPojo expensesPojo = new ExpensesPojo();
+            expensesPojo.setId(expanses.getId());
+            expensesPojo.setTitle(expanses.getTitle());
+            expensesPojo.setAmount(expanses.getAmount());
+            expensesPojo.setDate(expanses.getDate());
+            expensesPojo.setRemarks(expanses.getRemarks());
+            expensesPojo.setExpanses_category_id(expanses.getExpanses_category_id());
+            expensesPojo.setAttachment(expanses.getAttachment());
+            list.add(expensesPojo);
+        }
+        return list;
+    }
+}

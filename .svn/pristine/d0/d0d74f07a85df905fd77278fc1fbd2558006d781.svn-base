@@ -1,0 +1,20 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.SalesDiscount;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+
+public interface SalesDiscountRepository extends JpaRepository<SalesDiscount, Long> {
+    List<SalesDiscount> findByItemNameAndIdNotIn(String name, Long id);
+    List<SalesDiscount> findByItemName(String name);
+    SalesDiscount findFirstByItemNameContaining(String searchText,Sort sort);
+    List<SalesDiscount> findAllByItemNameContaining(String searchText, Pageable pageable);
+    SalesDiscount findFirstBy(Sort sort);
+    List<SalesDiscount> findAllBy(Pageable pageable);
+    List<SalesDiscount> findAllByItemNameContaining(String searchText);
+}
+

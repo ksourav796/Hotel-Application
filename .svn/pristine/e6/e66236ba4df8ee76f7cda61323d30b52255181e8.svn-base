@@ -1,0 +1,44 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.taxes;
+import com.hyva.hotel.pojo.TaxPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TaxMapper {
+    public static taxes mapPojoToEntity(TaxPojo taxPojo){
+        taxes taxes=new taxes();
+        taxes.setId(taxPojo.getId());
+        taxes.setName(taxPojo.getName());
+        taxes.setCode(taxPojo.getCode());
+        taxes.setType(taxPojo.getType());
+        taxes.setCgst(taxPojo.getCgst());
+        taxes.setSgst(taxPojo.getSgst());
+        taxes.setIgst(taxPojo.getIgst());
+        taxes.setMax_amount(taxPojo.getMax_amount());
+        taxes.setMinimum_amount(taxPojo.getMinimum_amount());
+        taxes.setRate(taxPojo.getRate());
+        taxes.setStatus(taxPojo.getStatus());
+        return taxes;
+    }
+    public static List<TaxPojo> mapEntityToPojo(List<taxes> taxesList){
+        List<TaxPojo>list=new ArrayList<>();
+        for(taxes taxes:taxesList) {
+            TaxPojo taxPojo = new TaxPojo();
+            taxPojo.setId(taxes.getId());
+            taxPojo.setName(taxes.getName());
+            taxPojo.setCode(taxes.getCode());
+            taxPojo.setType(taxes.getType());
+            taxPojo.setCgst(taxes.getCgst());
+            taxPojo.setSgst(taxes.getSgst());
+            taxPojo.setIgst(taxes.getIgst());
+            taxPojo.setMax_amount(taxes.getMax_amount());
+            taxPojo.setMinimum_amount(taxes.getMinimum_amount());
+            taxPojo.setRate(taxes.getRate());
+            taxPojo.setStatus(taxes.getStatus());
+            list.add(taxPojo);
+        }
+        return list;
+    }
+}

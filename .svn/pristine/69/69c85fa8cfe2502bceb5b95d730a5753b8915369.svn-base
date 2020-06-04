@@ -1,0 +1,278 @@
+app.controller('paidServicesController',
+    function($scope, $http, $location, $filter, Notification, ngTableParams,  $timeout, $window, $rootScope) {
+        console.log("aaaaaaaaaaaaa");
+        $scope.bshimServerURL = "/hotel";
+        $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        $scope.customerId = 1;
+        $scope.userRights = [];
+        $scope.operation = 'Create';
+        $scope.customer = 1;
+        $scope.today = new Date();
+        $scope.firstPage = true;
+        $scope.lastPage = false;
+        $scope.pageNo = 0;
+        $scope.prevPage = false;
+        $scope.isPrev = false;
+        $scope.isNext = false;
+
+
+        $scope.reloadPage = function () {
+            $window.location.reload();
+        };
+        $scope.getRoomTypesList = function () {
+            $http.post($scope.bshimServerURL + '/getRoomTypesList').then(function (response) {
+                var data = response.data.object;
+                $scope.roomtypesList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.backconfiguration=function(){
+            $window.location.href='/home#!/configuration'
+        };
+
+        $scope.importPopup = function(){
+            $("#import_PaidServices").modal('show');
+        }
+
+        $scope.savePaidServicesImport = function(){
+            $scope.isDisabled= true;
+            var formElement = document.getElementById("paidservicesDetails");
+            var paidservicesDetails = new FormData(formElement);
+            $http.post($scope.bshimServerURL + '/paidservicesImportSave',paidservicesDetails,
+                { headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity,
+                }).then(function (response) {
+                $scope.getPaidServiceList();
+                $scope.getPaginatedPaidList();
+                $("#import_PaidServices").modal('hide');
+                    $scope.isDisabled= false;
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                    $scope.isDisabled= false;
+                }
+            )
+        }
+
+        $scope.getPaidServiceList = function (searchText) {
+            if(angular.isUndefined(searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getPaidServiceList').then(function (response) {
+                var data = response.data.object;
+                $scope.paidServicesList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+        $scope.getPaginatedPaidList = function (page) {
+            switch (page) {
+                case 'firstPage':
+                    $scope.firstPage = true;
+                    $scope.lastPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'lastPage':
+                    $scope.lastPage = true;
+                    $scope.firstPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'nextPage':
+                    $scope.isNext = true;
+                    $scope.isPrev = false;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.pageNo = $scope.pageNo + 1;
+                    break;
+                case 'prevPage':
+                    $scope.isPrev = true;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.isNext = false;
+                    $scope.pageNo = $scope.pageNo - 1;
+                    break;
+                default:
+                    $scope.firstPage = true;
+                    $scope.lastPage = false;
+                    $scope.pageNo =0;
+                    $scope.isPrev = false;
+                    $scope.isNext = false;
+            }
+            var paginationDetails;
+            paginationDetails={
+                firstPage: $scope.firstPage,
+                lastPage: $scope.lastPage,
+                pageNo: $scope.pageNo,
+                prevPage: $scope.isPrev,
+                nextPage: $scope.isNext
+            }
+            if(angular.isUndefined($scope.searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getPaginatedPaidList?searchText='+$scope.searchText,angular.toJson(paginationDetails)).then(function (response) {
+                var data = response.data;
+                console.log(data);
+                $scope.paidServicesList = data.list;
+                $scope.first = data.firstPage;
+                $scope.last = data.lastPage;
+                $scope.prev = data.prevPage;
+                $scope.next = data.nextPage;
+                $scope.pageNo = data.pageNo;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+        $scope.getPaginatedPaidList();
+
+        $scope.addPaidServices = function () {
+            $scope.id="0";
+            $scope.title="";
+            $scope.RoomType=null;
+            $scope.priceType=null;
+            $scope.Price="";
+            $scope.status="Active";
+            $scope.desc="";
+            $scope.shortDescription="";
+            // $scope.getFloorsList();
+            $scope.getRoomTypesList();
+            $("#submit").text("Save");
+            $('#paidservices-title').text("Add Paid Services");
+            $("#add_new_paidservices").modal('show');
+
+        };
+        $scope.savePaidServices = function () {
+            if ($scope.title == '' || $scope.title == null || angular.isUndefined($scope.title)) {
+                Notification.error({message: 'Please Enter Title ', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.RoomType == '' || $scope.RoomType == null || angular.isUndefined($scope.RoomType)) {
+                Notification.error({message: 'Please Select RoomType ', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.priceType == '' || $scope.priceType == null || angular.isUndefined($scope.priceType)) {
+                Notification.error({message: 'Please Select PriceType', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.Price == '' || $scope.Price == null || angular.isUndefined($scope.Price)) {
+                Notification.error({message: 'Please Enter Price ', positionX: 'center', delay: 2000})
+            }
+            else {
+                var savePaidServices;
+                savePaidServices = {
+                    id: $scope.id,
+                    title: $scope.title,
+                    price_type: $scope.priceType,
+                    price: $scope.Price,
+                    roomTypeId: $scope.RoomType,
+                    status: $scope.status,
+                    description: $scope.desc,
+                    short_description: $scope.shortDescription
+
+                };
+                $http.post($scope.bshimServerURL + "/savePaidServices", angular.toJson(savePaidServices)).then(function (response) {
+                    var data = response.data;
+                    if (data == "" || data == 'undefined') {
+                        Notification.error({message: ' Already exists', positionX: 'center', delay: 2000});
+                    }
+                    else {
+                        $("#add_new_paidservices").modal('hide');
+                        $scope.getPaginatedPaidList();
+                        if ($scope.operation == 'Edit') {
+                            Notification.success({
+                                message: 'Paid Services is Updated successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+
+                        } else {
+                            Notification.success({
+                                message: 'Paid Services is Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+
+                    }
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                });
+            };
+        }
+        $scope.EditPaidServices = function (data) {
+            $scope.id=data.id;
+            $scope.title = data.title;
+            $scope.desc = data.description;
+            $scope.Price = data.price;
+            $scope.shortDescription = data.short_description;
+            $scope.status = data.status;
+            $scope.priceType = data.price_type;
+            $scope.RoomType = data.roomTypeId;
+            $scope.getRoomTypesList();
+            $scope.operation = 'Edit';
+            $("#submit").text("Update");
+            $('#paidservices-title').text("Edit Services");
+            $("#add_new_paidservices").modal('show');
+
+        }, function (error) {
+            Notification.error({message: 'Something went wrong, please try again', positionX: 'center', delay: 2000});
+        };
+
+
+        $scope.DeletePaidServices=function(data) {
+            bootbox.confirm({
+                title: "Alert",
+                message: "Do you want to Continue ?",
+                buttons: {
+                    confirm: {
+                        label: 'OK'
+                    },
+                    cancel: {
+                        label: 'Cancel'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $http.post($scope.bshimServerURL + '/getDeletePaidServices?id=' + data.id).then(function (response) {
+                            var data = response.data;
+                            Notification.success({
+                                message: 'Paid Services deleted  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.getPaginatedPaidList();
+                        }, function (error) {
+                            Notification.error({
+                                message: 'Something went wrong, please try again',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.isDisabled = false;
+                        });
+                    }
+                }
+            });
+        };
+
+    });

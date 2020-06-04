@@ -1,0 +1,18 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.Currency1;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+public interface CurrencyRepository extends JpaRepository<Currency1,Long> {
+    List<Currency1> findAllByStatus(String status);
+    Currency1 findByCurrencyName(String currencyName);
+    Currency1 findByCurrencyNameAndCurrencyIdNotIn(String name,Long id);
+    Currency1 findFirstByCurrencyNameContaining(String searchText,Sort sort);
+    List<Currency1> findAllByCurrencyNameContaining(String searchText,Pageable pageable);
+    Currency1 findFirstBy(Sort sort);
+    List<Currency1> findAllBy(Pageable pageable);
+    List<Currency1> findAllByCurrencyNameContaining(String searchText);
+}

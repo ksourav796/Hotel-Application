@@ -1,0 +1,29 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Designation;
+import com.hyva.hotel.pojo.DesignationPojo;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DesignationsMapper {
+    public static Designation mapPojoToEntity(DesignationPojo pojo){
+        Designation designation=new Designation();
+        designation.setId(pojo.getId());
+        designation.setName(pojo.getName());
+        designation.setDeptname(pojo.getDeptname());
+        return designation;
+    }
+
+    public static List<DesignationPojo> mapEntityToPojo(List<Designation> designations) {
+       List< DesignationPojo> list=new ArrayList<>();
+       for(Designation designation:designations){
+           DesignationPojo designationPojo=new DesignationPojo();
+           designationPojo.setId(designation.getId());
+           designationPojo.setName(designation.getName());
+           designationPojo.setDeptname(designation.getDeptname());
+           list.add(designationPojo);
+       }
+       return list;
+    }
+}
+

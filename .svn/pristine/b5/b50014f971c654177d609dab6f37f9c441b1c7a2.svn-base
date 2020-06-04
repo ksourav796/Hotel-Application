@@ -1,0 +1,798 @@
+app.controller('bookingsController',
+    function ($scope, $rootScope, $http, $location, $window, $filter, Notification) {
+        $scope.hotelServerURL = "/hotel";
+        $scope.bshimServerURL = "/hotel";
+        $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        $scope.customerId = 1;
+        $scope.pricePerNightList = [];
+        $scope.totalPricePerNightList = [];
+        $scope.relOrderPaidServiceList = [];
+        $scope.operation = 'Create';
+        $scope.customer = 1;
+        $scope.today = new Date();
+
+        $scope.reloadPage = function () {
+            $window.location.reload();
+        };
+
+        $scope.dateOptions = {
+            minDate: new Date()
+        };
+
+        $scope.format = 'dd/MM/yyyy';
+        $scope.openDate1 = function () {
+            $scope.popup1.opened = true;
+        };
+
+        $scope.popup1 = {
+            opened: false
+        };
+
+        $scope.addpayment = function () {
+            $scope.ordernumber=$scope.CheckOutOrderObj.order_no;
+            $scope.addeddate=$filter('date')(new Date(),'MM/dd/yyyy');
+
+            $("#payment_modal").modal('show');
+        };
+
+        $scope.getCountryList = function (type) {
+            if (angular.isUndefined(type)) {
+                type = "";
+            }
+            $http.post($scope.bshimServerURL + '/getCountryList?&type=' + type).then(function (response) {
+                var data = response.data;
+                var i = 0;
+                $scope.countryList = data;
+                $scope.listStatus = true;
+                angular.forEach($scope.countryList, function (value, key) {
+                    if (value.countryName.toUpperCase() == type.toUpperCase()) {
+                        if (value.status == 'InActive') {
+                            i++;
+                        }
+                    }
+                })
+                if (i > 0) {
+                    Notification.warning({
+                        message: 'country Became InActive',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                }
+
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+
+        $scope.addNewcountryPopulate = function () {
+            $scope.CountryNameText = "";
+            $scope.StatusText = "Active";
+            $("#submit").text("Save");
+            $('#country-title').text("Add Country");
+            $("#add_new_country_modal").modal('show');
+        };
+
+        $scope.saveCountry = function () {
+            if ($scope.CountryNameText == '' || $scope.CountryNameText == null || angular.isUndefined($scope.CountryNameText)) {
+                Notification.warning({message: 'Country Name can not be empty', positionX: 'center', delay: 2000});
+            }
+            else {
+                var saveCountryDetails;
+                saveCountryDetails = {
+                    countryId: $scope.countryId,
+                    countryName: $scope.CountryNameText,
+                    status: $scope.StatusText
+                };
+                $http.post($scope.bshimServerURL + '/saveCountry', angular.toJson(saveCountryDetails, "Create")).then(function (response, status, headers, config) {
+                    var data = response.data;
+                    if (data == "") {
+                        Notification.error({message: 'Already exists', positionX: 'center', delay: 2000});
+                    }
+                    else {
+                        $scope.getCountryList();
+                        $("#add_new_country_modal").modal('hide');
+                        if (!angular.isUndefined(data) && data !== null) {
+                            $scope.countrySearchText = "";
+                        }
+                        Notification.success({
+                            message: 'Country Created  successfully',
+                            positionX: 'center',
+                            delay: 2000
+                        });
+                    }
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                });
+
+            }
+            ;
+        };
+        $scope.getCountryList();
+
+        $scope.addguests = function () {
+            $scope.id = "0";
+            $scope.firstname = "";
+            $scope.lastname = "";
+            $scope.gender = "";
+            $scope.email = "";
+            $scope.password = "";
+            $scope.address = "";
+            $scope.mobile = "";
+            $scope.companyname = "";
+            $scope.dob = "";
+            $scope.country = null;
+            $scope.statusText = "Active";
+            $scope.vip = "";
+
+            $scope.getGuestsList();
+            $scope.getCountryList();
+            $("#add_guests").modal('show');
+
+        };
+        $scope.saveguests = function () {
+            if ($scope.firstname == '' || $scope.firstname == null || angular.isUndefined($scope.firstname)) {
+                Notification.error({message: 'FirstName can not be empty', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.lastname == '' || angular.isUndefined($scope.firstname) || $scope.lastname == null) {
+                Notification.error({message: 'Lastname can not be empty', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.email == '' || angular.isUndefined($scope.email) || $scope.email == null) {
+                Notification.error({message: 'Email can not be empty', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.mobile == '' || angular.isUndefined($scope.mobile) || $scope.mobile == null) {
+                Notification.error({message: 'Mobile Number can not be empty', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.country == '' || angular.isUndefined($scope.country) || $scope.country == null) {
+                Notification.error({message: 'Please Select Country', positionX: 'center', delay: 2000})
+            }
+            else {
+                var saveGuestDetails;
+                saveGuestDetails = {
+                    id: $scope.id,
+                    firstname: $scope.firstname,
+                    lastname: $scope.lastname,
+                    gender: $scope.gender,
+                    email: $scope.email,
+                    password: $scope.password,
+                    address: $scope.address,
+                    mobile: $scope.mobile,
+                    companyname: $scope.companyname,
+                    dob: $scope.dob,
+                    status: $scope.statusText,
+                    country: $scope.country,
+                    state_id: $scope.stateid,
+                    vip: $scope.vip
+                };
+                $http.post($scope.bshimServerURL + "/saveguests", angular.toJson(saveGuestDetails)).then(function (response) {
+                    var data = response.data;
+                    if (data == "" || data == 'undefined') {
+                        Notification.error({message: ' Already exists', positionX: 'center', delay: 2000});
+                    }
+                    else {
+                        $("#add_guests").modal('hide');
+                        $scope.getGuestsList();
+                        if ($scope.operation == 'Edit') {
+                            Notification.success({
+                                message: 'Guests is Updated successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+
+                        } else {
+                            Notification.success({
+                                message: 'Guests  Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+
+                    }
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                });
+            }
+            ;
+        }
+        $scope.format = 'dd/MM/yyyy';
+        $scope.openDate = function () {
+            $scope.popup8.opened = true;
+        };
+
+        $scope.popup8 = {
+            opened: false
+        };
+
+
+        $scope.getGuestsList = function (searchText) {
+            if (angular.isUndefined(searchText)) {
+                $scope.searchText = "";
+            }
+            $http.post($scope.bshimServerURL + '/getGuestsList').then(function (response) {
+                var data = response.data.object;
+                $scope.guestsList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+
+
+        $scope.next_wizardEdit = function (acId, grdID) {
+            if (acId == null || grdID == null || acId == "" || grdID == "") {
+                Notification.error({
+                    message: 'Select Grade and Academic Year',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            } else {
+                $("#sub_step12").removeClass("in active");
+                $("#sub_step22").addClass("tab-pane fade in active");
+                $("#next").hide();
+                $("#back").show();
+            }
+
+        }
+        $scope.back_wizardEdit = function () {
+            $("#sub_step22").removeClass("in active");
+            $("#sub_step12").addClass("tab-pane fade in active");
+            $("#next").show();
+            $("#back").hide();
+        }
+        $scope.today = new Date();
+        $scope.today1 = function () {
+            $scope.dateOfBirth = new Date();
+            $scope.dobAdmission = new Date();
+            $scope.joinDate = new Date();
+
+        };
+        $scope.today1();
+        $scope.format = 'dd/MM/yyyy';
+        $scope.openDate1 = function () {
+            $scope.popup1.opened = true;
+        };
+
+        $scope.popup1 = {
+            opened: false
+        };
+
+        $scope.openDate2 = function () {
+            $scope.popup2.opened = true;
+        };
+
+        $scope.popup2 = {
+            opened: false
+        };
+
+
+        $scope.getRoomTypesList = function () {
+            $http.post($scope.hotelServerURL + '/getRoomTypesList').then(function (response) {
+                var data = response.data.object;
+                $scope.roomtypesList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.getRoomsList = function () {
+            $http.post($scope.hotelServerURL + '/getRoomsList').then(function (response) {
+                var data = response.data.object;
+                console.log("roomsList")
+                console.log(data);
+                $scope.roomsList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.newCheckIn = function () {
+            $scope.guests = null;
+            $scope.adults = "";
+            $scope.checkOut = "";
+            $scope.couponamt = 0;
+            $scope.totalamtaftrdisct = 0;
+            $scope.kids = "";
+            $scope.roomTypeId = null;
+            $scope.roomId = null;
+            $scope.checkIn = "";
+            $scope.getRoomTypesList();
+            $scope.getRoomsList();
+            $scope.getGuestsList();
+            $('#student-title').text("Booking form");
+            $("#add_CheckIn_modal").modal('show');
+        };
+
+
+        $scope.newcheckout = function (id, paymentstatus,bookingstatus) {
+            // if (paymentstatus == "pending"&&bookingstatus=="Advance") {
+            if (paymentstatus == "pending") {
+                $http.post($scope.hotelServerURL + '/getordersobj?id=' + id).then(function (response) {
+                    var data = response.data.object.ordersObj;
+                    $scope.CheckOutOrderObj = data;
+                    console.log($scope.CheckOutOrderObj);
+                    $scope.CheckOutRelOrderPriceList = response.data.object.relOrdersPricesList;
+                    $scope.CheckOutRelOrderTaxesList = response.data.object.relOrdersTaxesList;
+                    $scope.CheckOutRelOrderServicesList = response.data.object.relOrdersServicesList;
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                })
+                $('#checkout-title').text("CheckOut form");
+                $("#add_new_CheckOut_modal").modal('show');
+            }
+            // else {
+            //     Notification.warning({
+            //         message: 'It Already Checked',
+            //         positionX: 'center',
+            //         delay: 2000
+            //     });
+            // }
+        };
+
+        $scope.addnewcheckout=function () {
+            $scope.orderId = $scope.CheckOutOrderObj.id;
+            $scope.ordernumber = $scope.CheckOutOrderObj.order_no;
+            $scope.addeddate = $scope.CheckOutOrderObj.check_in;
+            $scope.amount = $scope.CheckOutOrderObj.after_coupon_totalamount-$scope.CheckOutOrderObj.advance_amount;
+            $("#checkout_modal").modal('show');
+        };
+        $scope.addnewcheckin=function () {
+            $scope.getRoomBasedOnRoomType($scope.CheckOutOrderObj.room_type_id);
+        $("#checkin_modal").modal('show');
+    }
+
+    $scope.saveCheckinRoom=function(){
+            var checkinroom;
+        checkinroom={
+                id:$scope.CheckOutOrderObj.id,
+                room_no:$scope.roomId
+            };
+        $http.post($scope.hotelServerURL + '/saveCheckinRoom', angular.toJson(checkinroom)).then(function (response) {
+            var data=response.data.object;
+            $("#checkin_modal").modal('hide');
+            // $("#add_new_CheckOut_modal").modal('hide');
+            // $("#add_new_CheckOut_modal").modal('show');
+        } , function (error) {
+            Notification.error({
+                message: 'Something went wrong, please try again',
+                positionX: 'center',
+                delay: 2000
+            });
+        })
+
+        }
+        $scope.saveAdvancePayment=function() {
+            if ($scope.paymentmethod == '' || $scope.paymentmethod == null || angular.isUndefined($scope.paymentmethod)) {
+                Notification.error({message: 'Please Select Payment Method', positionX: 'center', delay: 2000});
+            } else if ($scope.amount == '' || $scope.amount == null || angular.isUndefined($scope.amount)) {
+                Notification.error({message: 'Please Enter Amount', positionX: 'center', delay: 2000});
+            }else if (parseFloat($scope.advanceAmount)>parseFloat($scope.grandTotal)) {
+                Notification.error({message: 'Amount cannot be Greater than Total Amount', positionX: 'center', delay: 2000});
+            } else {
+                var checkInDetails;
+                checkInDetails = {
+                    id: $scope.CheckOutOrderObj.id,
+                    advance_amount: $scope.amount
+                };
+                $http.post($scope.hotelServerURL + '/advancePayment', angular.toJson(checkInDetails)).then(function (response) {
+                    var data = response.data.object;
+                    $("#payment_modal").modal('hide');
+                    $scope.newcheckout($scope.CheckOutOrderObj.id, 'pending');
+                    // $scope.getcheckinList();
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                })
+            }
+            ;
+        }
+
+
+        // $scope.savePayment = function(){
+        //     var payment;
+        //     payment = {
+        //         order_Id:$scope.orderId,
+        //         invoiceNo:$scope.invoicenumber,
+        //         paymentType:$scope.paymentmethod,
+        //         addedDate:$scope.addeddate,
+        //         amount:$scope.amount
+        //     };
+        //     $http.post($scope.hotelServerURL + '/savePayment',angular.toJson(payment)).then(function (response) {
+        //         var data = response.data.object;
+        //         $("#checkout_modal").modal('hide');
+        //         $("#add_new_CheckOut_modal").modal('hide');
+        //         $scope.getcheckinList();
+        //     }, function (error) {
+        //         Notification.error({
+        //             message: 'Something went wrong, please try again',
+        //             positionX: 'center',
+        //             delay: 2000
+        //         });
+        //     })
+        // }
+
+
+        $scope.getcheckinList = function (searchText) {
+            if(angular.isUndefined(searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.hotelServerURL + '/getcheckinList?type='+'Advance').then(function (response) {
+                var data = response.data.object;
+                $scope.checkinList = data;
+
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+        $scope.getcheckinList();
+
+        //Fetching Rooms based on RoomType
+        $scope.getRoomBasedOnRoomType = function (roomTypeId) {
+            $http.post($scope.hotelServerURL + "/getRoomList?roomTypeId=" + roomTypeId).then(function (response) {
+                var data = response.data.object;
+                $scope.roomId=null;
+                $scope.roomsList = data;
+            })
+        }
+
+        //Total Nights Calculation
+        $scope.totalNights = function (checkout) {
+            // var checkIn = new Date($scope.checkIn);
+            var checkIn = $scope.checkIn;
+            var checkOutDate = checkout;
+            $scope.nights = (checkOutDate - checkIn)  / 1000 / 60 / 60 / 24;
+            $scope.nights=parseFloat($scope.nights).toFixed(0);
+        }
+
+        $scope.getRoomTypeObj = function () {
+            $scope.pricePerNightList = [];
+            $scope.totalPricePerNightList = [];
+            $scope.paidServiceList = [];
+            $scope.relOrderTaxesPojoList = [];
+            var roomTypeI = $scope.roomTypeId;
+            if(roomTypeI!=""&&roomTypeI!=null) {
+                $http.post($scope.hotelServerURL + "/getRoomTypeObj?roomTypeId=" + roomTypeI).then(function (response) {
+                    var data = response.data.object;
+                    $scope.roomTypeObj = data;
+                    $scope.days = $scope.nights;
+                    var i = 0;
+
+                    while ($scope.days > 0) {
+                        var date = new Date($scope.checkIn);
+                        date.setDate(date.getDate() + i++);
+                        var totalExtraPersonAmt=0;
+                        var extraPerson=0;
+                        if(parseInt($scope.adults)>parseInt($scope.roomTypeObj.base_occupancy)){
+                            totalExtraPersonAmt =($scope.adults - $scope.roomTypeObj.base_occupancy) * $scope.roomTypeObj.additional_person;
+                            extraPerson =($scope.adults - $scope.roomTypeObj.base_occupancy);
+                        }else {
+                            totalExtraPersonAmt =0;
+                            extraPerson =0;
+                        }
+                        $scope.pricePerNightList.push({
+                            price: $scope.roomTypeObj.base_price,
+                            date: date,
+                            additionalPerson: $scope.roomTypeObj.additional_person,
+                            baseOccupancy: $scope.roomTypeObj.base_occupancy,
+                            additionalPersonPrice: $scope.roomTypeObj.additional_person,
+                            extraPerson: extraPerson,//Extra Person Calculation
+                            totalExtraPersonAmount: totalExtraPersonAmt,//Total Amount for AdditionlPerson Calculation
+                            totalAmount: ($scope.roomTypeObj.base_price) + totalExtraPersonAmt // Total Amount
+                        });
+                        $scope.days = $scope.days - 1;
+                    }
+                    $scope.totalPrice = 0;
+                    $scope.totalAdditionalPrice = 0;
+                    $scope.total = 0;
+                    $scope.grandTotal = 0;
+                    $scope.tempTotal = 0;
+                    angular.forEach($scope.pricePerNightList, function (val, key) {
+                        $scope.totalPrice = $scope.totalPrice + $scope.pricePerNightList[key].price;
+                        $scope.totalAdditionalPrice = $scope.totalAdditionalPrice + $scope.pricePerNightList[key].totalExtraPersonAmount;
+                        $scope.total = $scope.total + $scope.pricePerNightList[key].totalAmount;
+                        $scope.tempTotal = $scope.total;
+                        $scope.grandTotal = $scope.total;
+                    });
+                    $scope.totalPricePerNightList.push({
+                        price: $scope.totalPrice,
+                        totalExtraPersonAmount: $scope.totalAdditionalPrice,
+                        totalAmount: $scope.total
+                    });
+                });
+
+                $http.post($scope.hotelServerURL + "/getTaxData").then(function (response) {
+                    $scope.totalTax = 0;
+                    var data = response.data.object;
+                    $scope.taxData = data;
+                    angular.forEach($scope.taxData, function (val, key) {
+                        $scope.relOrderTaxesPojoList.push({
+                            name: $scope.taxData[key].name,
+                            rate: $scope.taxData[key].rate,
+                            igst: $scope.taxData[key].igst,
+                            cgst: $scope.taxData[key].cgst,
+                            sgst: $scope.taxData[key].sgst,
+                            total: ($scope.total / 100) * $scope.taxData[key].rate
+                        });
+                    });
+                    angular.forEach($scope.relOrderTaxesPojoList, function (val, key) {
+                        $scope.totalTax = $scope.totalTax + val.total;
+                    });
+                    $scope.grandTotal = $scope.totalTax + $scope.grandTotal;
+                });
+
+                $http.post($scope.hotelServerURL + "/getServiceListBasedOnRoomType?roomTypeId=" + roomTypeI).then(function (response) {
+                    var data = response.data.object;
+                    $scope.serviceListBasedOnRoomType = data;
+                    angular.forEach($scope.serviceListBasedOnRoomType, function (val, key) {
+                        $scope.paidServiceList.push({
+                            title: $scope.serviceListBasedOnRoomType[key].title,
+                            price_type: $scope.serviceListBasedOnRoomType[key].price_type,
+                            price: $scope.serviceListBasedOnRoomType[key].price
+                        });
+                    });
+                });
+                $scope.totalamtaftrdisct=$scope.grandTotal;
+            }
+        }
+
+
+        $scope.operation="";
+        $scope.afterroomtype=function(){
+            $scope.operation='bookingShow'
+        }
+        $scope.calTaxAmount=function(){
+            $http.post($scope.hotelServerURL + "/getTaxData").then(function (response) {
+                $scope.totalTax = 0;
+                var data = response.data.object;
+                $scope.taxData = data;
+                $scope.relOrderTaxesPojoList=[];
+                angular.forEach($scope.taxData, function (val, key) {
+                    $scope.relOrderTaxesPojoList.push({
+                        name: $scope.taxData[key].name,
+                        rate: $scope.taxData[key].rate,
+                        igst: $scope.taxData[key].igst,
+                        cgst: $scope.taxData[key].cgst,
+                        sgst: $scope.taxData[key].sgst,
+                        total: ($scope.total / 100) * $scope.taxData[key].rate
+                    });
+                });
+                angular.forEach($scope.relOrderTaxesPojoList, function (val, key) {
+                    $scope.totalTax = $scope.totalTax + val.total;
+                });
+                $scope.grandTotal = $scope.totalTax + $scope.total;
+            });
+        }
+        $scope.applied=false;
+        $scope.calculateCouponAmount=function(){
+            $http.post($scope.hotelServerURL + '/getcoupon?coupon='+$scope.couponvalue).then(function (response) {
+                var data = response.data;
+                console.log(data);
+                if(data!=""){
+                    if($scope.applied==false){
+                        if(parseFloat($scope.total)>=parseFloat(data.min_amount)){
+                            $scope.couponamt=parseFloat(data.value);
+                            $scope.totalamtaftrdisct=parseFloat($scope.total);
+                            if(parseFloat($scope.totalamtaftrdisct)>parseFloat(data.value)){
+                                $scope.totalamtaftrdisct=parseFloat($scope.totalamtaftrdisct)-parseFloat(data.value);
+                            }else {
+                                $scope.totalamtaftrdisct=parseFloat(0);
+                            }
+                        }else {
+                            Notification.warning({
+                                message: 'Min Order is '+data.min_amount,
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+                        $scope.applied=true;
+                        $scope.removed=false;
+                        $scope.total=$scope.totalamtaftrdisct;
+                        $scope.calTaxAmount();
+                    }
+
+                }else {
+                    Notification.error({
+                        message: 'Coupon is Invalid',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                }
+            }, function (failureResponse) {
+
+            })
+        }
+        $scope.removed=false;
+        $scope.removeCoupan=function(){
+            if($scope.couponamt>0&&$scope.removed!=true){
+                $scope.total=parseFloat($scope.total+$scope.couponamt);
+                $scope.calTaxAmount();
+                $scope.removed=true;
+                $scope.applied=false;
+            }
+            $scope.couponamt=0;
+        }
+        $scope.grandTotalCalculation = function(paidServices,result,index){
+            $scope.list = paidServices;
+            $scope.totalServiceAmount = 0;
+            var nights=parseInt($scope.nights);
+            if(result){
+                if(paidServices.price_type=="Fixed Price"){
+                    $scope.relOrderPaidServiceList.push({
+                        title: $scope.list.title,
+                        price_type: $scope.list.price_type,
+                        price: $scope.list.price
+                    });
+                    $scope.grandTotal = (parseInt(paidServices.price) + $scope.grandTotal);
+                }else {
+                    while (nights>0){
+                        $scope.relOrderPaidServiceList.push({
+                            title: $scope.list.title,
+                            price_type: $scope.list.price_type,
+                            price: $scope.list.price
+                        });
+                        $scope.grandTotal = (parseInt(paidServices.price) + $scope.grandTotal);
+                        nights=nights-1;
+                    }
+                }
+
+            }
+            else{
+                if(paidServices.price_type=="Fixed Price"){
+                    $scope.relOrderPaidServiceList.splice(index, 1);
+                    $scope.grandTotal = $scope.grandTotal - (paidServices.price);
+                }else {
+                    while (nights>0){
+                        $scope.relOrderPaidServiceList.splice(index, 1);
+                        $scope.grandTotal = $scope.grandTotal - (paidServices.price);
+                        nights=nights-1;
+                    }
+                }
+                // var index = $scope.relOrderPaidServiceList.indexOf(paidServices);
+            }
+            $scope.totalServiceAmount = $scope.grandTotal - ($scope.totalTax + $scope.total);
+            $scope.totalamtaftrdisct=$scope.grandTotal;
+        }
+        $scope.saveOrder = function () {
+            if($scope.guests==''||$scope.guests==null||angular.isUndefined($scope.guests)){
+                Notification.error({message: 'Please Select Guests', positionX: 'center', delay: 2000})
+            }
+            else if($scope.adults==''||$scope.adults==null||angular.isUndefined($scope.adults)){
+                Notification.error({message: 'Please Select Adults', positionX: 'center', delay: 2000})
+            }
+            else if($scope.checkIn==''||$scope.checkIn==null||angular.isUndefined($scope.checkIn)){
+                Notification.error({message: 'Please Select CheckIn Date', positionX: 'center', delay: 2000})
+            }
+            else if($scope.checkOut==''||$scope.checkOut==null||angular.isUndefined($scope.checkOut)){
+                Notification.error({message: 'Please Select CheckOut Date', positionX: 'center', delay: 2000})
+            }
+            else if($scope.checkOut<=$scope.checkIn){
+                Notification.error({message: 'CheckOut Date Should be greater than CheckIn Date', positionX: 'center', delay: 2000})
+            }
+            else if($scope.roomTypeId==''||$scope.roomTypeId==null||angular.isUndefined($scope.roomTypeId)){
+                Notification.error({message: 'Please Select RoomType', positionX: 'center', delay: 2000})
+            }
+            else {
+                var checkInDetails;
+                checkInDetails = {
+                    guest_id: $scope.guests,
+                    check_in: $scope.checkIn,
+                    bookingstatus: 'Advance',
+                    check_out: $scope.checkOut,
+                    check_in_time: $scope.checkInTime,
+                    check_out_time: $scope.checkOutTime,
+                    ordered_on: new Date(),
+                    // room_no:
+                    // room_rent:
+                    adults: $scope.adults,
+                    kids: $scope.kids,
+                    room_no: $scope.roomId,
+                    // room_id:$scope.roomId,
+                    room_type_id: $scope.roomTypeId,
+                    additional_person: $scope.roomTypeObj.base_occupancy,
+                    payment_status: "pending",
+                    // advance_amount:
+                    totalamount: $scope.total+$scope.totalTax,
+                    advanceBooking:true,
+                    after_coupon_totalamount:$scope.totalamtaftrdisct,
+                    coupon_discount:$scope.couponamt,
+                    coupon:$scope.couponvalue,
+                    taxamount: $scope.totalTax,
+                    paid_service_amount: $scope.totalServiceAmount,
+                    amount: $scope.total,
+                    base_price: $scope.roomTypeObj.base_price,
+                    additional_person_amount: $scope.roomTypeObj.additional_person,
+                    nights: $scope.nights,
+                    relOrderPricesPojoList: $scope.pricePerNightList,
+                    // totalPricePerNightList:$scope.totalPricePerNightList,
+                    relOrderTaxesPojoList: $scope.relOrderTaxesPojoList,
+                    relOrderServicesPojoList: $scope.relOrderPaidServiceList
+                };
+
+                $http.post($scope.hotelServerURL + '/saveOrder', angular.toJson(checkInDetails)).then(function (response) {
+                    var data = response.data.object;
+                    // console.log(data);
+                    // $scope.studentList = data;
+                    $("#add_CheckIn_modal").modal('hide');
+                    $scope.getcheckinList();
+                    $scope.sendSMS(data,"OrderInvoiceNo");
+                } , function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                })
+            }
+        };
+
+        $scope.sendSMS = function(checkin,type){
+            var Details;
+            Details={
+                phoneNumber:checkin.guestId.mobile,
+                orderNo:checkin.order_no,
+                type:type
+            }
+            $http.post("/sms/sendSMSInvoice/",angular.toJson(Details, "Create"))
+                .then(function (response) {
+                    var data = response.data;
+                    $scope.smsData = data;
+                });
+        };
+
+        $scope.getGuestList = function () {
+            $(".loader").css("display", "block");
+            $http.post($scope.hotelServerURL + "/getGuestList").then(function (response) {
+                var data = response.data.object;
+                console.log(data);
+                $scope.guestList = data;
+
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+
+        };
+
+    });
+
+
+
+
+

@@ -1,0 +1,16 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Payment;
+import com.hyva.hotel.pojo.PaymentPojo;
+
+public class PaymentMapper {
+    public static Payment paymentPojoToEntity(PaymentPojo paymentPojo){
+        Payment paymentObj = new Payment();
+        paymentObj.setAmount(paymentPojo.getAmount());
+        paymentObj.setInvoice(paymentPojo.getInvoiceNo());
+        paymentObj.setOrder_id(paymentPojo.getOrderId());
+        paymentObj.setAdded_date(paymentPojo.getAddedDate());
+        paymentObj.setPayment_method(paymentPojo.getPaymentType());
+        return paymentObj;
+    }
+}

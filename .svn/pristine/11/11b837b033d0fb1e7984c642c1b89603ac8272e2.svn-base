@@ -1,0 +1,336 @@
+app.controller('couponCtrl',
+    function($scope, $http, $location, $filter, Notification, ngTableParams,  $timeout, $window, $rootScope) {
+        console.log("aaaaaaaaaaaaa");
+        $scope.bshimServerURL = "/hotel";
+        $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        $scope.customerId = 1;
+        $scope.userRights = [];
+        $scope.operation = 'Create';
+        $scope.customer = 1;
+        $scope.today = new Date();
+        $scope.operation='create';
+
+
+        $scope.reloadPage = function () {
+            $window.location.reload();
+        };
+
+        $scope.dateOptions = {
+            minDate : new Date()
+        };
+
+        $scope.format = 'dd/MM/yyyy';
+        $scope.openDate1 = function () {
+            $scope.popup1.opened = true;
+        };
+
+        $scope.popup1 = {
+            opened: false
+        };
+
+        $scope.openDate2 = function () {
+            $scope.popup2.opened = true;
+        };
+
+        $scope.popup2 = {
+            opened: false
+        };
+        $scope.reloadPage = function () {
+            $window.location.reload();
+        };
+
+
+        $scope.addcoupon = function () {
+            $scope.id=0;
+            $scope.offertitle="";
+            $scope.description="";
+            $scope.offerimage="";
+            $scope.frmdate="";
+            $scope.todate="";
+            $scope.couponcode="";
+            $scope.coupontype="";
+            $scope.couponvalue="";
+            $scope.minamount="";
+            $scope.maxamount="";
+            $scope.limitperuser="";
+            $scope.limitpercoupon="";
+            $("#add_new_coupon").modal('show');
+
+        };
+
+        $scope.backconfiguration=function(){
+            $window.location.href='/home#!/configuration'
+        };
+
+        $scope.importPopup = function(){
+            $("#import_Coupons").modal('show');
+        }
+
+        $scope.saveCouponsImport = function(){
+            $scope.isDisabled= true;
+            var formElement = document.getElementById("couponDetails");
+            var couponDetails = new FormData(formElement);
+            $http.post($scope.bshimServerURL + '/CouponsImportsave',couponDetails,
+                { headers: {'Content-Type': undefined},
+                    transformRequest: angular.identity,
+                }).then(function (response) {
+                    $("#import_Coupons").modal('hide');
+                $scope.getcouponsList();
+                $scope.getPaginatedCouponList();
+                    $scope.isDisabled= false;
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                    $scope.isDisabled= false;
+                }
+            )
+        }
+
+
+        $scope.getcouponsList = function (searchText) {
+            if(angular.isUndefined(searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getcouponsList?searchText=').then(function (response) {
+                var data = response.data.object;
+                $scope.couponsList = data;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.getcouponsList();
+
+
+        $scope.EditCoupons = function (data) {
+                 $scope.id=data.id;
+                 $scope.offertitle=data. title;
+                 $scope.description=data. description;
+                 $scope.offerimage=data.  image;
+                 $scope.frmdate=new Date(data.date_from);
+                 $scope.todate=new Date(data.date_to);
+                 $scope.couponcode=data.code;
+                 $scope.couponvalue=data.value;
+                 $scope.limitperuser=data.limit_per_user;
+                 $scope.limitpercoupon=data.limit_per_coupon;
+                 $scope.coupontype=data. type;
+                 $scope.minamount=data.min_amount;
+                 $scope.maxamount=data.max_amount;
+
+
+            $scope.operation = 'Edit';
+            $("#submit").text("Update");
+            $('#coupon-title').text("Edit Coupon");
+            $("#add_new_coupon").modal('show');
+
+        }, function (error) {
+            Notification.error({message: 'Something went wrong, please try again', positionX: 'center', delay: 2000});
+        };
+
+
+        $scope.DeleteCoupons=function(data) {
+            bootbox.confirm({
+                title: "Alert",
+                message: "Do you want to Continue ?",
+                buttons: {
+                    confirm: {
+                        label: 'OK'
+                    },
+                    cancel: {
+                        label: 'Cancel'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $http.post($scope.bshimServerURL + '/getDeleteCoupons?id=' + data.id).then(function (response) {
+                            var data = response.data;
+                            Notification.success({
+                                message: 'Coupons deleted  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.getcouponsList();
+                        }, function (error) {
+                            Notification.error({
+                                message: 'Something went wrong, please try again',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                            $scope.isDisabled = false;
+                        });
+                    }
+                }
+            });
+        };
+
+
+
+
+        $scope.savecoupon = function () {
+            if ($scope.offertitle == '' || $scope.offertitle == null || angular.isUndefined($scope.offertitle)) {
+                Notification.error({message: 'Please Enter Offer Title ', positionX: 'center', delay: 2000});
+            }
+            else if ($scope.frmdate == '' || $scope.frmdate == null || angular.isUndefined($scope.frmdate)) {
+                Notification.error({message: 'Please Select From Date ', positionX: 'center', delay: 2000});
+            }
+            else if ($scope.todate == '' || $scope.todate == null || angular.isUndefined($scope.todate)) {
+                Notification.error({message: 'Please Select To Date', positionX: 'center', delay: 2000});
+            }
+            else if ($scope.frmdate>=$scope.todate) {
+                Notification.error({message: 'Todate should not lessthan Fromdate', positionX: 'center', delay: 2000})
+            }
+            else if ($scope.couponcode == '' || $scope.couponcode == null || angular.isUndefined($scope.couponcode)) {
+                Notification.error({message: 'Please Enter Coupon code ', positionX: 'center', delay: 2000});
+            }
+            else if ($scope.couponvalue == '' || $scope.couponvalue == null || angular.isUndefined($scope.couponvalue)) {
+                Notification.error({message: 'Please Enter Coupon value', positionX: 'center', delay: 2000});
+            }
+            else if ($scope.minamount == '' || $scope.minamount == null || angular.isUndefined($scope.minamount)) {
+                Notification.error({message: 'Please Enter Min amount ', positionX: 'center', delay: 2000});
+            }
+            else if ($scope.maxamount == '' || $scope.maxamount == null || angular.isUndefined($scope.maxamount)) {
+                Notification.error({message: 'Please Enter Max amount ', positionX: 'center', delay: 2000});
+            }
+            else if (parseFloat($scope.maxamount)<parseFloat($scope.minamount)) {
+                Notification.error({message: 'MaxAmount Should not less than MinAmount', positionX: 'center', delay: 2000});
+            }
+            else if ($scope.minamount<=0 && $scope.maxamount<=0) {
+                Notification.error({message: 'Min and Max Amount Should not be zero', positionX: 'center', delay: 2000})
+            }
+            // else if ($scope.limitperuser==''||$scope.limitperuser==""||angular.isUndefined($scope.limitperuser)) {
+            //     Notification.error({message: 'Please Enter Limit Per user', positionX: 'center', delay: 2000})
+            // }
+            // else if ($scope.limitperuser<=0) {
+            //     Notification.error({message: 'Limit Per user should not be zero', positionX: 'center', delay: 2000})
+            // }
+           else {
+                var savecouponDetails;
+                savecouponDetails = {
+                    id: $scope.id,
+                    title: $scope.offertitle,
+                    description: $scope.description,
+                    image: $scope.offerimage,
+                    date_from: $scope.frmdate,
+                    date_to: $scope.todate,
+                    code: $scope.couponcode,
+                    type: $scope.coupontype,
+                    min_amount: $scope.minamount,
+                    max_amount: $scope.maxamount,
+                    value: $scope.couponvalue,
+                    limit_per_user: $scope.limitperuser,
+                    limit_per_coupon:$scope.limitpercoupon
+
+                };
+                $http.post($scope.bshimServerURL + "/savecoupon", angular.toJson(savecouponDetails)).then(function (response) {
+                    var data = response.data;
+                    if (data == "" || data == 'undefined' || data == null) {
+                        Notification.error({message: ' Already exists', positionX: 'center', delay: 2000});
+                    }
+                    else {
+                        $("#add_new_coupon").modal('hide');
+                        $scope.getcouponsList();
+                        if ($scope.operation == 'Edit') {
+                            Notification.success({
+                                message: 'Coupon is Updated successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+
+                        } else {
+                            Notification.success({
+                                message: 'Coupon is Created  successfully',
+                                positionX: 'center',
+                                delay: 2000
+                            });
+                        }
+
+                    }
+                }, function (error) {
+                    Notification.error({
+                        message: 'Something went wrong, please try again',
+                        positionX: 'center',
+                        delay: 2000
+                    });
+                });
+
+            }
+        }
+
+        $scope.getPaginatedCouponList = function (page) {
+            switch (page) {
+                case 'firstPage':
+                    $scope.firstPage = true;
+                    $scope.lastPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'lastPage':
+                    $scope.lastPage = true;
+                    $scope.firstPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isNext = false;
+                    $scope.isPrev = false;
+                    break;
+                case 'nextPage':
+                    $scope.isNext = true;
+                    $scope.isPrev = false;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.pageNo = $scope.pageNo + 1;
+                    break;
+                case 'prevPage':
+                    $scope.isPrev = true;
+                    $scope.lastPage = false;
+                    $scope.firstPage = false;
+                    $scope.isNext = false;
+                    $scope.pageNo = $scope.pageNo - 1;
+                    break;
+                default:
+                    $scope.firstPage = true;
+                    $scope.lastPage = false;
+                    $scope.pageNo = 0;
+                    $scope.isPrev = false;
+                    $scope.isNext =false;
+            }
+            var paginationDetails;
+            paginationDetails={
+                firstPage: $scope.firstPage,
+                lastPage: $scope.lastPage,
+                pageNo: $scope.pageNo,
+                prevPage: $scope.isPrev,
+                nextPage: $scope.isNext
+            }
+            if(angular.isUndefined($scope.searchText)){
+                $scope.searchText="";
+            }
+            $http.post($scope.bshimServerURL + '/getPaginatedCouponList?searchText='+$scope.searchText,angular.toJson(paginationDetails)).then(function (response) {
+                var data = response.data;
+                console.log(data);
+                $scope.cityList = data.list;
+                $scope.first = data.firstPage;
+                $scope.last = data.lastPage;
+                $scope.prev = data.prevPage;
+                $scope.next = data.nextPage;
+                $scope.pageNo = data.pageNo;
+            }, function (error) {
+                Notification.error({
+                    message: 'Something went wrong, please try again',
+                    positionX: 'center',
+                    delay: 2000
+                });
+            })
+        };
+
+        $scope.getPaginatedCouponList();
+
+
+
+    });

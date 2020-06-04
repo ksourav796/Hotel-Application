@@ -1,0 +1,33 @@
+package com.hyva.hotel.mapper;
+
+import com.hyva.hotel.entities.Amenities;
+import com.hyva.hotel.pojo.AmenitiesPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class HotelAmenitiesMapper {
+    public static Amenities mapPojoToEntity(AmenitiesPojo pojo){
+        Amenities amenities=new Amenities();
+        amenities.setAcdyrId(pojo.getAcdyrId());
+        amenities.setName(pojo.getName());
+        amenities.setDescription(pojo.getDescription());
+        amenities.setImage(pojo.getImage());
+        amenities.setActive(pojo.getActive());
+        return amenities;
+    }
+    public static List<AmenitiesPojo> mapEntityToPojo(List<Amenities> amenitiesList){
+        List<AmenitiesPojo> list=new ArrayList<>();
+        for(Amenities amenities:amenitiesList) {
+            AmenitiesPojo amenitiesPojo = new AmenitiesPojo();
+            amenitiesPojo.setAcdyrId(amenities.getAcdyrId());
+            amenitiesPojo.setName(amenities.getName());
+            amenitiesPojo.setDescription(amenities.getDescription());
+            amenitiesPojo.setImage(amenities.getImage());
+            amenitiesPojo.setActive(amenities.getActive());
+            list.add(amenitiesPojo);
+        }
+        return list;
+    }
+}
+

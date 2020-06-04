@@ -1,0 +1,113 @@
+package com.hyva.hotel.entities;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "room_types")
+public class RoomTypes {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long id;
+    private String title;
+    private String slug;
+    private String shortcode;
+    private String description;
+    private String base_occupancy;
+    private String higher_occupancy;
+    private String kids_occupancy;
+    private double base_price;
+    private double additional_person;
+    private double extra_bed_price;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public String getShortcode() {
+        return shortcode;
+    }
+
+    public void setShortcode(String shortcode) {
+        this.shortcode = shortcode;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getBase_occupancy() {
+        return base_occupancy;
+    }
+
+    public void setBase_occupancy(String base_occupancy) {
+        this.base_occupancy = base_occupancy;
+    }
+
+    public String getHigher_occupancy() {
+        return higher_occupancy;
+    }
+
+    public void setHigher_occupancy(String higher_occupancy) {
+        this.higher_occupancy = higher_occupancy;
+    }
+
+    public String getKids_occupancy() {
+        return kids_occupancy;
+    }
+
+    public void setKids_occupancy(String kids_occupancy) {
+        this.kids_occupancy = kids_occupancy;
+    }
+
+    public double getBase_price() {
+        return base_price;
+    }
+
+    public void setBase_price(double base_price) {
+        this.base_price = base_price;
+    }
+
+    public double getAdditional_person() {
+        return additional_person;
+    }
+
+    public void setAdditional_person(double additional_person) {
+        this.additional_person = additional_person;
+    }
+
+    public double getExtra_bed_price() {
+        return extra_bed_price;
+    }
+
+    public void setExtra_bed_price(double extra_bed_price) {
+        this.extra_bed_price = extra_bed_price;
+    }
+}

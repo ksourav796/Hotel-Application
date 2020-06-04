@@ -1,0 +1,10 @@
+package com.hyva.hotel.respositories;
+
+import com.hyva.hotel.entities.FormSetUp;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FormSetupRepository extends JpaRepository<FormSetUp,Long> {
+
+    FormSetUp findAllByTypename(String type);
+    FormSetUp findAllByTypenameAndFormsetupIdNotIn(String type,Long id);
+}
