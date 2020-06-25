@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   	<groupId>com.hyva</groupId>
 	<artifactId>Hotel</artifactId>
-	<version>V-18.1.18</version>
+<!-- 	<version>V-18.1.18</version> -->
 	<!--<packaging>war</packaging>-->
 	<repositories>
 		<repository>
@@ -13,11 +13,15 @@
 
 	<name>Hotel</name>
 	<description>Demo project for Spring Boot</description>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
   <parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.9.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		
 	</parent>
 
   <dependencies>
